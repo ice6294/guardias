@@ -15,7 +15,7 @@ public class Guardias {
 
     // GLOBAL ATTRIBUTES
     public static List<Calendario> resultados = new ArrayList();
-    public static final int DIF = 2;
+    public static final int DIF = 1;
 
     /**
      * @param args the command line arguments
@@ -23,19 +23,19 @@ public class Guardias {
     public static void main(String[] args) throws InterruptedException {
 
         // Inicializar residentes
-        Residente res0 = new Residente("Miguel", 0);
-        Residente res1 = new Residente("Alex", 1);
-        Residente res2 = new Residente("Maria", 2);
-        Residente res3 = new Residente("Carmen", 3);
-        Residente res4 = new Residente("Kevin", 4);
-        Residente res5 = new Residente("Juan", 5);
-        Residente res6 = new Residente("Luis", 6);
-        Residente res7 = new Residente("Sara", 7);
-        Residente res8 = new Residente("Dani", 8);
-        Residente res9 = new Residente("Lucia", 9);
+        Residente res0 = new Residente("Elena", 0); // R5
+        Residente res1 = new Residente("Natalia", 1); // R5
+        Residente res2 = new Residente("Joaquin", 2); // R4
+        Residente res3 = new Residente("Pablo", 3); // R4
+        Residente res4 = new Residente("Rosaura", 4); // R3
+        Residente res5 = new Residente("Javi", 5); // R3
+        Residente res6 = new Residente("Dani", 6); // R2
+        Residente res7 = new Residente("Pau", 7); // R2
+        Residente res8 = new Residente("Laura", 8); // R1
+        Residente res9 = new Residente("Carmen", 9); // R1
 
         // Inicializar calendario
-        Calendario cal = new Calendario(2015, 8); // Julio 2015
+        Calendario cal = new Calendario(2016, 2); // Julio 2015
 
         // Comprobando calendario
         System.out.println("~~~~~~~~~~~~~~~~~~ CALENDARIO ~~~~~~~~~~~~~~~~~~");
@@ -60,16 +60,16 @@ public class Guardias {
 
         // Creamos lista de residentes
         List<Residente> residentes = new ArrayList();
-        residentes.add(res9);
-        residentes.add(res8);
-        residentes.add(res7);
-        residentes.add(res6);
-        residentes.add(res5);
-        residentes.add(res4);
-        residentes.add(res3);
-        residentes.add(res2);
-        residentes.add(res1);
         residentes.add(res0);
+        residentes.add(res1);
+        residentes.add(res2);
+        residentes.add(res3);
+        residentes.add(res4);
+        residentes.add(res5);
+        residentes.add(res6);
+        residentes.add(res7);
+        residentes.add(res8);
+        residentes.add(res9);
 
         // Comprobamos lista de residentes
         System.out.println();
@@ -147,16 +147,19 @@ public class Guardias {
                 int dif = 0;
                 while (dia.getURG_higher() == null) {
                     Residente mayor = mayores.poll();
-                    if (!dia.getAbsents().contains(mayor) && asignaciones[mayor.getNumber()] < media(asignaciones) + dif) { // + comparar numero de asignaciones con la media
+                    if (!dia.getAbsents().contains(mayor)
+                            && !dia.getExceptions().contains(mayor)
+                                && asignaciones[mayor.getNumber()] < media(asignaciones) + dif) { // + comparar numero de asignaciones con la media
                         dia.setURG_higher(mayor);
                         asignaciones[mayor.getNumber()]++;
+                        dia.addException(mayor);
                     }
                     mayores.add(mayor);
                     intento++;
-                    dif++;
                     if (intento > menores.size() && dif > DIF) {
                         return false;
                     }
+                    dif++;
                 }
                 System.out.println("    · URG mayor asignado: " + dia.getURG_higher());
                 // </editor-fold>
@@ -166,16 +169,18 @@ public class Guardias {
                 dif = 0;
                 while (dia.getURG_minor() == null) {
                     Residente menor = menores.poll();
-                    if (!dia.getAbsents().contains(menor) && asignaciones[menor.getNumber()] < media(asignaciones) + dif) { // + comparar numero de asignaciones con la media
+                    if (!dia.getAbsents().contains(menor)
+                            && !dia.getExceptions().contains(menor)
+                                && asignaciones[menor.getNumber()] < media(asignaciones) + dif) { // + comparar numero de asignaciones con la media
                         dia.setURG_minor(menor);
                         asignaciones[menor.getNumber()]++;
                     }
                     menores.add(menor);
                     intento++;
-                    dif++;
                     if (intento > menores.size() && dif > DIF) {
                         return false;
                     }
+                    dif++;
                 }
                 System.out.println("    · URG pequeño asignado: " + dia.getURG_minor());
                 // </editor-fold>
@@ -185,16 +190,18 @@ public class Guardias {
                 dif = 0;
                 while (dia.getTX_higher() == null) {
                     Residente mayor = mayores.poll();
-                    if (!dia.getAbsents().contains(mayor) && asignaciones[mayor.getNumber()] < media(asignaciones) + dif) { // + comparar numero de asignaciones con la media
+                    if (!dia.getAbsents().contains(mayor)
+                            && !dia.getExceptions().contains(mayor)
+                                && asignaciones[mayor.getNumber()] < media(asignaciones) + dif) { // + comparar numero de asignaciones con la media
                         dia.setTX_higher(mayor);
                         asignaciones[mayor.getNumber()]++;
                     }
                     mayores.add(mayor);
                     intento++;
-                    dif++;
                     if (intento > menores.size() && dif > DIF) {
                         return false;
                     }
+                    dif++;
                 }
                 System.out.println("    · TX mayor asignado: " + dia.getTX_higher());
                 // </editor-fold>
@@ -204,16 +211,18 @@ public class Guardias {
                 dif = 0;
                 while (dia.getTX_minor() == null) {
                     Residente menor = menores.poll();
-                    if (!dia.getAbsents().contains(menor) && asignaciones[menor.getNumber()] < media(asignaciones) + dif) { // + comparar numero de asignaciones con la media
+                    if (!dia.getAbsents().contains(menor)
+                            && !dia.getExceptions().contains(menor)
+                                && asignaciones[menor.getNumber()] < media(asignaciones) + dif) { // + comparar numero de asignaciones con la media
                         dia.setTX_minor(menor);
                         asignaciones[menor.getNumber()]++;
                     }
                     menores.add(menor);
                     intento++;
-                    dif++;
                     if (intento > menores.size() && dif > DIF) {
                         return false;
                     }
+                    dif++;
                 }
                 System.out.println("    · TX pequeño asignado: " + dia.getTX_minor());
                 // </editor-fold>

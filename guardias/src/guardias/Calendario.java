@@ -116,28 +116,36 @@ public class Calendario implements Cloneable {
             result += "\n    · URG mayor: ";
             if (e.getValue().getURG_higher() != null) {
                 result += e.getValue().getURG_higher().getNumber();
+                result += " (" + e.getValue().getURG_higher().getResident() +")";
+                result += " - " + e.getValue().getURG_higher().getName();
             } else {
                 result += "[NULL]";
             }
             result += "\n    · URG pequeño: ";
             if (e.getValue().getURG_minor() != null) {
                 result += e.getValue().getURG_minor().getNumber();
+                result += " (" + e.getValue().getURG_minor().getResident() +")";
+                result += " - " + e.getValue().getURG_minor().getName();
             } else {
                 result += "[NULL]";
             }
             result += "\n    · TX mayor: ";
             if (e.getValue().getTX_higher() != null) {
                 result += e.getValue().getTX_higher().getNumber();
+                result += " (" + e.getValue().getTX_higher().getResident() +")";
+                result += " - " + e.getValue().getTX_higher().getName();
             } else {
                 result += "[NULL]";
             }
             result += "\n    · TX pequeño: ";
             if (e.getValue().getTX_minor() != null) {
                 result += e.getValue().getTX_minor().getNumber();
+                result += " (" + e.getValue().getTX_minor().getResident() +")";
+                result += " - " + e.getValue().getTX_minor().getName();
             } else {
                 result += "[NULL]";
             }
-            result += "\n";
+            result += "\n\n";
         }
         return result;
     }
