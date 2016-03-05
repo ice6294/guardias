@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -20,6 +19,9 @@ public class Calendario implements Cloneable {
 	private Integer month;
 
 	private SortedMap<Integer, Dia> calendar;
+	private List<String> table;
+	
+	private String string;
 
 	// CONSTRUCTOR
 	public Calendario() {
@@ -38,16 +40,8 @@ public class Calendario implements Cloneable {
 		return year;
 	}
 
-	public void setYear(Integer year) {
-		this.year = year;
-	}
-
 	public Integer getMonth() {
 		return month;
-	}
-
-	public void setMonth(Integer month) {
-		this.month = month;
 	}
 
 	public Map<Integer, Dia> getCalendar() {
@@ -57,11 +51,52 @@ public class Calendario implements Cloneable {
 	public void setCalendar(SortedMap<Integer, Dia> calendar) {
 		this.calendar = calendar;
 	}
+	
+	public void setTable() {
+		if (calendar.isEmpty()) {
+			return;
+		}
+		this.table = new ArrayList();
+		
+		// rellenamos la tabla con espacios
+		for (int i = 0; i < 210; i++) {
+			table.add(Utils.addSpaces(Utils.WIDTH));
+		}
+
+		Integer primer = calendar.get(0).getWeek_day() - 1;	// primer día de la semana
+		Integer end = calendar.size();	// último dia del mes
+
+		int count = 0;
+		Integer dia = 0;
+		for (int i = 0; i < 6; i++) {
+			int il = i * 35;
+			for (int j = 0; j < 7; j++) {
+				int jl = il + j;
+				// el contador dia no se inicia hasta que empieza el dia 1
+				dia += (count > primer) ? 1 : 0;
+				if (dia > end - 1) {
+					break;
+				}
+				//dia = (dia > end - 1) ? 0 : dia;
+				if (dia != 0) {
+					this.table.set(jl, Utils.addSpaces(Utils.WIDTH, dia.toString()));
+				}
+				// si el contador está a 0 se deja el espacio
+				if (dia > 0) {
+					this.table.set(jl + 7, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getURG_higher().getName()));
+					this.table.set(jl + 14, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getURG_minor().getName()));
+					this.table.set(jl + 21, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getTX_higher().getName()));
+					this.table.set(jl + 28, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getTX_minor().getName()));
+				}
+				count++;
+			}
+		}
+	}
 
 	// METHODS
 	public final void initializate() {
 		Calendar cal = new GregorianCalendar(this.year, this.month, 1);
-		int day_name = cal.get(Calendar.DAY_OF_WEEK) - 2;
+		int day_name = cal.get(Calendar.DAY_OF_WEEK) - 2;	// why???
 		day_name = (day_name == -1) ? 6 : day_name;
 		day_name = (day_name == -2) ? 5 : day_name;
 
@@ -112,48 +147,6 @@ public class Calendario implements Cloneable {
 		return obj;
 	}
 
-	@Override
-	public String toString() {
-		String result = new String();
-		for (Entry<Integer, Dia> e : this.getCalendar().entrySet()) {
-			result += e.getKey() + ": " + e.getValue();
-			result += "\n    · URG mayor: ";
-			if (e.getValue().getURG_higher() != null) {
-				result += e.getValue().getURG_higher().getNumber();
-				result += " (" + e.getValue().getURG_higher().getResident() + ")";
-				result += " - " + e.getValue().getURG_higher().getName();
-			} else {
-				result += "[NULL]";
-			}
-			result += "\n    · URG pequeño: ";
-			if (e.getValue().getURG_minor() != null) {
-				result += e.getValue().getURG_minor().getNumber();
-				result += " (" + e.getValue().getURG_minor().getResident() + ")";
-				result += " - " + e.getValue().getURG_minor().getName();
-			} else {
-				result += "[NULL]";
-			}
-			result += "\n    · TX mayor: ";
-			if (e.getValue().getTX_higher() != null) {
-				result += e.getValue().getTX_higher().getNumber();
-				result += " (" + e.getValue().getTX_higher().getResident() + ")";
-				result += " - " + e.getValue().getTX_higher().getName();
-			} else {
-				result += "[NULL]";
-			}
-			result += "\n    · TX pequeño: ";
-			if (e.getValue().getTX_minor() != null) {
-				result += e.getValue().getTX_minor().getNumber();
-				result += " (" + e.getValue().getTX_minor().getResident() + ")";
-				result += " - " + e.getValue().getTX_minor().getName();
-			} else {
-				result += "[NULL]";
-			}
-			result += "\n\n";
-		}
-		return result;
-	}
-
 	public String monthName() {
 		String[] names = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Nobiembre", "Diciembre"};
 		return names[this.month];
@@ -163,35 +156,35 @@ public class Calendario implements Cloneable {
 		return year.toString() + " - " + monthName();
 	}
 
-	public List<String> table() {
-		List<String> tabla = new ArrayList();
-		int longest = 10;
-
+	@Override
+	public String toString() {
+		if (this.string != null) {
+			return this.string;
+		}
+		if (this.calendar == null) {
+			return "#Error: Calendar not created";
+		} else if (this.table == null) {
+			this.setTable();
+		}
 		String bar = "+------------+";
-		bar += addChars(longest,'-'); // L
-		bar += "+";
-		bar += addChars(longest,'-'); // M
-		bar += "+";
-		bar += addChars(longest,'-'); // X
-		bar += "+";
-		bar += addChars(longest,'-'); // J
-		bar += "+";
-		bar += addChars(longest,'-'); // V
-		bar += "+";
-		bar += addChars(longest,'-'); // S
-		bar += "+";
-		bar += addChars(longest,'-'); // D
-		bar += "+" + "\n";
-		//String result = bar + "|    TIPO    |  L   |  M   |  X   |  J   |  V   |  S   |  D   |\n" + bar;
-		String result = bar + "|            |";
-		result += addSpaces(longest, "L") + "|";
-		result += addSpaces(longest, "M") + "|";
-		result += addSpaces(longest, "X") + "|";
-		result += addSpaces(longest, "J") + "|";
-		result += addSpaces(longest, "V") + "|";
-		result += addSpaces(longest, "S") + "|";
-		result += addSpaces(longest, "D") + "|";
-		result += "\n" + bar;
+		bar += Utils.addChars(Utils.WIDTH,'-') + "+"; // L
+		bar += Utils.addChars(Utils.WIDTH,'-') + "+"; // M
+		bar += Utils.addChars(Utils.WIDTH,'-') + "+"; // X
+		bar += Utils.addChars(Utils.WIDTH,'-') + "+"; // J
+		bar += Utils.addChars(Utils.WIDTH,'-') + "+"; // V
+		bar += Utils.addChars(Utils.WIDTH,'-') + "+"; // S
+		bar += Utils.addChars(Utils.WIDTH,'-') + "+"; // D
+		bar += "\n";
+		
+		this.string = bar + "|            |";
+		this.string += Utils.addSpaces(Utils.WIDTH, "L") + "|";
+		this.string += Utils.addSpaces(Utils.WIDTH, "M") + "|";
+		this.string += Utils.addSpaces(Utils.WIDTH, "X") + "|";
+		this.string += Utils.addSpaces(Utils.WIDTH, "J") + "|";
+		this.string += Utils.addSpaces(Utils.WIDTH, "V") + "|";
+		this.string += Utils.addSpaces(Utils.WIDTH, "S") + "|";
+		this.string += Utils.addSpaces(Utils.WIDTH, "D") + "|";
+		this.string += "\n" + bar;
 
 		String URJ_mayor = "| URJ mayor: |";
 		String URJ_peque = "| URJ peque: |";
@@ -199,116 +192,24 @@ public class Calendario implements Cloneable {
 		String TX_peque = "| TX  peque: |";
 		String nada = "|            |";
 		String sep = "|";
-
-		// rellenamos la tabla con espacios
-		for (int i = 0; i < 210; i++) {
-			tabla.add(addSpaces(longest));
-		}
-
-		Integer primer = calendar.get(0).getWeek_day() - 1;	// primer día dela semana
-		Integer end = calendar.size();
-
-		System.out.println(calendarName());
-		System.out.println("Primer dia: " + calendar.get(0).getWeekDayName()
-				+ "(" + primer.toString() + ")\nUltimo num: " + end.toString());
-
+		
 		int count = 0;
-		Integer dia = 0;
-
-		System.out.println("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		System.out.println("\t\t\t\tCREANDO TABLA\n");
-		for (int i = 0; i < 6; i++) {
-			int il = i * 35;
-			for (int j = 0; j < 7; j++) {
-				int jl = il + j;
-				// el contador dia no se inicia hasta que empieza el dia 1
-				dia += (count > primer) ? 1 : 0;
-				if (dia > end - 1) {
-					break;
-				}
-				//dia = (dia > end - 1) ? 0 : dia;
-				if (dia != 0) {
-					tabla.set(jl, addSpaces(longest, dia.toString()));
-				}
-				// si el contador está a 0 se deja el espacio
-				if (dia > 0) {
-					tabla.set(jl + 7, addSpaces(longest, calendar.get(dia - 1).getURG_higher().getName()));
-					tabla.set(jl + 14, addSpaces(longest, calendar.get(dia - 1).getURG_minor().getName()));
-					tabla.set(jl + 21, addSpaces(longest, calendar.get(dia - 1).getTX_higher().getName()));
-					tabla.set(jl + 28, addSpaces(longest, calendar.get(dia - 1).getTX_minor().getName()));
-				}
-				count++;
-			}
-		}
-
-		count = 0;
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 5; j++) {
-				result += (j == 0) ? nada : "";
-				result += (j == 1) ? bar + URJ_mayor : "";
-				result += (j == 2) ? URJ_peque : "";
-				result += (j == 3) ? TX_mayor : "";
-				result += (j == 4) ? TX_peque : "";
+				this.string += (j == 0) ? nada : "";
+				this.string += (j == 1) ? bar + URJ_mayor : "";
+				this.string += (j == 2) ? URJ_peque : "";
+				this.string += (j == 3) ? TX_mayor : "";
+				this.string += (j == 4) ? TX_peque : "";
 				for (int k = 0; k < 7; k++) {
-					result += tabla.get(count) + sep;
+					this.string += this.table.get(count) + sep;
 					count++;
 				}
-				result += "\n";
+				this.string += "\n";
 			}
-			result += bar;
+			this.string += bar;
 		}
-
-		System.out.println(result);
-
-		return tabla;
-	}
-
-	// solo espacios
-	public String addSpaces(int size) {
-		return addChars(size, ' ');
-	}
-
-	// espacios + nombre
-	public String addSpaces(int size, String name) {
-		return addChars(size, name, ' ');
-	}
-
-	public String addChars(int size, char c) {
-		String aux = "";
-		for (int i = 0; i < size; i++) {
-			aux += c;
-		}
-		return aux;
-	}
-	
-	public String addChars(int size, String name, char c) {
-		String result = "";
-		int aux = size - name.length();
-		if (aux > 0) {
-			result = "";
-			if (aux % 2 == 0) {
-				aux = Math.round(aux / 2);
-				for (int i = 0; i < aux; i++) {
-					result += c;
-				}
-			} else {
-				aux = Math.round(aux / 2);
-				for (int i = 0; i < aux + 1; i++) {
-					result += c;
-				}
-			}
-			result += name;
-			for (int i = 0; i < aux; i++) {
-				result += c;
-			}
-		} else {
-			int i = 0;
-			for (char car : name.toCharArray()) {
-				result += (i < size) ? car : "";
-				i++;
-			}
-		}
-		return result;
+		return this.string;
 	}
 
 }

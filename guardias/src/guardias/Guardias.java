@@ -16,7 +16,8 @@ public class Guardias {
 
 	// GLOBAL ATTRIBUTES
 	public static List<Calendario> resultados = new ArrayList();
-	public static final int DIF = 1;
+	public static final int SEED = 360;
+	public static final int DIF = 3;
 
 	/**
 	 * @param args the command line arguments
@@ -40,7 +41,7 @@ public class Guardias {
 		Calendario cal = new Calendario(2016, 2); // Julio 2015 <---------------
 
 		// Comprobando calendario
-		System.out.println("~~~~~~~~~~~~~~~~~~ CALENDARIO ~~~~~~~~~~~~~~~~~~");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ CALENDARIO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		for (Entry<Integer, Dia> e : cal.getCalendar().entrySet()) {
 			System.out.println(e.getKey() + ": " + e.getValue() + " [" + e.getValue().getWeek_day() + "]");
 		}
@@ -84,41 +85,48 @@ public class Guardias {
 		residentes.add(res7);
 		residentes.add(res8);
 		residentes.add(res9);
-		
-		// SEED
-		int seed = 360;
-		Random random = new Random(seed);
 
-		// Comprobamos lista de residentes
+		// SEED
+		Random random = new Random(SEED);
+
+		// RESIDENTES
 		System.out.println();
-		System.out.println("~~~~~~~~~~~~~~~~~~ RESIDENTES ~~~~~~~~~~~~~~~~~~");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ RESIDENTES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		// Comprobamos lista de residentes
+		int pos = 1;
 		for (Residente r : residentes) {
-			System.out.println(r.toString());
+			System.out.println(pos + ". " + r.toString());
+			pos++;
 		}
 		// Thread.sleep(1000);
 
+		// MAYORES
+		System.out.println();
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MAYORES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		// Creamos cola de residentes mayores
 		Queue<Residente> mayores = new ArrayDeque();
 		List<Residente> aux = new ArrayList();
 		for (int i = 0; i < 6; i++) {
 			aux.add(residentes.get(i));
 		}
-		while (!aux.isEmpty()) {
-			int n = (int) (random.nextDouble() * aux.size());
-			System.out.println("Random: " + n);
-			mayores.add(aux.remove(n));
-		}
 
 		// Comprobamos lista de residentes mayores
-		System.out.println();
-		System.out.println("~~~~~~~~~~~~~~~~~~ MAYORES ~~~~~~~~~~~~~~~~~~");
 		int j = 0;
 		for (Residente r : mayores) {
 			System.out.println(j + ": " + r.toString());
 			j++;
 		}
 		// Thread.sleep(1000);
+		// Randomizamos la cola mayores
+		while (!aux.isEmpty()) {
+			int n = (int) (random.nextDouble() * aux.size());
+			System.out.println("Random: " + n + " - " + aux.get(n).toString());
+			mayores.add(aux.remove(n));
+		}
 
+		// PEQUEÑOS
+		System.out.println();
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PEQUEÑOS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		// Creamos cola de residentes pequeños
 		Queue<Residente> menores = new ArrayDeque();
 		List<Residente> aux2 = new ArrayList();
@@ -126,40 +134,34 @@ public class Guardias {
 			aux2.add(residentes.get(i));
 		}
 
-		// Aleatorizamos cola de residentes
-		while (!aux2.isEmpty()) {
-			//int n = (int) (Math.random() * aux2.size());
-			int n = (int) (random.nextDouble() * aux2.size());
-			System.out.println("Random: " + n);
-			menores.add(aux2.remove(n));
-		}
-		System.out.println();
-
 		// Comprobamos lista de residentes pequeños
-		System.out.println();
-		System.out.println("~~~~~~~~~~~~~~~~~~ PEQUEÑOS ~~~~~~~~~~~~~~~~~~");
 		j = 0;
 		for (Residente r : menores) {
 			System.out.println(j + ": " + r.toString());
 			j++;
 		}
 		// Thread.sleep(1000);
+		// Aleatorizamos cola de residentes pequeños
+		while (!aux2.isEmpty()) {
+			//int n = (int) (Math.random() * aux2.size());
+			int n = (int) (random.nextDouble() * aux2.size());
+			System.out.println("Random: " + n + " - " + aux2.get(n).toString());
+			menores.add(aux2.remove(n));
+		}
+		System.out.println();
 
 		// Creamos lista de asignaciones
 		int[] asignaciones = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 		// Asignar
 		System.out.println("\n\n");
-		System.out.println("~~~~~~~~~~~~~~~~~~ ASIGNAR ~~~~~~~~~~~~~~~~~~");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ASIGNAR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ");
 		if (asignar(cal, cal.getCalendar().get(0), menores, mayores, asignaciones)) {
 			System.out.println("\n\n");
-			System.out.println("~~~~~~~~~~~~~~~~~~ RESULTADO ~~~~~~~~~~~~~~~~~~");
+			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ RESULTADO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			System.out.println(cal);
 			System.out.println("Nº de asignaciones: " + Arrays.toString(asignaciones));
 			System.out.println("\n\n");
-			Thread.sleep(1000);
-			System.out.println("~~~~~~~~~~~~~~~~~~~ TABLA ~~~~~~~~~~~~~~~~~~~");
-			System.out.println(cal.table());
 		} else {
 			System.out.println("\n\n ERROR. No se pudieron hacer las asignaciones");
 		}
@@ -186,7 +188,7 @@ public class Guardias {
 					dia.setURG_higher(mayor);
 					asignaciones[mayor.getNumber()]++;
 					dia.addException(mayor);
-					if(calendario.hasNext(dia.getDay())) {
+					if (calendario.hasNext(dia.getDay())) {
 						calendario.next(dia.getDay()).addException(mayor);
 					}
 				}
@@ -211,7 +213,7 @@ public class Guardias {
 					dia.setURG_minor(menor);
 					asignaciones[menor.getNumber()]++;
 					dia.addException(menor);
-					if(calendario.hasNext(dia.getDay())) {
+					if (calendario.hasNext(dia.getDay())) {
 						calendario.next(dia.getDay()).addException(menor);
 					}
 				}
@@ -318,18 +320,6 @@ public class Guardias {
 	public static int mediana(int[] asignaciones) {
 		Arrays.sort(asignaciones);
 		return asignaciones[asignaciones.length / 2];
-	}
-
-	public static void menuCrearCalendario() {
-		boolean exit = false;
-		String in = "";
-		while (!exit) {
-			System.out.println("Menu:");
-			System.out.println("\t1) Agregar ausencia");
-			System.out.println("\t2) Eliminar ausencia");
-			System.out.println("\t<exit>");
-		}
-
 	}
 
 }
