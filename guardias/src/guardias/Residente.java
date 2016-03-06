@@ -1,100 +1,145 @@
 package guardias;
 
+import java.util.Objects;
+
 /**
  *
  * @author luis
  */
-public class Residente {
+public class Residente implements Cloneable {
 
-    // ATTRIBUTES
-    private String name;
-    private Integer number;
+	// ATTRIBUTES
+	private String name;
+	private Integer number;
 
-    private String resident;
+	private String resident;
 
-    // CONSTRUCTOR
-    public Residente() {
-	this(null, null);
-    }
-
-    public Residente(String name, Integer number) {
-	this.name = name;
-	this.setNumber(number);
-	this.setResident();
-    }
-
-    // GETTERS & SETTERS
-    public String getName() {
-	return name;
-    }
-
-    public void setName(String name) {
-	this.name = name;
-    }
-
-    public Integer getNumber() {
-	return number;
-    }
-
-    public final void setNumber(Integer number) {
-	if (number > 9) {
-	    this.number = 10;
-	} else {
-	    this.number = number;
+	// CONSTRUCTOR
+	public Residente() {
+		this(null, null);
 	}
-    }
 
-    public String getResident() {
-	return resident;
-    }
-
-    public final void setResident() {
-	int n;
-	switch (this.number) {
-	    case 0:
-	    case 1: {
-		n = 5;
-		break;
-	    }
-	    case 2:
-	    case 3: {
-		n = 4;
-		break;
-	    }
-	    case 4:
-	    case 5: {
-		n = 3;
-		break;
-	    }
-	    case 6:
-	    case 7: {
-		n = 2;
-		break;
-	    }
-	    case 8:
-	    case 9: {
-		n = 1;
-		break;
-	    }
-	    default: {
-		n = 0;
-	    }
+	public Residente(String name, Integer number) {
+		this.name = name;
+		this.setNumber(number);
+		this.setResident();
 	}
-	this.resident = "R" + n;
-    }
 
-    // METHODS
-    public boolean isHigher() {
-	return this.number < 7;
-    }
+	// GETTERS & SETTERS
+	public String getName() {
+		return name;
+	}
 
-    public boolean isMinor() {
-	return !this.isHigher();
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public String toString() {
-	return "Name: " + this.getName() + " (" + this.getResident() + ")";
-    }
+	public Integer getNumber() {
+		return number;
+	}
+
+	public final void setNumber(Integer number) {
+		if (number > 9) {
+			this.number = 10;
+		} else {
+			this.number = number;
+		}
+	}
+
+	public String getResident() {
+		return resident;
+	}
+
+	public final void setResident() {
+		int n;
+		switch (this.number) {
+			case 0:
+			case 1: {
+				n = 5;
+				break;
+			}
+			case 2:
+			case 3: {
+				n = 4;
+				break;
+			}
+			case 4:
+			case 5: {
+				n = 3;
+				break;
+			}
+			case 6:
+			case 7: {
+				n = 2;
+				break;
+			}
+			case 8:
+			case 9: {
+				n = 1;
+				break;
+			}
+			default: {
+				n = 0;
+			}
+		}
+		this.resident = "R" + n;
+	}
+
+	// METHODS
+	public boolean isHigher() {
+		return this.number < 7;
+	}
+
+	public boolean isMinor() {
+		return !this.isHigher();
+	}
+
+	@Override
+	public String toString() {
+		return "Name: " + this.getName() + " (" + this.getResident() + ")";
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 7;
+		hash = 31 * hash + Objects.hashCode(this.name);
+		hash = 31 * hash + Objects.hashCode(this.number);
+		hash = 31 * hash + Objects.hashCode(this.resident);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Residente other = (Residente) obj;
+		if (!Objects.equals(this.name, other.name)) {
+			return false;
+		}
+		if (!Objects.equals(this.resident, other.resident)) {
+			return false;
+		}
+		return Objects.equals(this.number, other.number);
+	}
+
+	
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		Object obj = null;
+		try {
+			obj = super.clone();
+		} catch (CloneNotSupportedException ex) {
+			System.out.println(" no se puede duplicar");
+		}
+		return obj;
+	}
 
 }

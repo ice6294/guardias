@@ -20,12 +20,12 @@ public class Calendario implements Cloneable {
 
 	private SortedMap<Integer, Dia> calendar;
 	private List<String> table;
-	
+
 	private String string;
 
 	// CONSTRUCTOR
 	public Calendario() {
-		this(null, null);
+		//this(null, null);
 	}
 
 	public Calendario(Integer year, Integer month) {
@@ -43,6 +43,13 @@ public class Calendario implements Cloneable {
 	public Integer getMonth() {
 		return month;
 	}
+	
+	public Dia getDia(Integer d) {
+		if (d < 0 || d > calendar.lastKey()) {
+			return calendar.get(d);
+		}
+		return null;
+	}
 
 	public Map<Integer, Dia> getCalendar() {
 		return calendar;
@@ -51,13 +58,13 @@ public class Calendario implements Cloneable {
 	public void setCalendar(SortedMap<Integer, Dia> calendar) {
 		this.calendar = calendar;
 	}
-	
+
 	public void setTable() {
 		if (calendar.isEmpty()) {
 			return;
 		}
 		this.table = new ArrayList();
-		
+
 		// rellenamos la tabla con espacios
 		for (int i = 0; i < 210; i++) {
 			table.add(Utils.addSpaces(Utils.WIDTH));
@@ -82,11 +89,19 @@ public class Calendario implements Cloneable {
 					this.table.set(jl, Utils.addSpaces(Utils.WIDTH, dia.toString()));
 				}
 				// si el contador está a 0 se deja el espacio
-				if (dia > 0) {
-					this.table.set(jl + 7, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getURG_higher().getName()));
-					this.table.set(jl + 14, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getURG_minor().getName()));
-					this.table.set(jl + 21, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getTX_higher().getName()));
-					this.table.set(jl + 28, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getTX_minor().getName()));
+				if (dia > 0 && calendar.get(dia - 1) != null) {
+					if (calendar.get(dia - 1).getURG_higher() != null) {
+						this.table.set(jl + 7, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getURG_higher().getName()));
+					}
+					if (calendar.get(dia - 1).getURG_minor() != null) {
+						this.table.set(jl + 14, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getURG_minor().getName()));
+					}
+					if (calendar.get(dia - 1).getTX_higher() != null) {
+						this.table.set(jl + 21, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getTX_higher().getName()));
+					}
+					if (calendar.get(dia - 1).getTX_minor() != null) {
+						this.table.set(jl + 28, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getTX_minor().getName()));
+					}
 				}
 				count++;
 			}
@@ -108,12 +123,20 @@ public class Calendario implements Cloneable {
 			calendar.put(i, day);
 		}
 	}
-
+	
 	public boolean addException(Residente resident, Integer day) {
 		if (day > this.calendar.size()) {
 			return false;
 		}
 		this.calendar.get(day).addException(resident);
+		return true;
+	}
+
+	public boolean addException_urg(Residente resident, Integer day) {
+		if (day > this.calendar.size()) {
+			return false;
+		}
+		this.calendar.get(day).addException_urg(resident);
 		return true;
 	}
 
@@ -136,17 +159,6 @@ public class Calendario implements Cloneable {
 		return null;
 	}
 
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		Object obj = null;
-		try {
-			obj = super.clone();
-		} catch (CloneNotSupportedException ex) {
-			System.out.println(" no se puede duplicar");
-		}
-		return obj;
-	}
-
 	public String monthName() {
 		String[] names = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Nobiembre", "Diciembre"};
 		return names[this.month];
@@ -167,15 +179,15 @@ public class Calendario implements Cloneable {
 			this.setTable();
 		}
 		String bar = "+------------+";
-		bar += Utils.addChars(Utils.WIDTH,'-') + "+"; // L
-		bar += Utils.addChars(Utils.WIDTH,'-') + "+"; // M
-		bar += Utils.addChars(Utils.WIDTH,'-') + "+"; // X
-		bar += Utils.addChars(Utils.WIDTH,'-') + "+"; // J
-		bar += Utils.addChars(Utils.WIDTH,'-') + "+"; // V
-		bar += Utils.addChars(Utils.WIDTH,'-') + "+"; // S
-		bar += Utils.addChars(Utils.WIDTH,'-') + "+"; // D
+		bar += Utils.addChars(Utils.WIDTH, '-') + "+"; // L
+		bar += Utils.addChars(Utils.WIDTH, '-') + "+"; // M
+		bar += Utils.addChars(Utils.WIDTH, '-') + "+"; // X
+		bar += Utils.addChars(Utils.WIDTH, '-') + "+"; // J
+		bar += Utils.addChars(Utils.WIDTH, '-') + "+"; // V
+		bar += Utils.addChars(Utils.WIDTH, '-') + "+"; // S
+		bar += Utils.addChars(Utils.WIDTH, '-') + "+"; // D
 		bar += "\n";
-		
+
 		this.string = bar + "|            |";
 		this.string += Utils.addSpaces(Utils.WIDTH, "L") + "|";
 		this.string += Utils.addSpaces(Utils.WIDTH, "M") + "|";
@@ -192,7 +204,7 @@ public class Calendario implements Cloneable {
 		String TX_peque = "| TX  peque: |";
 		String nada = "|            |";
 		String sep = "|";
-		
+
 		int count = 0;
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 5; j++) {
@@ -210,6 +222,23 @@ public class Calendario implements Cloneable {
 			this.string += bar;
 		}
 		return this.string;
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		Calendario obj = new Calendario(this.year, this.month);
+		try {
+			SortedMap<Integer, Dia> _calendar = new TreeMap();
+			for (int i = 0; i < this.calendar.size(); i++) {
+				Dia d = (Dia) this.calendar.get(i).clone();
+				_calendar.put(i, d);
+			}
+			obj.setCalendar(_calendar);
+			obj = (Calendario) (Object) super.clone();
+		} catch (CloneNotSupportedException ex) {
+			System.out.println(" no se puede duplicar");
+		}
+		return obj;
 	}
 
 }
