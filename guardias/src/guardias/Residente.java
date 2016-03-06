@@ -9,14 +9,14 @@ import java.util.Objects;
 public class Residente implements Cloneable {
 
 	// ATTRIBUTES
-	private String name;
+	private String name;	// TODO agregar ID
 	private Integer number;
 
 	private String resident;
 
 	// CONSTRUCTOR
+	// <editor-fold desc="<------------------->">
 	public Residente() {
-		this(null, null);
 	}
 
 	public Residente(String name, Integer number) {
@@ -24,8 +24,10 @@ public class Residente implements Cloneable {
 		this.setNumber(number);
 		this.setResident();
 	}
+	// </editor-fold>
 
 	// GETTERS & SETTERS
+	// <editor-fold desc="<------------------->">
 	public String getName() {
 		return name;
 	}
@@ -84,8 +86,10 @@ public class Residente implements Cloneable {
 		}
 		this.resident = "R" + n;
 	}
+	// </editor-fold>
 
 	// METHODS
+	// <editor-fold desc="<------------------->">
 	public boolean isHigher() {
 		return this.number < 7;
 	}
@@ -93,19 +97,24 @@ public class Residente implements Cloneable {
 	public boolean isMinor() {
 		return !this.isHigher();
 	}
+	// </editor-fold>
 
+	// OVERRIDE METHODS
+	// <editor-fold desc="<------------------->">
 	@Override
 	public String toString() {
 		return "Name: " + this.getName() + " (" + this.getResident() + ")";
 	}
 
 	@Override
-	public int hashCode() {
-		int hash = 7;
-		hash = 31 * hash + Objects.hashCode(this.name);
-		hash = 31 * hash + Objects.hashCode(this.number);
-		hash = 31 * hash + Objects.hashCode(this.resident);
-		return hash;
+	public Object clone() throws CloneNotSupportedException {
+		Object obj = null;
+		try {
+			obj = super.clone();
+		} catch (CloneNotSupportedException ex) {
+			System.out.println("# ERROR: (Residente) no se puede duplicar: " + ex);
+		}
+		return obj;
 	}
 
 	@Override
@@ -129,17 +138,14 @@ public class Residente implements Cloneable {
 		return Objects.equals(this.number, other.number);
 	}
 
-	
-
 	@Override
-	public Object clone() throws CloneNotSupportedException {
-		Object obj = null;
-		try {
-			obj = super.clone();
-		} catch (CloneNotSupportedException ex) {
-			System.out.println("# ERROR: (Residente) no se puede duplicar: " + ex);
-		}
-		return obj;
+	public int hashCode() {
+		int hash = 7;
+		hash = 31 * hash + Objects.hashCode(this.name);
+		hash = 31 * hash + Objects.hashCode(this.number);
+		hash = 31 * hash + Objects.hashCode(this.resident);
+		return hash;
 	}
+	// </editor-fold>
 
 }

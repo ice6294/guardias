@@ -15,17 +15,20 @@ import java.util.TreeMap;
 public class Calendario implements Cloneable {
 
 	// ATTRIBUTES
+	private String id;
+
 	private Integer year;
 	private Integer month;
+	private Integer seed;
 
 	private SortedMap<Integer, Dia> calendar;
 	private List<String> table;
 
 	private String string;
 
-	// CONSTRUCTOR
+	// CONSTRUCTORS
+	// <editor-fold desc="<------------------->">
 	public Calendario() {
-		//this(null, null);
 	}
 
 	public Calendario(Integer year, Integer month) {
@@ -35,7 +38,23 @@ public class Calendario implements Cloneable {
 		this.initializate();
 	}
 
+	public Calendario(Integer year, Integer month, Integer seed) {
+		this(year, month);
+		this.seed = seed;
+	}
+	// </editor-fold>
+
 	// GETTERS & SETTERS
+	// <editor-fold desc="<------------------->">
+	public String getId() {
+		setId();
+		return id;
+	}
+
+	public void setId() {
+		id = year + " " + month + " " + seed;
+	}
+
 	public Integer getYear() {
 		return year;
 	}
@@ -43,7 +62,15 @@ public class Calendario implements Cloneable {
 	public Integer getMonth() {
 		return month;
 	}
-	
+
+	public Integer getSeed() {
+		return seed;
+	}
+
+	public void setSeed(Integer seed) {
+		this.seed = seed;
+	}
+
 	public Dia getDia(Integer d) {
 		if (d > 0 || d < calendar.lastKey()) {
 			return calendar.get(d);
@@ -81,7 +108,7 @@ public class Calendario implements Cloneable {
 				int jl = il + j;
 				// el contador dia no se inicia hasta que empieza el dia 1
 				dia += (count > primer) ? 1 : 0;
-				if (dia > end - 1) {
+				if (dia > end) {
 					break;
 				}
 				//dia = (dia > end - 1) ? 0 : dia;
@@ -107,15 +134,17 @@ public class Calendario implements Cloneable {
 			}
 		}
 	}
+	// </editor-fold>
 
-	// METHODS
+	// BASIC METHODS
+	// <editor-fold desc="<------------------->">
 	public final void initializate() {
 		Calendar cal = new GregorianCalendar(this.year, this.month, 1);
 		int day_name = cal.get(Calendar.DAY_OF_WEEK) - 2;	// why???
 		day_name = (day_name == -1) ? 6 : day_name;
 		day_name = (day_name == -2) ? 5 : day_name;
 
-		int num_days = cal.getActualMaximum(Calendar.DAY_OF_MONTH) + 1;
+		int num_days = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		for (int i = 0; i < num_days; i++) {
 			Dia day = new Dia(i, day_name);
 			day_name++;
@@ -123,7 +152,25 @@ public class Calendario implements Cloneable {
 			calendar.put(i, day);
 		}
 	}
-	
+
+	public boolean isDay(Integer day) {
+		return (day < this.calendar.size()) && (day > -1);
+	}
+
+	public boolean hasNext(Integer day) {
+		return (day < this.calendar.size() - 1) && (day > -1);
+	}
+
+	public Dia next(Integer day) {
+		if (this.hasNext(day)) {
+			return this.calendar.get(day + 1);
+		}
+		return null;
+	}
+	// </editor-fold>
+
+	// ADD METHODS
+	// <editor-fold desc="<------------------->">
 	public boolean addException(Residente resident, Integer day) {
 		if (isDay(day)) {
 			this.calendar.get(day).addException(resident);
@@ -147,29 +194,33 @@ public class Calendario implements Cloneable {
 		}
 		return false;
 	}
-	
+
 	public boolean addSelectedURG_higher(Residente resident, Integer day) {
 		if (isDay(day)) {
 			this.calendar.get(day).setURG_higher(resident);
 			if (day > 0) {
-				this.calendar.get(day-1).addAbsent(resident);
+				this.calendar.get(day - 1).addAbsent(resident);
+				addPrevFridaysException_urg(resident, day);		// NEW <----------------
+				addNextFridaysException_urg(resident, day);		// NEW <----------------
 			}
 			return true;
 		}
 		return false;
 	}
-	
+
 	public boolean addSelectedURG_minor(Residente resident, Integer day) {
 		if (isDay(day)) {
 			this.calendar.get(day).setURG_minor(resident);
 			if (day > 0) {
-				this.calendar.get(day-1).addAbsent(resident);
+				this.calendar.get(day - 1).addAbsent(resident);
+				addPrevFridaysException_urg(resident, day);		// NEW <----------------
+				addNextFridaysException_urg(resident, day);		// NEW <----------------
 			}
 			return true;
 		}
 		return false;
 	}
-	
+
 	public boolean addSelectedTX_higher(Residente resident, Integer day) {
 		if (isDay(day)) {
 			this.calendar.get(day).setTX_higher(resident);
@@ -177,7 +228,7 @@ public class Calendario implements Cloneable {
 		}
 		return false;
 	}
-	
+
 	public boolean addSelectedTX_minor(Residente resident, Integer day) {
 		if (isDay(day)) {
 			this.calendar.get(day).setTX_minor(resident);
@@ -185,23 +236,66 @@ public class Calendario implements Cloneable {
 		}
 		return false;
 	}
+	// </editor-fold>
+
+	// FRIDAY METHODS
+	// <editor-fold desc="<------------------->">
+	public boolean isFriday(Integer day) {
+		if (isDay(day)) {
+			return this.calendar.get(day).getWeek_day() == 4;
+		}
+		return false;
+	}
 	
-	public boolean isDay(Integer day) {
-		return (day < this.calendar.size()) && (day > -1);
+	public boolean hasPrevFriday(Integer day) {
+		if (isFriday(day)) {
+			return isDay(day - 7);
+		}
+		return false;
 	}
-
-	public boolean hasNext(Integer day) {
-		return (day < this.calendar.size() - 1) && (day > -1);
+	
+	public void addPrevFridaysException_urg(Residente res, Integer day) {
+		Dia d;
+		while (hasPrevFriday(day)) {
+			d = prevFriday(day);
+			d.addException_urg(res);
+			day -= 7;
+		}
 	}
-
-	public Dia next(Integer day) {
-		if (this.hasNext(day)) {
-			return this.calendar.get(day + 1);
+	
+	public Dia prevFriday(Integer day) {
+		if (hasPrevFriday(day)) {
+			return this.calendar.get(day - 7);
 		}
 		return null;
 	}
-	
+
+	public boolean hasNextFriday(Integer day) {
+		if (isFriday(day)) {
+			return isDay(day + 7);
+		}
+		return false;
+	}
+
+	public Dia nextFriday(Integer day) {
+		if (hasNextFriday(day)) {
+			return this.calendar.get(day + 7);
+		}
+		return null;
+	}
+
+	public void addNextFridaysException_urg(Residente res, Integer day) {
+		Dia d;
+		while (hasNextFriday(day)) {
+			d = nextFriday(day);
+			d.addException_urg(res);
+			day += 7;
+		}
+	}
+	// </editor-fold>
+
 	// TO STRING METHODS
+	// <editor-fold desc="<------------------->">
 	public String monthName() {
 		String[] names = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Nobiembre", "Diciembre"};
 		return names[this.month];
@@ -210,8 +304,10 @@ public class Calendario implements Cloneable {
 	public String calendarName() {
 		return year.toString() + " - " + monthName();
 	}
+	// </editor-fold>
 
 	// OVERRIDE METHODS
+	// <editor-fold desc="<------------------->">
 	@Override
 	public String toString() {
 		if (this.string != null) {
@@ -284,5 +380,6 @@ public class Calendario implements Cloneable {
 		}
 		return obj;
 	}
+	// </editor-fold>
 
 }
