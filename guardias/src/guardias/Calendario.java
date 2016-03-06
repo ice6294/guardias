@@ -45,7 +45,7 @@ public class Calendario implements Cloneable {
 	}
 	
 	public Dia getDia(Integer d) {
-		if (d < 0 || d > calendar.lastKey()) {
+		if (d > 0 || d < calendar.lastKey()) {
 			return calendar.get(d);
 		}
 		return null;
@@ -115,7 +115,7 @@ public class Calendario implements Cloneable {
 		day_name = (day_name == -1) ? 6 : day_name;
 		day_name = (day_name == -2) ? 5 : day_name;
 
-		int num_days = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		int num_days = cal.getActualMaximum(Calendar.DAY_OF_MONTH) + 1;
 		for (int i = 0; i < num_days; i++) {
 			Dia day = new Dia(i, day_name);
 			day_name++;

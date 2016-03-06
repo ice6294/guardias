@@ -17,9 +17,9 @@ public class Guardias {
 	// GLOBAL ATTRIBUTES
 	public static List<Calendario> resultados = new ArrayList();
 	public static final int YEAR = 2016;
-	public static final int MONTH = 2;
-	public static final int SEED = 360;
-	public static final int DIF = 3;
+	public static final int MONTH = 10;
+	public static final int SEED = 456;
+	public static final int DIF = 4;
 
 	/**
 	 * @param args the command line arguments
@@ -58,21 +58,26 @@ public class Guardias {
 		cal.addAbsent(res1, 21);
 		//cal.addAbsent(res1, 22);
 		//cal.addAbsent(res1, 23);
-		//cal.addAbsent(res1, 24);
-		//cal.addAbsent(res1, 25);
-		//cal.addAbsent(res1, 26);
+		cal.addAbsent(res1, 24);
+		cal.addAbsent(res1, 25);
+		cal.addAbsent(res1, 26);
 		//cal.addAbsent(res1, 27);
 
 		cal.addAbsent(res2, 7);
 		cal.addAbsent(res2, 8);
-		//cal.addAbsent(res2, 9);
+		cal.addAbsent(res2, 9);
+
+		cal.addAbsent(res3, 13);
+		cal.addAbsent(res3, 14);
+		cal.addAbsent(res3, 18);
+		cal.addAbsent(res3, 20);
 
 		cal.addAbsent(res5, 0);
 		cal.addAbsent(res5, 1);
 
 		cal.addAbsent(res7, 23);
-		//cal.addAbsent(res7, 24);
-		//cal.addAbsent(res7, 25);
+		cal.addAbsent(res7, 24);
+		cal.addAbsent(res7, 25);
 
 		cal.addAbsent(res9, 14);
 
@@ -162,7 +167,13 @@ public class Guardias {
 		System.out.println("\n\n");
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ASIGNAR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ");
 		//if (asignar(cal, cal.getCalendar().get(0), menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx)) {
-		if (probarOpciones(cal, cal.getCalendar().get(0), menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx)) {
+		boolean asignado = false;
+		try {
+			asignado = probarOpciones(cal, cal.getCalendar().get(0), menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx);
+		} catch (CloneNotSupportedException | InterruptedException | NullPointerException exc) {
+			System.err.printf("# ERROR (main): " + exc + "\n# " + cal.getYear() + " - " + cal.monthName() + " [SEED: " + SEED + " ]\n");
+		}
+		if (asignado) {
 			System.out.println("\n\n");
 			System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " + cal.monthName().toUpperCase() + " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			System.out.println(cal);
@@ -175,7 +186,7 @@ public class Guardias {
 		}
 
 	}
-	
+
 	private static boolean probarOpciones(Calendario calendario, Dia dia,
 			Queue<Residente> menores, Queue<Residente> mayores,
 			Integer[] asignaciones, Integer[] asignaciones_urg, Integer[] asignaciones_tx)
@@ -184,7 +195,7 @@ public class Guardias {
 		// Hacemos copia de todo
 		Calendario _calendario = (Calendario) calendario.clone();
 		//Dia _dia = (Dia) dia.clone();
-		Integer _dia = dia.getDay();
+		//Integer _dia = dia.getDay();
 		Integer[] _asignaciones = asignaciones.clone();
 		Integer[] _asignaciones_urg = asignaciones_urg.clone();
 		Integer[] _asignaciones_tx = asignaciones_tx.clone();
@@ -225,7 +236,7 @@ public class Guardias {
 				System.out.println("   > Mayores: " + _mayores.toString());
 				System.out.println("   > Menores: " + _menores.toString());
 				System.out.println();
-				//Thread.sleep(2000);
+				Thread.sleep(2000);
 			} else {
 				primer_intento = true;
 			}
@@ -234,7 +245,13 @@ public class Guardias {
 					&& calendario.next(calendario.next(dia.getDay()).getDay()) != null) {
 				dia = calendario.next(calendario.next(dia.getDay()).getDay());
 			}
-			if (!(asignado = asignar(calendario, dia, menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx))) {
+			try {
+				asignado = asignar(calendario, dia, menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx);
+			} catch (CloneNotSupportedException | InterruptedException | NullPointerException exc) {
+				System.err.printf("# ERROR (probarOpciones): " + exc + "\n# " + calendario.getYear() + " - " + calendario.monthName() + " [SEED: " + SEED + " ] ~ Intento: " + jt + " " + it);
+				asignado = false;
+			}
+			if (!asignado) {
 				System.out.println("");
 				System.out.println("_________________ Comprobamos:");
 				System.out.println("> dia : " + dia.toString());
@@ -245,7 +262,7 @@ public class Guardias {
 				System.out.println("");
 
 				calendario = _calendario;
-				dia = calendario.getDia(_dia);//_dia;
+				//dia = calendario.getDia(_dia);//_dia;
 				menores = _menores;
 				mayores = _mayores;
 				asignaciones = _asignaciones;
@@ -260,7 +277,7 @@ public class Guardias {
 				if (jt > menores.size()) {
 					System.out.println("NADA. HABRÁ QUE VOLVER UN PASO ATRÁS!!!!!!!!!!!!!!!!!!!!!!!!!");
 					System.out.println("");
-					//Thread.sleep(2000);
+					Thread.sleep(2000);
 					return false;
 				}
 			}
@@ -286,6 +303,7 @@ public class Guardias {
 				return false;
 			}
 			System.out.println("    · URG mayor asignado: " + dia.getURG_higher());
+			System.out.println("\t· Ausentes       : " + dia.getAbsents()+ "\n");
 			System.out.println("\t· Excepciones    : " + dia.getExceptions() + "\n");
 			System.out.println("\t· Excepciones URG: " + dia.getExceptions_urg() + "\n");
 			//Thread.sleep(100);
@@ -295,6 +313,7 @@ public class Guardias {
 				return false;
 			}
 			System.out.println("    · URG pequeño asignado: " + dia.getURG_minor());
+			System.out.println("\t· Ausentes       : " + dia.getAbsents()+ "\n");
 			System.out.println("\t· Excepciones    : " + dia.getExceptions() + "\n");
 			System.out.println("\t· Excepciones URG: " + dia.getExceptions_urg() + "\n");
 			//Thread.sleep(100);
@@ -304,6 +323,7 @@ public class Guardias {
 				return false;
 			}
 			System.out.println("    · TX mayor asignado: " + dia.getTX_higher());
+			System.out.println("\t· Ausentes       : " + dia.getAbsents()+ "\n");
 			System.out.println("\t· Excepciones    : " + dia.getExceptions() + "\n");
 			System.out.println("\t· Excepciones URG: " + dia.getExceptions_urg() + "\n");
 			//Thread.sleep(100);
@@ -313,6 +333,7 @@ public class Guardias {
 				return false;
 			}
 			System.out.println("    · TX pequeño asignado: " + dia.getTX_minor());
+			System.out.println("\t· Ausentes       : " + dia.getAbsents()+ "\n");
 			System.out.println("\t· Excepciones    : " + dia.getExceptions() + "\n");
 			System.out.println("\t· Excepciones URG: " + dia.getExceptions_urg() + "\n");
 			//Thread.sleep(100);
@@ -478,13 +499,13 @@ public class Guardias {
 			Residente urg_menor = dia.getURG_minor();
 			Residente tx_mayor = dia.getTX_higher();
 			Residente tx_menor = dia.getTX_minor();
-			
+
 			// seleccionamos residentes al sábado
 			sabado.setURG_higher(tx_mayor);
 			sabado.setURG_minor(tx_menor);
 			sabado.setTX_higher(urg_mayor);
 			sabado.setTX_minor(urg_menor);
-			
+
 			// aumentamos asignaciones
 			asignaciones[urg_mayor.getNumber()]++;
 			asignaciones[urg_menor.getNumber()]++;
@@ -496,7 +517,7 @@ public class Guardias {
 			// aumentamos asignaciones_tx
 			asignaciones_tx[urg_mayor.getNumber()]++;
 			asignaciones_tx[urg_menor.getNumber()]++;
-			
+
 			if (calendario.hasNext(sabado.getDay())) {
 				Dia domingo = calendario.next(sabado.getDay());
 				// seleccionamos residentes al domingo
@@ -504,7 +525,7 @@ public class Guardias {
 				domingo.setURG_minor(urg_menor);
 				domingo.setTX_higher(tx_mayor);
 				domingo.setTX_minor(tx_menor);
-				
+
 				// aumentamos asignaciones
 				asignaciones[urg_mayor.getNumber()]++;
 				asignaciones[urg_menor.getNumber()]++;
@@ -516,7 +537,7 @@ public class Guardias {
 				// aumentamos asignaciones_tx
 				asignaciones_tx[tx_mayor.getNumber()]++;
 				asignaciones_tx[tx_menor.getNumber()]++;
-				
+
 				if (calendario.hasNext(domingo.getDay())) {
 					Dia lunes = calendario.next(domingo.getDay());
 					// el lunes no pueden tener guardia de urgencias
