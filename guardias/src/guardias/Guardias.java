@@ -16,9 +16,10 @@ public class Guardias {
 
 	// GLOBAL ATTRIBUTES
 	public static List<Calendario> resultados = new ArrayList();
+	public static List<Residente> residentes = new ArrayList();
 	public static final int YEAR = 2016;
-	public static final int MONTH = 10;
-	public static final int SEED = 456;
+	public static final int MONTH = 2;
+	public static final int SEED = 360;
 	public static final int DIF = 4;
 
 	/**
@@ -81,8 +82,14 @@ public class Guardias {
 
 		cal.addAbsent(res9, 14);
 
+		// Creamos obligatorios
+		cal.addSelectedURG_minor(res9, 22);
+		cal.addSelectedURG_minor(res9, 24);
+
+		cal.addSelectedTX_minor(res9, 21);
+		cal.addSelectedTX_minor(res9, 23);
+
 		// Creamos lista de residentes
-		List<Residente> residentes = new ArrayList();
 		residentes.add(res0);
 		residentes.add(res1);
 		residentes.add(res2);
@@ -297,13 +304,14 @@ public class Guardias {
 			return true;
 		}
 		if (dia.getWeek_day() < 5) {
-			// Lunes, Martes, Miércoles, Jueves ó Viernes
+
+			// LUNES | MARTES | MIÉRCOLES | JUEVES | VIERNES
 			// URG_MAYOR
 			if (!asignarURG_mayor(calendario, dia, mayores, asignaciones, asignaciones_urg)) {
 				return false;
 			}
 			System.out.println("    · URG mayor asignado: " + dia.getURG_higher());
-			System.out.println("\t· Ausentes       : " + dia.getAbsents()+ "\n");
+			System.out.println("\t· Ausentes       : " + dia.getAbsents() + "\n");
 			System.out.println("\t· Excepciones    : " + dia.getExceptions() + "\n");
 			System.out.println("\t· Excepciones URG: " + dia.getExceptions_urg() + "\n");
 			//Thread.sleep(100);
@@ -313,7 +321,7 @@ public class Guardias {
 				return false;
 			}
 			System.out.println("    · URG pequeño asignado: " + dia.getURG_minor());
-			System.out.println("\t· Ausentes       : " + dia.getAbsents()+ "\n");
+			System.out.println("\t· Ausentes       : " + dia.getAbsents() + "\n");
 			System.out.println("\t· Excepciones    : " + dia.getExceptions() + "\n");
 			System.out.println("\t· Excepciones URG: " + dia.getExceptions_urg() + "\n");
 			//Thread.sleep(100);
@@ -323,7 +331,7 @@ public class Guardias {
 				return false;
 			}
 			System.out.println("    · TX mayor asignado: " + dia.getTX_higher());
-			System.out.println("\t· Ausentes       : " + dia.getAbsents()+ "\n");
+			System.out.println("\t· Ausentes       : " + dia.getAbsents() + "\n");
 			System.out.println("\t· Excepciones    : " + dia.getExceptions() + "\n");
 			System.out.println("\t· Excepciones URG: " + dia.getExceptions_urg() + "\n");
 			//Thread.sleep(100);
@@ -333,12 +341,12 @@ public class Guardias {
 				return false;
 			}
 			System.out.println("    · TX pequeño asignado: " + dia.getTX_minor());
-			System.out.println("\t· Ausentes       : " + dia.getAbsents()+ "\n");
+			System.out.println("\t· Ausentes       : " + dia.getAbsents() + "\n");
 			System.out.println("\t· Excepciones    : " + dia.getExceptions() + "\n");
 			System.out.println("\t· Excepciones URG: " + dia.getExceptions_urg() + "\n");
 			//Thread.sleep(100);
 
-			// Viernes, Sabado ó Domingo
+			// VIERNES | SÁBADO | DOMINGO
 			if (dia.getWeek_day() == 4) {
 				asignarFinde(calendario, dia, asignaciones, asignaciones_tx, asignaciones_urg);
 			}
@@ -346,7 +354,6 @@ public class Guardias {
 		System.out.println(Arrays.toString(asignaciones) + "\n");
 		if (calendario.hasNext(dia.getDay())) {
 			return probarOpciones(calendario, calendario.next(dia.getDay()), menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx);
-			//return asignar(calendario, calendario.next(dia.getDay()), menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx);
 		} else {
 			System.out.println("FIN de asignación\n");
 			return true;
@@ -357,6 +364,64 @@ public class Guardias {
 			Queue<Residente> mayores, Integer[] asignaciones, Integer[] asignaciones_urg)
 			throws InterruptedException {
 
+		boolean asignado = (dia.hasURG_higher());	// NEW
+		int intento = 0;
+		int dif = 0;
+		System.out.println("urgMenor EXCEPCIONES    : \u001B[36m" + dia.getExceptions() + "\u001B[0m");
+		System.out.println("urgMenor EXCEPCIONES URG: \u001B[36m" + dia.getExceptions_urg() + "\u001B[0m");
+		while (!asignado) {
+			// Sacamos primer residente en cola
+			Residente mayor = mayores.poll();
+			// Comprobamos si la asignación es correcta
+			asignado = !dia.getAbsents().contains(mayor);
+			asignado &= !dia.getExceptions().contains(mayor);
+			asignado &= !dia.getExceptions_urg().contains(mayor);
+			asignado &= (asignaciones_urg[mayor.getNumber()] < media(asignaciones_urg) + dif);
+			// si la asignación es correcta lo agregamos
+			if (asignado) {
+				dia.setURG_higher(mayor);
+			}
+			// Metemos residente en cola
+			mayores.add(mayor);
+			intento++;
+			if (intento > mayores.size() && dif > DIF) {
+				System.out.println("# Por aquí no!!! (asignarURG_mayor)");
+				//Thread.sleep(1000);
+				return false;
+			}
+			dif++;
+		}
+		Residente mayor = dia.getURG_higher();
+		asignaciones[mayor.getNumber()]++;
+		asignaciones_urg[mayor.getNumber()]++;
+		dia.addException(mayor);
+		if (calendario.hasNext(dia.getDay())) {
+			calendario.next(dia.getDay()).addException_urg(mayor);
+		}
+		// Si es R3 el otro no puede estar como pequeño
+		if (mayor.getNumber() == 4) {
+			dia.addException_urg(residentes.get(5));
+		} else if (mayor.getNumber() == 5) {
+			dia.addException_urg(residentes.get(4));
+		}
+		return true;
+		/*
+		if (dia.hasURG_higher()) {
+			Residente mayor = dia.getURG_higher();
+			asignaciones[mayor.getNumber()]++;
+			asignaciones_urg[mayor.getNumber()]++;
+			dia.addException(mayor);
+			if (calendario.hasNext(dia.getDay())) {
+				calendario.next(dia.getDay()).addException_urg(mayor);
+			}
+			// Si es R3 el otro no puede estar como pequeño
+			if (mayor.getNumber() == 4) {
+				dia.addException_urg(residentes.get(5));
+			} else if (mayor.getNumber() == 5) {
+				dia.addException_urg(residentes.get(4));
+			}
+			return true;
+		}
 		int intento = 0;
 		int dif = 0;
 		System.out.println("urgMayor EXCEPCIONES    : \u001B[36m" + dia.getExceptions() + "\u001B[0m");
@@ -374,6 +439,12 @@ public class Guardias {
 				if (calendario.hasNext(dia.getDay())) {
 					calendario.next(dia.getDay()).addException_urg(mayor);
 				}
+				// Si es R3 el otro no puede estar como pequeño
+				if (mayor.getNumber() == 4) {
+					dia.addException_urg(residentes.get(5));
+				} else if (mayor.getNumber() == 5) {
+					dia.addException_urg(residentes.get(4));
+				}
 			}
 			mayores.add(mayor);
 			intento++;
@@ -384,17 +455,59 @@ public class Guardias {
 			}
 			dif++;
 		}
-		return true;
+		return true;*/
 	}
 
 	private static boolean asignarURG_menor(Calendario calendario, Dia dia,
 			Queue<Residente> menores, Integer[] asignaciones, Integer[] asignaciones_urg)
 			throws InterruptedException {
 
+		boolean asignado = (dia.hasURG_minor());	// NEW
 		int intento = 0;
 		int dif = 0;
 		System.out.println("urgMenor EXCEPCIONES    : \u001B[36m" + dia.getExceptions() + "\u001B[0m");
 		System.out.println("urgMenor EXCEPCIONES URG: \u001B[36m" + dia.getExceptions_urg() + "\u001B[0m");
+		while (!asignado) {
+			// Sacamos primer residente en cola
+			Residente menor = menores.poll();
+			// Comprobamos si la asignación es correcta
+			asignado = !dia.getAbsents().contains(menor);
+			asignado &= !dia.getExceptions().contains(menor);
+			asignado &= !dia.getExceptions_urg().contains(menor);
+			asignado &= (asignaciones_urg[menor.getNumber()] < media(asignaciones_urg) + dif);
+			// si la asignación es correcta lo agregamos
+			if (asignado) {
+				dia.setURG_minor(menor);
+			}
+			// Metemos residente en cola
+			menores.add(menor);
+			intento++;
+			if (intento > menores.size() && dif > DIF) {
+				System.out.println("# Por aquí no!!! (asignarURG_menor)");
+				//Thread.sleep(1000);
+				return false;
+			}
+			dif++;
+		}
+		Residente menor = dia.getURG_minor();
+		asignaciones[menor.getNumber()]++;
+		asignaciones_urg[menor.getNumber()]++;
+		dia.addException(menor);
+		if (calendario.hasNext(dia.getDay())) {
+			calendario.next(dia.getDay()).addException_urg(menor);
+		}
+		return true;
+		/*
+		if (dia.hasURG_minor()) {
+			Residente menor = dia.getURG_minor();
+			asignaciones[menor.getNumber()]++;
+			asignaciones_urg[menor.getNumber()]++;
+			dia.addException(menor);
+			if (calendario.hasNext(dia.getDay())) {
+				calendario.next(dia.getDay()).addException_urg(menor);
+			}
+			return true;
+		}
 		while (dia.getURG_minor() == null) {
 			Residente menor = menores.poll();
 			if (!dia.getAbsents().contains(menor)
@@ -417,14 +530,16 @@ public class Guardias {
 				return false;
 			}
 			dif++;
-		}
-		return true;
+		}*/
 	}
 
 	private static boolean asignarTX_mayor(Calendario calendario, Dia dia,
 			Queue<Residente> mayores, Integer[] asignaciones, Integer[] asignaciones_tx)
 			throws InterruptedException {
 
+		if (dia.hasTX_higher()) {
+			return true;
+		}
 		int intento = 0;
 		int dif = 0;
 		System.out.println("txMayor EXCEPCIONES    : \u001B[36m" + dia.getExceptions() + "\u001B[0m");
@@ -438,9 +553,14 @@ public class Guardias {
 				asignaciones[mayor.getNumber()]++;
 				asignaciones_tx[mayor.getNumber()]++;
 				dia.addException(mayor);
-				// crear excepcionesTX si al dia siguiente no puede estar de TX!!!!?!?!?!?!?!
 				if (calendario.hasNext(dia.getDay())) {
 					//calendario.next(dia.getDay()).addException(mayor);
+				}
+				// Si es R3 el otro no puede estar como pequeño
+				if (mayor.getNumber() == 4) {
+					dia.addException(residentes.get(5));
+				} else if (mayor.getNumber() == 5) {
+					dia.addException(residentes.get(4));
 				}
 			}
 			mayores.add(mayor);
@@ -459,6 +579,9 @@ public class Guardias {
 			Queue<Residente> menores, Integer[] asignaciones, Integer[] asignaciones_tx)
 			throws InterruptedException {
 
+		if (dia.hasTX_minor()) {
+			return true;
+		}
 		int intento = 0;
 		int dif = 0;
 		System.out.println("txMmenor EXCEPCIONES    : \u001B[36m" + dia.getExceptions() + "\u001B[0m");

@@ -72,7 +72,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         jButtonCargar2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButtonCargar2.setText("Help");
+        jButtonCargar2.setText("Ayuda");
         jButtonCargar2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCargar2ActionPerformed(evt);

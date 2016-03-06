@@ -88,6 +88,10 @@ public class Dia implements Cloneable {
 	public void setURG_higher(Residente URG_higher) {
 		this.URG_higher = URG_higher;
 	}
+	
+	public boolean hasURG_higher() {
+		return this.URG_higher != null;
+	}
 
 	public Residente getURG_minor() {
 		return URG_minor;
@@ -95,6 +99,10 @@ public class Dia implements Cloneable {
 
 	public void setURG_minor(Residente URG_minor) {
 		this.URG_minor = URG_minor;
+	}
+	
+	public boolean hasURG_minor() {
+		return this.URG_minor != null;
 	}
 
 	public Residente getTX_higher() {
@@ -104,6 +112,10 @@ public class Dia implements Cloneable {
 	public void setTX_higher(Residente TX_higher) {
 		this.TX_higher = TX_higher;
 	}
+	
+	public boolean hasTX_higher() {
+		return this.TX_higher != null;
+	}
 
 	public Residente getTX_minor() {
 		return TX_minor;
@@ -111,6 +123,10 @@ public class Dia implements Cloneable {
 
 	public void setTX_minor(Residente TX_minor) {
 		this.TX_minor = TX_minor;
+	}
+	
+	public boolean hasTX_minor() {
+		return this.TX_minor != null;
 	}
 
 	// METHODS
@@ -144,6 +160,12 @@ public class Dia implements Cloneable {
 		this.setTX_minor(null);
 	}
 
+	// OVERRIDE METHODS
+	@Override
+	public String toString() {
+		return "Day: " + (this.getDay() + 1) + ". Week_Day: " + this.getWeekDayName();
+	}
+	
 	@Override
 	public int hashCode() {
 		int hash = 7;
@@ -168,11 +190,6 @@ public class Dia implements Cloneable {
 			return false;
 		}
 		return Objects.equals(this.week_day, other.week_day);
-	}
-
-	@Override
-	public String toString() {
-		return "Day: " + (this.getDay() + 1) + ". Week_Day: " + this.getWeekDayName();
 	}
 
 	@Override
@@ -202,7 +219,7 @@ public class Dia implements Cloneable {
 
 			obj = (Dia) super.clone();
 		} catch (CloneNotSupportedException ex) {
-			System.out.println(" no se puede duplicar");
+			System.out.println("# ERROR: (Dia) no se puede duplicar: " + ex);
 		}
 		return obj;
 	}
