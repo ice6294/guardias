@@ -19,7 +19,8 @@ public class Utils {
 	public static final String ANSI_WHITE = "\u001B[37m";
 	public static final String ANSI_BLACK = "\u001B[30m";
 
-	// METHODS
+	// CELLS METHODS
+	// <editor-fold desc="<------------------->">
 	// solo espacios
 	public static String addSpaces(int size) {
 		return addChars(size, ' ');
@@ -67,8 +68,10 @@ public class Utils {
 		}
 		return result;
 	}
+	// </editor-fold>
 
 	// PRINT METHODS
+	// <editor-fold desc="<------------------->">
 	public static void println(String s) {
 		System.out.println(s);
 	}
@@ -192,4 +195,5 @@ public class Utils {
 			}
 		}
 	}
+	// </editor-fold>
 }

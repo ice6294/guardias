@@ -31,6 +31,8 @@ public class Guardias {
 	 * @throws java.lang.CloneNotSupportedException
 	 */
 	public static void main(String[] args) throws InterruptedException, CloneNotSupportedException {
+		
+		MenuPrincipal mp = new MenuPrincipal();
 
 		// Inicializar calendario
 		Calendario cal = new Calendario(YEAR, MONTH, SEED);

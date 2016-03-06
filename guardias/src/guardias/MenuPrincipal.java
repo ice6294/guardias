@@ -26,15 +26,26 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jButtonCargar1 = new javax.swing.JButton();
-        jLabelTitulo = new javax.swing.JLabel();
-        jButtonCargar = new javax.swing.JButton();
-        jButtonSalir = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jButtonCargar2 = new javax.swing.JButton();
-        jButtonCargar3 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabelGuardias = new javax.swing.JLabel();
+        jScrollPane = new javax.swing.JScrollPane();
+        jTextArea = new javax.swing.JTextArea();
+        jButtonCrearCalendario = new javax.swing.JButton();
+        jLabelYear = new javax.swing.JLabel();
+        jTextFieldYear = new javax.swing.JTextField();
+        jLabelMonth = new javax.swing.JLabel();
+        jTextFieldMonth = new javax.swing.JTextField();
+        jLabelSeed = new javax.swing.JLabel();
+        jTextFieldSeed = new javax.swing.JTextField();
+        jButtonResidentes = new javax.swing.JButton();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jLabelAusencia = new javax.swing.JLabel();
+        jTextFieldAusencia = new javax.swing.JTextField();
+        jButtonAddAusencia = new javax.swing.JButton();
+        jButtonRmvAusencia = new javax.swing.JButton();
+        jLabelObligatorio = new javax.swing.JLabel();
+        jTextFieldObligatorio = new javax.swing.JTextField();
+        jButtonAddObligatorio = new javax.swing.JButton();
+        jButtonRmvObligatorio = new javax.swing.JButton();
 
         jButtonCargar1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButtonCargar1.setText("Cargar Fichero");
@@ -47,158 +58,257 @@ public class MenuPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mi analizador (L) ");
 
-        jLabelTitulo.setFont(new java.awt.Font("Tahoma", 3, 48)); // NOI18N
-        jLabelTitulo.setText("Guardias");
+        jLabelGuardias.setFont(new java.awt.Font("Tahoma", 3, 48)); // NOI18N
+        jLabelGuardias.setText("Guardias");
 
-        jButtonCargar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButtonCargar.setText("Residentes");
-        jButtonCargar.addActionListener(new java.awt.event.ActionListener() {
+        jTextArea.setColumns(20);
+        jTextArea.setRows(5);
+        jTextArea.setText("\n");
+        jScrollPane.setViewportView(jTextArea);
+
+        jButtonCrearCalendario.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonCrearCalendario.setText("Crear Calendario");
+        jButtonCrearCalendario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCargarActionPerformed(evt);
+                jButtonCrearCalendarioActionPerformed(evt);
             }
         });
 
-        jButtonSalir.setBackground(new java.awt.Color(255, 255, 255));
-        jButtonSalir.setText("Salir");
-        jButtonSalir.addActionListener(new java.awt.event.ActionListener() {
+        jLabelYear.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabelYear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelYear.setText("YEAR");
+
+        jTextFieldYear.setText("jTextField1");
+
+        jLabelMonth.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabelMonth.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelMonth.setText("MONTH");
+
+        jTextFieldMonth.setText("jTextField1");
+
+        jLabelSeed.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabelSeed.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelSeed.setText("SEED");
+
+        jTextFieldSeed.setText("jTextField1");
+
+        jButtonResidentes.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jButtonResidentes.setText("RESIDENTES");
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSalirActionPerformed(evt);
+                jComboBox2ActionPerformed(evt);
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("\n");
-        jScrollPane1.setViewportView(jTextArea1);
+        jLabelAusencia.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelAusencia.setText("Ausencia");
 
-        jButtonCargar2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButtonCargar2.setText("Ayuda");
-        jButtonCargar2.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldAusencia.setText("jTextField4");
+
+        jButtonAddAusencia.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+        jButtonAddAusencia.setText("+");
+        jButtonAddAusencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCargar2ActionPerformed(evt);
+                jButtonAddAusenciaActionPerformed(evt);
             }
         });
 
-        jButtonCargar3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButtonCargar3.setText("Crear Calendario");
-        jButtonCargar3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonRmvAusencia.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+        jButtonRmvAusencia.setText("-");
+        jButtonRmvAusencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCargar3ActionPerformed(evt);
+                jButtonRmvAusenciaActionPerformed(evt);
             }
         });
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Ver Calendario:");
+        jLabelObligatorio.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelObligatorio.setText("Obligatorio");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jTextFieldObligatorio.setText("jTextField4");
+
+        jButtonAddObligatorio.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+        jButtonAddObligatorio.setText("+");
+        jButtonAddObligatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddObligatorioActionPerformed(evt);
+            }
+        });
+
+        jButtonRmvObligatorio.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+        jButtonRmvObligatorio.setText("-");
+        jButtonRmvObligatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRmvObligatorioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(114, Short.MAX_VALUE)
-                .addComponent(jLabelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(105, 105, 105))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonSalir)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButtonCargar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonCargar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonCargar3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addContainerGap())
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabelAusencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(32, 32, 32)
+                                        .addComponent(jLabelObligatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                    .addComponent(jTextFieldAusencia)
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                        .addComponent(jButtonAddAusencia)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jButtonRmvAusencia)))
+                                                .addGap(18, 18, 18)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addComponent(jButtonAddObligatorio)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                        .addComponent(jButtonRmvObligatorio))
+                                                    .addComponent(jTextFieldObligatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonCrearCalendario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(0, 39, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabelYear, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextFieldYear, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(53, 53, 53)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTextFieldMonth, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabelMonth, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(54, 54, 54)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTextFieldSeed, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabelSeed, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(63, 63, 63)))))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonResidentes, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelGuardias, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(109, 109, 109))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonCargar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonCargar3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonCargar2, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 18, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelGuardias)
+                    .addComponent(jButtonResidentes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonSalir)
-                .addGap(20, 20, 20))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelObligatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelAusencia, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jTextFieldAusencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jTextFieldObligatorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButtonAddAusencia)
+                            .addComponent(jButtonRmvAusencia)
+                            .addComponent(jButtonAddObligatorio)
+                            .addComponent(jButtonRmvObligatorio))
+                        .addGap(14, 14, 14))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonCrearCalendario, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabelYear, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextFieldYear, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabelMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextFieldMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabelSeed, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jTextFieldSeed, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(129, 129, 129))
         );
 
-        setSize(new java.awt.Dimension(497, 798));
+        setSize(new java.awt.Dimension(715, 765));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
-
-        System.exit(0); // Salimos del programa
-
-    }//GEN-LAST:event_jButtonSalirActionPerformed
 
     private void jButtonCargar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCargar1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonCargar1ActionPerformed
 
-    private void jButtonCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCargarActionPerformed
-
-        // Creamos un filtro para que se reconozcan los archivos de texto
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto", "txt");
-        JFileChooser fileChooserCargar = new JFileChooser();
-        fileChooserCargar.setFileFilter(filtro);
-
-        fileChooserCargar.setDialogTitle("Abrir");
-
-        int seleccion = fileChooserCargar.showOpenDialog(this);
-
-        CTextAreaOutputStream taos = new CTextAreaOutputStream();
-        //Redirijo los println
-        System.setOut(new PrintStream(taos, true) {
-            @Override
-            public synchronized void println(String s) {
-                if ((s != null) && (s.length() > 0)) {
-                    jTextArea1.setText(jTextArea1.getText() + "\n" + s);
-                }
-            }
-        });
-    }//GEN-LAST:event_jButtonCargarActionPerformed
-
-    private void jButtonCargar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCargar2ActionPerformed
+    private void jButtonCrearCalendarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearCalendarioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonCargar2ActionPerformed
+    }//GEN-LAST:event_jButtonCrearCalendarioActionPerformed
 
-    private void jButtonCargar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCargar3ActionPerformed
+    private void jButtonAddAusenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddAusenciaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonCargar3ActionPerformed
+    }//GEN-LAST:event_jButtonAddAusenciaActionPerformed
+
+    private void jButtonRmvAusenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRmvAusenciaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonRmvAusenciaActionPerformed
+
+    private void jButtonAddObligatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddObligatorioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonAddObligatorioActionPerformed
+
+    private void jButtonRmvObligatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRmvObligatorioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonRmvObligatorioActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2ActionPerformed
     /**
      * @param args the command line arguments
      */
+	// <editor-fold defaultstate="collapse" desc="Variables declaration">
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonCargar;
+    private javax.swing.JButton jButtonAddAusencia;
+    private javax.swing.JButton jButtonAddObligatorio;
     private javax.swing.JButton jButtonCargar1;
-    private javax.swing.JButton jButtonCargar2;
-    private javax.swing.JButton jButtonCargar3;
-    private javax.swing.JButton jButtonSalir;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabelTitulo;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JButton jButtonCrearCalendario;
+    private javax.swing.JButton jButtonResidentes;
+    private javax.swing.JButton jButtonRmvAusencia;
+    private javax.swing.JButton jButtonRmvObligatorio;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JLabel jLabelAusencia;
+    private javax.swing.JLabel jLabelGuardias;
+    private javax.swing.JLabel jLabelMonth;
+    private javax.swing.JLabel jLabelObligatorio;
+    private javax.swing.JLabel jLabelSeed;
+    private javax.swing.JLabel jLabelYear;
+    private javax.swing.JScrollPane jScrollPane;
+    private javax.swing.JTextArea jTextArea;
+    private javax.swing.JTextField jTextFieldAusencia;
+    private javax.swing.JTextField jTextFieldMonth;
+    private javax.swing.JTextField jTextFieldObligatorio;
+    private javax.swing.JTextField jTextFieldSeed;
+    private javax.swing.JTextField jTextFieldYear;
     // End of variables declaration//GEN-END:variables
+	// </editor-fold>
 }
