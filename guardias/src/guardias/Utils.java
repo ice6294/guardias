@@ -1,5 +1,8 @@
 package guardias;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author luis
@@ -75,15 +78,15 @@ public class Utils {
 	public static void println(String s) {
 		System.out.println(s);
 	}
-	
+
 	public static void println() {
 		System.out.println();
 	}
-	
+
 	public static void print(String s) {
 		System.out.print(s);
 	}
-	
+
 	public static void printlnColor(String color, String s) {
 		switch (color) {
 			case "GREEN":
@@ -139,7 +142,7 @@ public class Utils {
 			}
 		}
 	}
-	
+
 	public static void printColor(String color, String s) {
 		switch (color) {
 			case "GREEN":
@@ -196,4 +199,37 @@ public class Utils {
 		}
 	}
 	// </editor-fold>
+
+	// OTHER METHODS
+	// <editor-fold desc="<------------------->">
+	public static boolean isMonth(String s) {
+		List<String> months = new ArrayList();
+		months.add("Enero");
+		months.add("Febrero");
+		months.add("Marzo");
+		months.add("Abril");
+		months.add("Mayo");
+		months.add("Junio");
+		months.add("Julio");
+		months.add("Agosto");
+		months.add("Septiembre");
+		months.add("Octubre");
+		months.add("Nombiembre");
+		months.add("Diciembre");
+		return months.contains(s);
+	}
+
+	public static Integer getMonth(String s) {
+		String[] names = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Nobiembre", "Diciembre"};
+		int i = 0;
+		for (String name : names) {
+			if (names[i].equals(s)) {
+				return i;
+			}
+			i++;
+		}
+		return i;
+	}
+	// </editor-fold>
+
 }

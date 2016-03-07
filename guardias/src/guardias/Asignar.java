@@ -14,7 +14,7 @@ import javafx.util.Pair;
  * @author luis
  */
 public class Asignar {
-	
+
 	// PUBLIC ATTRIBUTES
 	public static Integer SEED = 360;
 	public static Integer DIF = 0;
@@ -29,8 +29,7 @@ public class Asignar {
 		// Actualizamos las variables globales
 		SEED = seed;
 		RESIDENTES = residentes;
-		
-		
+
 		// Creamos Calendario
 		Calendario cal = new Calendario(year, month, seed);
 
@@ -68,7 +67,7 @@ public class Asignar {
 			int n = (int) (random.nextDouble() * aux2.size());
 			menores.add(aux2.remove(n));
 		}
-		
+
 		// Creamos lista de asignaciones
 		int num_residentes = residentes.size();
 		Integer[] asignaciones = new Integer[num_residentes];
@@ -79,7 +78,7 @@ public class Asignar {
 			asignaciones_urg[i] = 0;
 			asignaciones_tx[i] = 0;
 		}
-		
+
 		// Hacemos la asignación
 		boolean asignado = false;
 		try {
@@ -87,7 +86,7 @@ public class Asignar {
 		} catch (CloneNotSupportedException | InterruptedException | NullPointerException exc) {
 			System.err.printf("# ERROR (main): " + exc + "\n# " + cal.getYear() + " - " + cal.monthName() + " [SEED: " + SEED + " ]\n");
 		}
-		
+
 		if (asignado) {
 			println("Nº de asignaciones totales: " + Arrays.toString(asignaciones));
 			println("Nº de asignaciones urg:     " + Arrays.toString(asignaciones_urg));
@@ -129,9 +128,6 @@ public class Asignar {
 		int jt = 0;
 		while (!asignado) {
 			// i -> mayores / j -> menores
-			//println("\n");
-			//printlnColor("GREEN", "Dia: " + dia.toString() + " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-			//printlnColor("YELLOW", "Vuelta: " + jt + " - " + it);
 			// Rotamos mayores
 			for (int i = 0; i < it; i++) {
 				Residente aux = mayores.poll();
@@ -144,10 +140,6 @@ public class Asignar {
 			}
 			// Probamos combinación
 			if (primer_intento) {
-				//printlnColor("RED", "################# Probamos siguiente combinación ...");
-				//println("   > Mayores: " + _mayores.toString());
-				//println("   > Menores: " + _menores.toString());
-				//println();
 			} else {
 				primer_intento = true;
 			}
@@ -165,15 +157,6 @@ public class Asignar {
 				asignado = false;
 			}
 			if (!asignado) {
-				//println();
-				//printlnColor("RED", "_________________ Comprobamos:");
-				//println("> dia : " + dia.toString());
-				//println("> asignaciones : " + Arrays.toString(asignaciones) + "\t ---------+");
-				//println("> _asignaciones: " + Arrays.toString(_asignaciones) + "\t <--------+");
-				//println("   > Mayores: " + _mayores.toString());
-				//println("   > Menores: " + _menores.toString());
-				//println();
-
 				calendario = _calendario;
 				menores = _menores;
 				mayores = _mayores;
@@ -187,8 +170,6 @@ public class Asignar {
 				it = 0;
 				jt++;
 				if (jt > menores.size()) {
-					//printlnColor("RED", "NADA. HAY QUE VOLVER UN PASO ATRÁS");
-					//println();
 					return false;
 				}
 			}
@@ -212,81 +193,35 @@ public class Asignar {
 			if (!asignarURG_mayor(calendario, dia, mayores, asignaciones, asignaciones_urg)) {
 				return false;
 			}
-			//println("    · URG mayor asignado    : " + dia.getURG_higher());
-			//print("\t· Ausentes          : ");
-			//printlnColor("PURPLE", dia.getAbsents().toString());
-			//print("\t· Excepciones       : ");
-			//printlnColor("YELLOW", dia.getExceptions().toString());
-			//print("\t· Excepciones URG   : ");
-			//printlnColor("YELLOW", dia.getExceptions().toString());
-			//println();
 
 			// URG_MENOR
 			if (!asignarURG_menor(calendario, dia, menores, asignaciones, asignaciones_urg)) {
 				return false;
 			}
-			//println("    · URG pequeño asignado  : " + dia.getURG_minor());
-			//print("\t· Ausentes          : ");
-			//printlnColor("PURPLE", dia.getAbsents().toString());
-			//print("\t· Excepciones       : ");
-			//printlnColor("YELLOW", dia.getExceptions().toString());
-			//print("\t· Excepciones URG   : ");
-			//printlnColor("YELLOW", dia.getExceptions().toString());
-			//println();
-
 			// TX_MAYOR
 			if (!asignarTX_mayor(calendario, dia, mayores, asignaciones, asignaciones_tx)) {
 				return false;
 			}
-			//println("    · TX mayor asignado  : " + dia.getTX_higher());
-			//print("\t· Ausentes         : ");
-			//printlnColor("PURPLE", dia.getAbsents().toString());
-			//print("\t· Excepciones      : ");
-			//printlnColor("YELLOW", dia.getExceptions().toString());
-			//print("\t· Excepciones URG  : ");
-			//printlnColor("YELLOW", dia.getExceptions().toString());
-			//println();
 
 			// TX_MENOR
 			if (!asignarTX_menor(calendario, dia, menores, asignaciones, asignaciones_tx)) {
 				return false;
 			}
-			//println("    · TX pequeño asignado  : " + dia.getTX_minor());
-			//print("\t· Ausentes         : ");
-			//printlnColor("PURPLE", dia.getAbsents().toString());
-			//print("\t· Excepciones      : ");
-			//printlnColor("YELLOW", dia.getExceptions().toString());
-			//print("\t· Excepciones URG  : ");
-			//printlnColor("YELLOW", dia.getExceptions().toString());
-			//println();
 
 			// VIERNES | SÁBADO | DOMINGO
 			if (dia.getWeek_day() == 4) {
 				asignarFinde(calendario, dia, asignaciones, asignaciones_tx, asignaciones_urg);
 			}
 		}
-		//println(Arrays.toString(asignaciones));
-		//println();
 		if (calendario.hasNext(dia.getDay())) {
 			return probarOpciones(calendario, calendario.next(dia.getDay()), menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx);
-		} else {
-			//println("\n");
-			//printlnColor("GREEN", "> FIN de asignación");
-			return true;
 		}
+		return true;
 	}
 
 	private static boolean asignarURG_mayor(Calendario calendario, Dia dia,
 			Queue<Residente> mayores, Integer[] asignaciones, Integer[] asignaciones_urg)
 			throws InterruptedException {
-
-		//print("  URG_Mayor AUSENCIAS       : ");
-		//printlnColor("BLUE", dia.getAbsents().toString());
-		//print("  URG_Mayor EXCEPCIONES     : ");
-		//printlnColor("CYAN", dia.getExceptions().toString());
-		//print("  URG_Mayor EXCEPCIONES_URG : ");
-		//printlnColor("CYAN", dia.getExceptions().toString());
-		//println();
 
 		boolean asignado = (dia.hasURG_higher());
 		int intento = 0;
@@ -307,7 +242,6 @@ public class Asignar {
 			mayores.add(mayor);
 			intento++;
 			if (intento > mayores.size() && dif > DIF) {
-				//printlnColor("RED", "# Por aquí no!!! (asignarURG_mayor)");
 				return false;
 			}
 			dif++;
@@ -333,14 +267,6 @@ public class Asignar {
 			Queue<Residente> menores, Integer[] asignaciones, Integer[] asignaciones_urg)
 			throws InterruptedException {
 
-		//print("  URG_Menor AUSENCIAS       : ");
-		//printlnColor("BLUE", dia.getAbsents().toString());
-		//print("  URG_Menor EXCEPCIONES     : ");
-		//printlnColor("CYAN", dia.getExceptions().toString());
-		//print("  URG_Menor EXCEPCIONES_URG : ");
-		//printlnColor("CYAN", dia.getExceptions().toString());
-		//println();
-
 		boolean asignado = (dia.hasURG_minor());
 		int intento = 0;
 		int dif = 0;
@@ -360,7 +286,6 @@ public class Asignar {
 			menores.add(menor);
 			intento++;
 			if (intento > menores.size() && dif > DIF) {
-				//printlnColor("RED", "# Por aquí no!!! (asignarURG_menor)\n");
 				return false;
 			}
 			dif++;
@@ -380,14 +305,6 @@ public class Asignar {
 			Queue<Residente> mayores, Integer[] asignaciones, Integer[] asignaciones_tx)
 			throws InterruptedException {
 
-		//print("  TX_Mayor AUSENCIAS       : ");
-		//printlnColor("BLUE", dia.getAbsents().toString());
-		//print("  TX_Mayor EXCEPCIONES     : ");
-		//printlnColor("CYAN", dia.getExceptions().toString());
-		//print("  TX_Mayor EXCEPCIONES_URG : ");
-		//printlnColor("CYAN", dia.getExceptions().toString());
-		//println();
-
 		boolean asignado = (dia.hasTX_higher());
 		int intento = 0;
 		int dif = 0;
@@ -406,7 +323,6 @@ public class Asignar {
 			mayores.add(mayor);
 			intento++;
 			if (intento > mayores.size() && dif > DIF) {
-				//printlnColor("RED", "# Por aquí no!!! (asignarTX_mayor)");
 				return false;
 			}
 			dif++;
@@ -428,14 +344,6 @@ public class Asignar {
 			Queue<Residente> menores, Integer[] asignaciones, Integer[] asignaciones_tx)
 			throws InterruptedException {
 
-		//print("  TX_Minor AUSENCIAS       : ");
-		//printlnColor("BLUE", dia.getAbsents().toString());
-		//print("  TX_Minor EXCEPCIONES     : ");
-		//printlnColor("CYAN", dia.getExceptions().toString());
-		//print("  TX_Minor EXCEPCIONES_URG : ");
-		//printlnColor("CYAN", dia.getExceptions().toString());
-		//println();
-
 		boolean asignado = (dia.hasTX_minor());
 		int intento = 0;
 		int dif = 0;
@@ -454,7 +362,6 @@ public class Asignar {
 			menores.add(menor);
 			intento++;
 			if (intento > menores.size() && dif > DIF) {
-				//printlnColor("RED", "# Por aquí no!!! (asignarTX_menor)");
 				return false;
 			}
 			dif++;
