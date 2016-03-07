@@ -88,6 +88,8 @@ public class Asignar {
 		}
 
 		if (asignado) {
+			showResidents(residentes, ausentes, obligatorios);
+			println("\nASIGNACIONES");
 			println("Nº de asignaciones totales: " + Arrays.toString(asignaciones));
 			println("Nº de asignaciones urg:     " + Arrays.toString(asignaciones_urg));
 			println("Nº de asignaciones tx:      " + Arrays.toString(asignaciones_tx));

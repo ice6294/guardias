@@ -1,7 +1,10 @@
 package guardias;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import javafx.util.Pair;
 
 /**
  *
@@ -221,14 +224,84 @@ public class Utils {
 
 	public static Integer getMonth(String s) {
 		String[] names = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Nobiembre", "Diciembre"};
-		int i = 0;
-		for (String name : names) {
+		int i;
+		for (i = 0; i < names.length; i++) {
 			if (names[i].equals(s)) {
 				return i;
 			}
-			i++;
 		}
 		return i;
+	}
+
+	public static void showResidents(List<Residente> residentes,
+			List<Pair<Integer, Residente>> ausencias,
+			List<Pair<Integer, Residente>> obligatorios) {
+
+		int i = 0;
+		println("RESIDENTES");
+		for (Residente r : residentes) {
+			println(i + ". " + r.toString());
+			i++;
+		}
+
+		println("\nAUSENCIAS");
+		for (Pair<Integer, Residente> p : ausencias) {
+			println("Dia: " + (p.getKey() + 1) + " - " + p.getValue().toString());
+		}
+
+		println("\nOBLIGATORIOS");
+		for (Pair<Integer, Residente> p : obligatorios) {
+			println("Dia: " + (p.getKey() + 1) + " - " + p.getValue().toString());
+		}
+
+	}
+
+	public static void showResident(String residente,
+			List<Pair<Integer, Residente>> ausencias,
+			List<Pair<Integer, Residente>> obligatorios) {
+
+		println(residente);
+		
+		println("\nAUSENCIAS");
+		for (Pair<Integer, Residente> p : ausencias) {
+			if (p.getValue().toString() == null ? residente == null : p.getValue().toString().equals(residente)) {
+				println("Dia: " + (p.getKey() + 1));
+			}
+		}
+
+		println("\nOBLIGATORIOS");
+		for (Pair<Integer, Residente> p : obligatorios) {
+			if (p.getValue().toString() == null ? residente == null : p.getValue().toString().equals(residente)) {
+				println("Dia: " + (p.getKey() + 1));
+			}
+		}
+
+	}
+	
+	public static Residente getResidentFromToString(List<Residente> residentes, String residente) {
+		Residente result = new Residente();
+		for (Residente r : residentes) {
+			if (r.toString() == null ? residente == null : r.toString().equals(residente)) {
+				result = r;
+				break;
+			}
+		}
+		return result;
+	}
+	
+	public static void sortPairList(List<Pair<Integer, Residente>> residentes) {
+		Collections.sort(residentes, new Comparator<Pair<Integer, Residente>>() {
+			@Override
+			public int compare(Pair<Integer, Residente> o1, Pair<Integer, Residente> o2) {
+				if (o1.getKey() < o2.getKey()) {
+					return -1;
+				} else if (o1.getKey() > o2.getKey()) {
+					return 1;
+				} else {
+					return 0;
+				}
+			}
+		});
 	}
 	// </editor-fold>
 

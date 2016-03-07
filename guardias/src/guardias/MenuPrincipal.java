@@ -4,7 +4,9 @@ import static guardias.Asignar.cthulhu;
 import static guardias.Utils.*;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 import javafx.util.Pair;
 
 public class MenuPrincipal extends javax.swing.JFrame {
@@ -12,9 +14,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
 	public int year = 2016;
 	public int month = 3;
 	public int seed = 360;
-	
+
 	public List<Residente> residentes = new ArrayList();
-	
+
 	public List<Pair<Integer, Residente>> ausentes = new ArrayList();
 	public List<Pair<Integer, Residente>> obligatorios = new ArrayList();
 
@@ -35,7 +37,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 		Residente res8 = new Residente("Laura", 8); // R1
 		Residente res9 = new Residente("Carmen", 9); // R1
 		// </editor-fold>
-		
+
 		// <editor-fold desc="// Agregamos lista de residentes">
 		residentes.add(res0);
 		residentes.add(res1);
@@ -48,39 +50,56 @@ public class MenuPrincipal extends javax.swing.JFrame {
 		residentes.add(res8);
 		residentes.add(res9);
 		// </editor-fold>
-		
+
+		// <editor-fold desc="// Agregamos lista de residentes">
+		this.jComboBox2.removeAllItems();
+		this.jComboBox2.addItem("");
+		this.jComboBox2.addItem(res0.toString());
+		this.jComboBox2.addItem(res1.toString());
+		this.jComboBox2.addItem(res2.toString());
+		this.jComboBox2.addItem(res3.toString());
+		this.jComboBox2.addItem(res4.toString());
+		this.jComboBox2.addItem(res5.toString());
+		this.jComboBox2.addItem(res6.toString());
+		this.jComboBox2.addItem(res7.toString());
+		this.jComboBox2.addItem(res8.toString());
+		this.jComboBox2.addItem(res9.toString());
+		// </editor-fold>
+
 		CTextAreaOutputStream taos = new CTextAreaOutputStream();
-		
-        // Redirijimos las salidas
-        System.setOut(new PrintStream(taos, true) {
-            @Override
-            public synchronized void println(String s) {
-                if ((s != null) && (s.length() > 0)) {
-                    jTextArea.setText(jTextArea.getText() + "\n" + s);
-                }
-            }
+
+		// Redirijimos las salidas
+		System.setOut(new PrintStream(taos, true) {
 			@Override
-            public synchronized void print(String s) {
-                if ((s != null) && (s.length() > 0)) {
-                    jTextArea.setText(jTextArea.getText() + s);
-                }
-            }
-        });
-		
+			public synchronized void println(String s) {
+				if ((s != null) && (s.length() > 0)) {
+					jTextArea.setText(jTextArea.getText() + "\n" + s);
+				}
+			}
+
+			@Override
+			public synchronized void print(String s) {
+				if ((s != null) && (s.length() > 0)) {
+					jTextArea.setText(jTextArea.getText() + s);
+				}
+			}
+		});
+
 		System.setErr(new PrintStream(taos, true) {
-            @Override
-            public synchronized void println(String s) {
-                if ((s != null) && (s.length() > 0)) {
-                    jTextArea.setText(jTextArea.getText() + "\n" + s);
-                }
-            }
 			@Override
-            public synchronized void print(String s) {
-                if ((s != null) && (s.length() > 0)) {
-                    jTextArea.setText(jTextArea.getText() + s);
-                }
-            }
-        });
+			public synchronized void println(String s) {
+				if ((s != null) && (s.length() > 0)) {
+					jTextArea.setText(jTextArea.getText() + "\n" + s);
+				}
+			}
+
+			@Override
+			public synchronized void print(String s) {
+				if ((s != null) && (s.length() > 0)) {
+					jTextArea.setText(jTextArea.getText() + s);
+				}
+			}
+		});
 
 	}
 
@@ -107,9 +126,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabelAusencias = new javax.swing.JLabel();
         jTextFieldAusencias = new javax.swing.JTextField();
         jButtonAddAusencias = new javax.swing.JButton();
+        jButtonRmvAusencias = new javax.swing.JButton();
         jLabelObligatorias = new javax.swing.JLabel();
         jTextFieldObligatorias = new javax.swing.JTextField();
         jButtonAddObligatorias = new javax.swing.JButton();
+        jButtonRmvObligatorias = new javax.swing.JButton();
         jScrollPane = new javax.swing.JScrollPane();
         jTextArea = new javax.swing.JTextArea();
         jButtonExit = new javax.swing.JButton();
@@ -164,6 +185,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jButtonResidentes.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jButtonResidentes.setText("RESIDENTES");
+        jButtonResidentes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonResidentesActionPerformed(evt);
+            }
+        });
 
         jLabelResidente.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelResidente.setText("Residente:");
@@ -179,7 +205,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabelAusencias.setText("Ausencias:");
 
         jTextFieldAusencias.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        jTextFieldAusencias.setText("#");
 
         jButtonAddAusencias.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
         jButtonAddAusencias.setText("+");
@@ -189,17 +214,32 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButtonRmvAusencias.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+        jButtonRmvAusencias.setText("-");
+        jButtonRmvAusencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRmvAusenciasActionPerformed(evt);
+            }
+        });
+
         jLabelObligatorias.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelObligatorias.setText("Obligatorias:");
 
         jTextFieldObligatorias.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        jTextFieldObligatorias.setText("#");
 
         jButtonAddObligatorias.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
         jButtonAddObligatorias.setText("+");
         jButtonAddObligatorias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAddObligatoriasActionPerformed(evt);
+            }
+        });
+
+        jButtonRmvObligatorias.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
+        jButtonRmvObligatorias.setText("-");
+        jButtonRmvObligatorias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonRmvObligatoriasActionPerformed(evt);
             }
         });
 
@@ -255,10 +295,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addGap(25, 25, 25)
-                                        .addComponent(jLabelResidente, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                                        .addComponent(jLabelResidente, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
                                         .addGap(26, 26, 26))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabelObligatorias, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                        .addComponent(jLabelObligatorias, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
                                         .addGap(24, 24, 24))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -271,9 +311,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
                                             .addComponent(jTextFieldObligatorias, javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jTextFieldAusencias))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jButtonAddAusencias)
-                                            .addComponent(jButtonAddObligatorias, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jButtonAddAusencias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jButtonRmvAusencias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jButtonAddObligatorias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jButtonRmvObligatorias, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(31, 31, 31)
                                 .addComponent(jButtonResidentes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -308,41 +350,46 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
-                        .addComponent(jLabelResidente, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(73, 73, 73))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBox2)
-                        .addGap(73, 73, 73))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonCrearCalendario, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabelMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextFieldMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabelSeed, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextFieldSeed, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(34, 34, 34)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabelYear, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jTextFieldAusencias, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabelAusencias, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jButtonAddAusencias, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jTextFieldYear, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldObligatorias, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabelObligatorias, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonAddObligatorias, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
+                        .addComponent(jLabelResidente, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jButtonCrearCalendario, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabelMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jTextFieldMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabelSeed, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jTextFieldSeed, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(34, 34, 34)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabelYear, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jTextFieldAusencias, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabelAusencias, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jComboBox2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jButtonAddAusencias, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(1, 1, 1)
+                                    .addComponent(jButtonRmvAusencias, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jTextFieldYear, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextFieldObligatorias, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabelObligatorias, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jButtonAddObligatorias, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(1, 1, 1)
+                            .addComponent(jButtonRmvObligatorias, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonExit, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -351,7 +398,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        setSize(new java.awt.Dimension(807, 719));
+        setSize(new java.awt.Dimension(810, 719));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -364,7 +411,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 			if (_year < 0 || _year > 5000) {
 				throw new Exception();
 			}
-		} catch(Exception exc) {
+		} catch (Exception exc) {
 			System.err.println("\n# Campo YEAR erróneo: " + _year);
 			ok = false;
 		}
@@ -374,14 +421,14 @@ public class MenuPrincipal extends javax.swing.JFrame {
 			if (!isMonth(_month)) {
 				throw new Exception();
 			}
-		} catch(Exception exc) {
+		} catch (Exception exc) {
 			System.err.println("\n# Campo MONTH erróneo: " + _month);
 			ok = false;
 		}
 		int _seed = 360;
 		try {
 			_seed = Integer.parseInt(this.jTextFieldSeed.getText());
-		} catch(Exception exc) {
+		} catch (Exception exc) {
 			System.err.println("\n# Campo SEED erróneo: " + _seed);
 			ok = false;
 		}
@@ -396,15 +443,46 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonCrearCalendarioActionPerformed
 
     private void jButtonAddAusenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddAusenciasActionPerformed
-		// TODO add your handling code here:
+		String _ausencias = this.jTextFieldAusencias.getText();
+		String[] _ausencias_split = _ausencias.split(", |,| ");
+		for (String s : _ausencias_split) {
+			int dia;
+			try {
+				dia = Integer.parseInt(s);
+				if (dia < 0 || dia > 31) {
+					throw new Exception();
+				} else {
+					Residente res;
+					if (this.jComboBox2.getSelectedItem() == "") {
+						throw new Exception();
+					}
+					res = getResidentFromToString(residentes, this.jComboBox2.getSelectedItem().toString());
+					Pair<Integer, Residente> aus = new Pair(dia - 1, res);
+					if (!ausentes.contains(aus)) {
+						ausentes.add(aus);
+					} else {
+						System.err.println("\n# Error. " + res.getName() + " ya está añadida al día " + dia);
+					}
+					this.jTextArea.setText("");
+					this.jTextFieldAusencias.setText("");
+					sortPairList(ausentes);
+					showResident(res.toString(), ausentes, obligatorios);
+				}
+			} catch (Exception exc) {
+				System.err.println("\n# Error en campo AUSENCIAS: " + s);
+			}
+		}
     }//GEN-LAST:event_jButtonAddAusenciasActionPerformed
 
-    private void jButtonAddObligatoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddObligatoriasActionPerformed
-		// TODO add your handling code here:
-    }//GEN-LAST:event_jButtonAddObligatoriasActionPerformed
-
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-		// TODO add your handling code here:
+		this.jTextArea.setText("");
+		String name = String.valueOf(this.jComboBox2.getSelectedItem());
+		if (!"".equals(name)) {
+			this.jTextFieldAusencias.setText("");
+			this.jTextFieldObligatorias.setText("");
+			showResident(name, ausentes, obligatorios);
+		} else {
+		}
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jTextFieldMonthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldMonthActionPerformed
@@ -420,12 +498,113 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonHelpActionPerformed
 
     private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExitActionPerformed
-        System.exit(0);
+		System.exit(0);
     }//GEN-LAST:event_jButtonExitActionPerformed
 
     private void jTextFieldYearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldYearActionPerformed
-        // TODO add your handling code here:
+		// TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldYearActionPerformed
+
+    private void jButtonResidentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResidentesActionPerformed
+		jTextArea.setText("");
+		showResidents(residentes, ausentes, obligatorios);
+    }//GEN-LAST:event_jButtonResidentesActionPerformed
+
+    private void jButtonRmvAusenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRmvAusenciasActionPerformed
+		String _ausencias = this.jTextFieldAusencias.getText();
+		String[] _ausencias_split = _ausencias.split(", |,| ");
+		for (String s : _ausencias_split) {
+			int dia;
+			try {
+				dia = Integer.parseInt(s);
+				if (dia < 0 || dia > 31) {
+					throw new Exception();
+				} else {
+					Residente res;
+					if (this.jComboBox2.getSelectedItem() == "") {
+						throw new Exception();
+					}
+					res = getResidentFromToString(residentes, this.jComboBox2.getSelectedItem().toString());
+					Pair<Integer, Residente> aus = new Pair(dia - 1, res);
+					if (ausentes.contains(aus)) {
+						ausentes.remove(aus);
+					} else {
+						System.err.println("\n# Error. " + res.getName() + " no está añadida al día " + dia);
+					}
+					this.jTextArea.setText("");
+					this.jTextFieldAusencias.setText("");
+					sortPairList(ausentes);
+					showResident(res.toString(), ausentes, obligatorios);
+				}
+			} catch (Exception exc) {
+				System.err.println("\n# Error en campo AUSENCIAS: " + s);
+			}
+		}
+    }//GEN-LAST:event_jButtonRmvAusenciasActionPerformed
+
+    private void jButtonAddObligatoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddObligatoriasActionPerformed
+		String _obligatorias = this.jTextFieldObligatorias.getText();
+		String[] _obligatorias_split = _obligatorias.split(", |,| ");
+		for (String s : _obligatorias_split) {
+			int dia;
+			try {
+				dia = Integer.parseInt(s);
+				if (dia < 0 || dia > 31) {
+					throw new Exception();
+				} else {
+					Residente res;
+					if (this.jComboBox2.getSelectedItem() == "") {
+						throw new Exception();
+					}
+					res = getResidentFromToString(residentes, this.jComboBox2.getSelectedItem().toString());
+					Pair<Integer, Residente> aus = new Pair(dia - 1, res);
+					if (!obligatorios.contains(aus)) {
+						obligatorios.add(aus);
+					} else {
+						System.err.println("\n# Error. " + res.getName() + " ya está añadida al día " + dia);
+					}
+					this.jTextArea.setText("");
+					this.jTextFieldObligatorias.setText("");
+					sortPairList(obligatorios);
+					showResident(res.toString(), ausentes, obligatorios);
+				}
+			} catch (Exception exc) {
+				System.err.println("\n# Error en campo AUSENCIAS: " + s);
+			}
+		}
+    }//GEN-LAST:event_jButtonAddObligatoriasActionPerformed
+
+    private void jButtonRmvObligatoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRmvObligatoriasActionPerformed
+		String _obligatorias = this.jTextFieldObligatorias.getText();
+		String[] _obligatorias_split = _obligatorias.split(", |,| ");
+		for (String s : _obligatorias_split) {
+			int dia;
+			try {
+				dia = Integer.parseInt(s);
+				if (dia < 0 || dia > 31) {
+					throw new Exception();
+				} else {
+					Residente res;
+					if (this.jComboBox2.getSelectedItem() == "") {
+						throw new Exception();
+					}
+					res = getResidentFromToString(residentes, this.jComboBox2.getSelectedItem().toString());
+					Pair<Integer, Residente> aus = new Pair(dia - 1, res);
+					if (obligatorios.contains(aus)) {
+						obligatorios.remove(aus);
+					} else {
+						System.err.println("\n# Error. " + res.getName() + " no está añadida al día " + dia);
+					}
+					this.jTextArea.setText("");
+					this.jTextFieldObligatorias.setText("");
+					sortPairList(ausentes);
+					showResident(res.toString(), ausentes, obligatorios);
+				}
+			} catch (Exception exc) {
+				System.err.println("\n# Error en campo AUSENCIAS: " + s);
+			}
+		}
+    }//GEN-LAST:event_jButtonRmvObligatoriasActionPerformed
 	/**
 	 * @param args the command line arguments
 	 */
@@ -438,6 +617,8 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButtonHelp;
     private javax.swing.JButton jButtonResidentes;
     private javax.swing.JButton jButtonRestart;
+    private javax.swing.JButton jButtonRmvAusencias;
+    private javax.swing.JButton jButtonRmvObligatorias;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabelAusencias;
     private javax.swing.JLabel jLabelGuardias;
