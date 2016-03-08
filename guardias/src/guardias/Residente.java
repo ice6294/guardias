@@ -103,7 +103,7 @@ public class Residente implements Cloneable {
 	// <editor-fold desc="<------------------->">
 	@Override
 	public String toString() {
-		return "Name: " + this.getName() + " (" + this.getResident() + ")";
+		return this.getName() + " (" + this.getResident() + ")";
 	}
 
 	@Override

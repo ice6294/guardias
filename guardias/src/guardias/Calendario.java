@@ -1,5 +1,6 @@
 package guardias;
 
+import static guardias.Utils.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -189,6 +190,11 @@ public class Calendario implements Cloneable {
 
 	public boolean addAbsent(Residente resident, Integer day) {
 		if (isDay(day)) {
+			if (isSaturday(day) && hasPrev(day)) {
+				this.calendar.get(day-1).addAbsent(resident);
+			} else if (isSunday(day) && hasPrev(day-1)) {
+				this.calendar.get(day-2).addAbsent(resident);
+			}
 			this.calendar.get(day).addAbsent(resident);
 			return true;
 		}
@@ -199,9 +205,17 @@ public class Calendario implements Cloneable {
 		if (isDay(day)) {
 			this.calendar.get(day).setURG_higher(resident);
 			if (day > 0) {
-				this.calendar.get(day - 1).addAbsent(resident);
-				addPrevFridaysException_urg(resident, day);		// NEW <----------------
-				addNextFridaysException_urg(resident, day);		// NEW <----------------
+				if (isFriday(day)) {
+					addPrevFridaysException_urg(resident, day);
+					addNextFridaysException_urg(resident, day);
+					this.calendar.get(day - 1).addAbsent(resident);
+				} else if (isSaturday(day) && hasPrev(day)) {
+					addSelectedTX_higher(resident, day - 1);
+				} else if (isSunday(day) && hasPrev(day - 1)) {
+					addSelectedURG_higher(resident, day - 2);
+				} else {
+					this.calendar.get(day - 1).addAbsent(resident);
+				}
 			}
 			return true;
 		}
@@ -212,9 +226,17 @@ public class Calendario implements Cloneable {
 		if (isDay(day)) {
 			this.calendar.get(day).setURG_minor(resident);
 			if (day > 0) {
-				this.calendar.get(day - 1).addAbsent(resident);
-				addPrevFridaysException_urg(resident, day);		// NEW <----------------
-				addNextFridaysException_urg(resident, day);		// NEW <----------------
+				if (isFriday(day)) {
+					addPrevFridaysException_urg(resident, day);
+					addNextFridaysException_urg(resident, day);
+					this.calendar.get(day - 1).addAbsent(resident);
+				} else if (isSaturday(day) && hasPrev(day)) {
+					addSelectedTX_minor(resident, day - 1);
+				} else if (isSunday(day) && hasPrev(day - 1)) {
+					addSelectedURG_minor(resident, day - 2);
+				} else {
+					this.calendar.get(day - 1).addAbsent(resident);
+				}
 			}
 			return true;
 		}
@@ -240,9 +262,24 @@ public class Calendario implements Cloneable {
 
 	// FRIDAY METHODS
 	// <editor-fold desc="<------------------->">
+	// TODO pasar estos 3 a dia
 	public boolean isFriday(Integer day) {
 		if (isDay(day)) {
 			return this.calendar.get(day).getWeek_day() == 4;
+		}
+		return false;
+	}
+	
+	public boolean isSaturday(Integer day) {
+		if (isDay(day)) {
+			return this.calendar.get(day).getWeek_day() == 5;
+		}
+		return false;
+	}
+	
+	public boolean isSunday(Integer day) {
+		if (isDay(day)) {
+			return this.calendar.get(day).getWeek_day() == 6;
 		}
 		return false;
 	}
@@ -275,6 +312,10 @@ public class Calendario implements Cloneable {
 			return isDay(day + 7);
 		}
 		return false;
+	}
+	
+	public boolean hasPrev(Integer day) {
+		return isDay(day-1);
 	}
 
 	public Dia nextFriday(Integer day) {
@@ -319,27 +360,27 @@ public class Calendario implements Cloneable {
 			this.setTable();
 		}
 		String bar = "+------------+";
-		bar += Utils.addChars(Utils.WIDTH, '-') + "+"; // L
-		bar += Utils.addChars(Utils.WIDTH, '-') + "+"; // M
-		bar += Utils.addChars(Utils.WIDTH, '-') + "+"; // X
-		bar += Utils.addChars(Utils.WIDTH, '-') + "+"; // J
-		bar += Utils.addChars(Utils.WIDTH, '-') + "+"; // V
-		bar += Utils.addChars(Utils.WIDTH, '-') + "+"; // S
-		bar += Utils.addChars(Utils.WIDTH, '-') + "+"; // D
+		bar += addChars(WIDTH, '-') + "+"; // L
+		bar += addChars(WIDTH, '-') + "+"; // M
+		bar += addChars(WIDTH, '-') + "+"; // X
+		bar += addChars(WIDTH, '-') + "+"; // J
+		bar += addChars(WIDTH, '-') + "+"; // V
+		bar += addChars(WIDTH, '-') + "+"; // S
+		bar += addChars(WIDTH, '-') + "+"; // D
 		bar += "\n";
 
 		this.string = bar + "|            |";
-		this.string += Utils.addSpaces(Utils.WIDTH, "L") + "|";
-		this.string += Utils.addSpaces(Utils.WIDTH, "M") + "|";
-		this.string += Utils.addSpaces(Utils.WIDTH, "X") + "|";
-		this.string += Utils.addSpaces(Utils.WIDTH, "J") + "|";
-		this.string += Utils.addSpaces(Utils.WIDTH, "V") + "|";
-		this.string += Utils.addSpaces(Utils.WIDTH, "S") + "|";
-		this.string += Utils.addSpaces(Utils.WIDTH, "D") + "|";
+		this.string += addSpaces(WIDTH, "L") + "|";
+		this.string += addSpaces(WIDTH, "M") + "|";
+		this.string += addSpaces(WIDTH, "X") + "|";
+		this.string += addSpaces(WIDTH, "J") + "|";
+		this.string += addSpaces(WIDTH, "V") + "|";
+		this.string += addSpaces(WIDTH, "S") + "|";
+		this.string += addSpaces(WIDTH, "D") + "|";
 		this.string += "\n" + bar;
 
-		String URJ_mayor = "| URJ mayor: |";
-		String URJ_peque = "| URJ peque: |";
+		String URJ_mayor = "| URG mayor: |";
+		String URJ_peque = "| URG peque: |";
 		String TX_mayor = "| TX  mayor: |";           // aquí va la tabla
 		String TX_peque = "| TX  peque: |";
 		String nada = "|            |";

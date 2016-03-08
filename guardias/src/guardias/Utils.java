@@ -1,10 +1,13 @@
 package guardias;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import javafx.util.Pair;
+import javax.print.PrintException;
 
 /**
  *
@@ -13,7 +16,11 @@ import javafx.util.Pair;
 public class Utils {
 
 	// ATRIBUTES
+	// <editor-fold desc="<------------------->">
 	public static final int WIDTH = 10;
+	public static final int WIDTH2 = 7;
+
+	public static final String PATH = System.getProperty("user.dir");
 
 	public static final String ANSI_RESET = "\u001B[0m";
 	public static final String ANSI_GREEN = "\u001B[32m";
@@ -25,6 +32,16 @@ public class Utils {
 	public static final String ANSI_WHITE = "\u001B[37m";
 	public static final String ANSI_BLACK = "\u001B[30m";
 
+	public static final String INTRO
+			= "\t\t\t    /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/\n"
+			+ "\t\t\t   /~~~~~~~~~~~~     GUARDIAS     ~~~~~~~~~~~~/\n"
+			+ "\t\t\t  /~~~~~~~~~~~~ RESIDENTES - CGD ~~~~~~~~~~~~/\n"
+			+ "\t\t\t /~~~~~~~~~~~ PUERTA DEL HIERRO ~~~~~~~~~~~~/\n"
+			+ "\t\t\t/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/\n\n";
+	public static final String HELP
+			= "";
+
+	// </editor-fold>
 	// CELLS METHODS
 	// <editor-fold desc="<------------------->">
 	// solo espacios
@@ -238,20 +255,34 @@ public class Utils {
 			List<Pair<Integer, Residente>> obligatorios) {
 
 		int i = 0;
-		println("RESIDENTES");
+		println(" 1. RESIDENTES");
 		for (Residente r : residentes) {
-			println(i + ". " + r.toString());
+			println("    " + (i + 1) + ". " + r.toString());
 			i++;
 		}
 
-		println("\nAUSENCIAS");
+		println("\n 2. AUSENCIAS");
+		int dia = -1;
 		for (Pair<Integer, Residente> p : ausencias) {
-			println("Dia: " + (p.getKey() + 1) + " - " + p.getValue().toString());
+			int _dia = p.getKey();
+			if (dia == _dia) {
+				println("           - " + p.getValue().toString());
+			} else {
+				println("    Dia: " + (p.getKey() + 1) + " - " + p.getValue().toString());
+				dia = _dia;
+			}
 		}
 
-		println("\nOBLIGATORIOS");
+		dia = -1;
+		println("\n 3. OBLIGATORIOS");
 		for (Pair<Integer, Residente> p : obligatorios) {
-			println("Dia: " + (p.getKey() + 1) + " - " + p.getValue().toString());
+			int _dia = p.getKey();
+			if (dia == _dia) {
+				println("           - " + p.getValue().toString());
+			} else {
+				println("    Dia: " + (p.getKey() + 1) + " - " + p.getValue().toString());
+				dia = _dia;
+			}
 		}
 
 	}
@@ -261,23 +292,78 @@ public class Utils {
 			List<Pair<Integer, Residente>> obligatorios) {
 
 		println(residente);
-		
-		println("\nAUSENCIAS");
+
+		println("\n 1. AUSENCIAS");
 		for (Pair<Integer, Residente> p : ausencias) {
 			if (p.getValue().toString() == null ? residente == null : p.getValue().toString().equals(residente)) {
-				println("Dia: " + (p.getKey() + 1));
+				println("    Dia: " + (p.getKey() + 1));
 			}
 		}
 
-		println("\nOBLIGATORIOS");
+		println("\n 2. OBLIGATORIOS");
 		for (Pair<Integer, Residente> p : obligatorios) {
 			if (p.getValue().toString() == null ? residente == null : p.getValue().toString().equals(residente)) {
-				println("Dia: " + (p.getKey() + 1));
+				println("    Dia: " + (p.getKey() + 1));
 			}
 		}
 
 	}
-	
+
+	public static void showAssignments(List<Residente> res,
+			Integer[] asignaciones, Integer[] asignaciones_urg, Integer[] asignaciones_tx) {
+		int n = res.size();
+		String aux = "+--------+";
+
+		println("\n 4. ASIGNACIONES\n");
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\n");
+
+		print("|        |");
+		for (int i = 0; i < n; i++) {
+			print(addSpaces(WIDTH2, res.get(i).getName()) + "|");
+		}
+		print("\n");
+
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\n");
+
+		print("|    URG |");
+		for (int i = 0; i < n; i++) {
+			print(addSpaces(WIDTH2, Integer.toString(asignaciones_urg[i])) + "|");
+		}
+		print("\n");
+
+		print("|     TX |");
+		for (int i = 0; i < n; i++) {
+			print(addSpaces(WIDTH2, Integer.toString(asignaciones_tx[i])) + "|");
+		}
+		print("\n");
+
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\n");
+
+		print("|  TOTAL |");
+		for (int i = 0; i < n; i++) {
+			print(addSpaces(WIDTH2, Integer.toString(asignaciones[i])) + "|");
+		}
+		print("\n");
+
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\n");
+	}
+
 	public static Residente getResidentFromToString(List<Residente> residentes, String residente) {
 		Residente result = new Residente();
 		for (Residente r : residentes) {
@@ -288,7 +374,7 @@ public class Utils {
 		}
 		return result;
 	}
-	
+
 	public static void sortPairList(List<Pair<Integer, Residente>> residentes) {
 		Collections.sort(residentes, new Comparator<Pair<Integer, Residente>>() {
 			@Override
@@ -303,6 +389,12 @@ public class Utils {
 			}
 		});
 	}
-	// </editor-fold>
+
+	public static void createTxt(String filename, String content) throws IOException, PrintException {
+		try (PrintWriter out = new PrintWriter(PATH + filename + ".txt")) {
+			out.println(content);
+		}
+	}
+// </editor-fold>
 
 }

@@ -2,18 +2,22 @@ package guardias;
 
 import static guardias.Asignar.cthulhu;
 import static guardias.Utils.*;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.util.Pair;
+import javax.print.PrintException;
 
 public class MenuPrincipal extends javax.swing.JFrame {
 
 	public int year = 2016;
 	public int month = 3;
 	public int seed = 360;
+	
+	public Calendario calendarioActual;
 
 	public List<Residente> residentes = new ArrayList();
 
@@ -52,7 +56,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
 		// </editor-fold>
 
 		// <editor-fold desc="// Agregamos lista de residentes">
-		this.jComboBox2.removeAllItems();
 		this.jComboBox2.addItem("");
 		this.jComboBox2.addItem(res0.toString());
 		this.jComboBox2.addItem(res1.toString());
@@ -134,11 +137,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jScrollPane = new javax.swing.JScrollPane();
         jTextArea = new javax.swing.JTextArea();
         jButtonExit = new javax.swing.JButton();
+        jButtonClean = new javax.swing.JButton();
         jButtonRestart = new javax.swing.JButton();
+        jButtonExport = new javax.swing.JButton();
         jButtonHelp = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Mi analizador (L) ");
+        setTitle("Guardias - Residentes (CGD) - Puerta del Hierro");
 
         jLabelGuardias.setFont(new java.awt.Font("Tahoma", 3, 48)); // NOI18N
         jLabelGuardias.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -156,6 +161,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabelYear.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelYear.setText("YEAR");
 
+        jTextFieldYear.setBackground(new java.awt.Color(250, 250, 250));
         jTextFieldYear.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextFieldYear.setText("2016");
         jTextFieldYear.addActionListener(new java.awt.event.ActionListener() {
@@ -168,6 +174,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabelMonth.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelMonth.setText("MONTH");
 
+        jTextFieldMonth.setBackground(new java.awt.Color(250, 250, 250));
         jTextFieldMonth.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextFieldMonth.setText("Marzo");
         jTextFieldMonth.addActionListener(new java.awt.event.ActionListener() {
@@ -180,6 +187,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabelSeed.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelSeed.setText("SEED");
 
+        jTextFieldSeed.setBackground(new java.awt.Color(250, 250, 250));
         jTextFieldSeed.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextFieldSeed.setText("360");
 
@@ -194,7 +202,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabelResidente.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelResidente.setText("Residente:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);
@@ -204,6 +211,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabelAusencias.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelAusencias.setText("Ausencias:");
 
+        jTextFieldAusencias.setBackground(new java.awt.Color(250, 250, 250));
         jTextFieldAusencias.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
         jButtonAddAusencias.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
@@ -225,6 +233,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jLabelObligatorias.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelObligatorias.setText("Obligatorias:");
 
+        jTextFieldObligatorias.setBackground(new java.awt.Color(250, 250, 250));
         jTextFieldObligatorias.setHorizontalAlignment(javax.swing.JTextField.LEFT);
 
         jButtonAddObligatorias.setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
@@ -243,6 +252,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jTextArea.setBackground(new java.awt.Color(250, 250, 250));
         jTextArea.setColumns(20);
         jTextArea.setFont(new java.awt.Font("Courier", 1, 14)); // NOI18N
         jTextArea.setRows(5);
@@ -257,11 +267,28 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButtonClean.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jButtonClean.setText("LIMPIAR");
+        jButtonClean.setToolTipText("");
+        jButtonClean.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCleanActionPerformed(evt);
+            }
+        });
+
         jButtonRestart.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButtonRestart.setText("REINICIAR");
         jButtonRestart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonRestartActionPerformed(evt);
+            }
+        });
+
+        jButtonExport.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jButtonExport.setText("EXPORTAR");
+        jButtonExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExportActionPerformed(evt);
             }
         });
 
@@ -284,9 +311,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButtonExit, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonRestart, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(169, 169, 169)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonClean, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonRestart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButtonExport, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
                                 .addComponent(jButtonHelp, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -394,7 +425,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonExit, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonHelp, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonRestart, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonRestart, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonClean, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonExport, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -436,7 +469,34 @@ public class MenuPrincipal extends javax.swing.JFrame {
 		month = getMonth(_month);
 		seed = _seed;
 		if (ok) {
-			cthulhu(year, month, seed, residentes, ausentes, obligatorios);
+			Thread th = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					calendarioActual = cthulhu(year, month, seed, residentes, ausentes, obligatorios);
+				}
+			}, "Chtulhu");
+			Thread wait = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						for (int i = 1; i < 11; i++) {
+							Thread.sleep(1000);
+							if (th.isAlive()) {
+								System.out.println(i + " ...\n");
+							}
+						}
+						if (th.isAlive()) {
+							System.err.println("# Error: Imposible esta combinación. Pruebe con otras condiciones u otra seed.");
+							th.interrupt();
+						}
+					} catch (InterruptedException ex) {
+						Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+					}
+				}
+			}, "Wait for the call");
+			th.start();
+			wait.start();
+			//cthulhu(year, month, seed, residentes, ausentes, obligatorios);
 		} else {
 			System.err.println("Something went wrong");
 		}
@@ -449,7 +509,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 			int dia;
 			try {
 				dia = Integer.parseInt(s);
-				if (dia < 0 || dia > 31) {
+				if (dia < 1 || dia > 31) {
 					throw new Exception();
 				} else {
 					Residente res;
@@ -490,7 +550,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldMonthActionPerformed
 
     private void jButtonRestartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRestartActionPerformed
-		jTextArea.setText("");
+		ausentes.clear();
+		obligatorios.clear();
+		calendarioActual = null;
+		this.jTextArea.setText("");
     }//GEN-LAST:event_jButtonRestartActionPerformed
 
     private void jButtonHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHelpActionPerformed
@@ -517,7 +580,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 			int dia;
 			try {
 				dia = Integer.parseInt(s);
-				if (dia < 0 || dia > 31) {
+				if (dia < 1 || dia > 31) {
 					throw new Exception();
 				} else {
 					Residente res;
@@ -605,6 +668,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
 			}
 		}
     }//GEN-LAST:event_jButtonRmvObligatoriasActionPerformed
+
+    private void jButtonCleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCleanActionPerformed
+        this.jTextArea.setText("");
+    }//GEN-LAST:event_jButtonCleanActionPerformed
+
+    private void jButtonExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExportActionPerformed
+        if (!"".equals(jTextArea.getText()) && calendarioActual != null) {
+			try {
+				createTxt(calendarioActual.getId(), this.jTextArea.getText());
+				System.out.println("\n\n Se creado el txt:\n\n\tPATH: " + PATH + calendarioActual.getId() + ".txt\n");
+			} catch (IOException | PrintException ex) {
+				System.err.println("\n # Error: problema al exportar a txt");
+			}
+		} else {
+			System.err.println("\n # Error: no se pudo exportar a txt");
+		}
+    }//GEN-LAST:event_jButtonExportActionPerformed
 	/**
 	 * @param args the command line arguments
 	 */
@@ -612,8 +692,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddAusencias;
     private javax.swing.JButton jButtonAddObligatorias;
+    private javax.swing.JButton jButtonClean;
     private javax.swing.JButton jButtonCrearCalendario;
     private javax.swing.JButton jButtonExit;
+    private javax.swing.JButton jButtonExport;
     private javax.swing.JButton jButtonHelp;
     private javax.swing.JButton jButtonResidentes;
     private javax.swing.JButton jButtonRestart;

@@ -3,7 +3,6 @@ package guardias;
 import static guardias.Utils.*;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
@@ -21,7 +20,7 @@ public class Asignar {
 	public static List<Residente> RESIDENTES;
 
 	// MASTER METHOD
-	public static void cthulhu(Integer year, Integer month, Integer seed,
+	public static Calendario cthulhu(Integer year, Integer month, Integer seed,
 			List<Residente> residentes,
 			List<Pair<Integer, Residente>> ausentes,
 			List<Pair<Integer, Residente>> obligatorios) {
@@ -38,7 +37,11 @@ public class Asignar {
 			cal.addAbsent(p.getValue(), p.getKey());
 		}
 		for (Pair<Integer, Residente> p : obligatorios) {
-			cal.addAbsent(p.getValue(), p.getKey());
+			if (p.getValue().isHigher()) {
+				cal.addSelectedURG_higher(p.getValue(), p.getKey());
+			} else {
+				cal.addSelectedURG_minor(p.getValue(), p.getKey());
+			}
 		}
 
 		// Creamos random
@@ -88,16 +91,17 @@ public class Asignar {
 		}
 
 		if (asignado) {
+			println(INTRO);
 			showResidents(residentes, ausentes, obligatorios);
-			println("\nASIGNACIONES");
-			println("Nº de asignaciones totales: " + Arrays.toString(asignaciones));
-			println("Nº de asignaciones urg:     " + Arrays.toString(asignaciones_urg));
-			println("Nº de asignaciones tx:      " + Arrays.toString(asignaciones_tx));
-			println();
-			println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " + cal.monthName().toUpperCase() + " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			showAssignments(residentes, asignaciones, asignaciones_urg, asignaciones_tx);
+			
+			println(" 5. CALENDARIO");
+			println(addChars(91, " " + cal.monthName().toUpperCase() + " ", '~'));
 			println(cal.toString());
+			return cal;
 		} else {
-			println("\n\n ERROR. No se pudieron hacer las asignaciones");
+			println("\n\n # ERROR. No se pudieron hacer las asignaciones");
+			return null;
 		}
 
 	}
@@ -109,9 +113,6 @@ public class Asignar {
 
 		// Hacemos copia de todo
 		Calendario _calendario = (Calendario) calendario.clone();
-		Integer[] _asignaciones = asignaciones.clone();
-		Integer[] _asignaciones_urg = asignaciones_urg.clone();
-		Integer[] _asignaciones_tx = asignaciones_tx.clone();
 
 		// Copiamos mayores
 		Queue<Residente> _mayores = new ArrayDeque();
@@ -162,9 +163,6 @@ public class Asignar {
 				calendario = _calendario;
 				menores = _menores;
 				mayores = _mayores;
-				asignaciones = _asignaciones;
-				asignaciones_urg = _asignaciones_urg;
-				asignaciones_tx = _asignaciones_tx;
 			}
 
 			it++;
