@@ -2,6 +2,8 @@ package guardias;
 
 import static guardias.Asignar.cthulhu;
 import static guardias.Utils.*;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -9,14 +11,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.util.Pair;
-import javax.print.PrintException;
+import javax.swing.JFileChooser;
 
 public class MenuPrincipal extends javax.swing.JFrame {
 
 	public int year = 2016;
 	public int month = 3;
 	public int seed = 360;
-	
+
 	public Calendario calendarioActual;
 
 	public List<Residente> residentes = new ArrayList();
@@ -76,7 +78,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 			@Override
 			public synchronized void println(String s) {
 				if ((s != null) && (s.length() > 0)) {
-					jTextArea.setText(jTextArea.getText() + "\n" + s);
+					jTextArea.setText(jTextArea.getText() + "\r\n" + s);
 				}
 			}
 
@@ -92,7 +94,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 			@Override
 			public synchronized void println(String s) {
 				if ((s != null) && (s.length() > 0)) {
-					jTextArea.setText(jTextArea.getText() + "\n" + s);
+					jTextArea.setText(jTextArea.getText() + "\r\n" + s);
 				}
 			}
 
@@ -285,7 +287,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         });
 
         jButtonExport.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jButtonExport.setText("EXPORTAR");
+        jButtonExport.setText("GUARDAR");
         jButtonExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonExportActionPerformed(evt);
@@ -445,7 +447,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 				throw new Exception();
 			}
 		} catch (Exception exc) {
-			System.err.println("\n# Campo YEAR erróneo: " + _year);
+			System.err.println("\r\n # Campo YEAR erróneo: " + _year);
 			ok = false;
 		}
 		String _month = "Marzo";
@@ -455,14 +457,14 @@ public class MenuPrincipal extends javax.swing.JFrame {
 				throw new Exception();
 			}
 		} catch (Exception exc) {
-			System.err.println("\n# Campo MONTH erróneo: " + _month);
+			System.err.println("\r\n # Campo MONTH erróneo: " + _month);
 			ok = false;
 		}
 		int _seed = 360;
 		try {
 			_seed = Integer.parseInt(this.jTextFieldSeed.getText());
 		} catch (Exception exc) {
-			System.err.println("\n# Campo SEED erróneo: " + _seed);
+			System.err.println("\r\n # Campo SEED erróneo: " + _seed);
 			ok = false;
 		}
 		year = _year;
@@ -479,26 +481,30 @@ public class MenuPrincipal extends javax.swing.JFrame {
 				@Override
 				public void run() {
 					try {
+						/*
 						for (int i = 1; i < 11; i++) {
+							if (th.isAlive() && i == 1) {
+								System.out.println(" Asignando ...\r\n");
+							}
 							Thread.sleep(1000);
 							if (th.isAlive()) {
-								System.out.println(i + " ...\n");
+								System.out.println("  " + i + " ...\r\n");
 							}
-						}
+						}*/
+						Thread.sleep(10000);
 						if (th.isAlive()) {
-							System.err.println("# Error: Imposible esta combinación. Pruebe con otras condiciones u otra seed.");
+							System.err.println(" # Error: Imposible esta combinación. Pruebe con otras condiciones u otra seed.");
 							th.interrupt();
 						}
 					} catch (InterruptedException ex) {
 						Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
 					}
 				}
-			}, "Wait for the call");
+			}, "Waiter");
 			th.start();
 			wait.start();
-			//cthulhu(year, month, seed, residentes, ausentes, obligatorios);
 		} else {
-			System.err.println("Something went wrong");
+			System.err.println(" # Error: campo erróneo");
 		}
     }//GEN-LAST:event_jButtonCrearCalendarioActionPerformed
 
@@ -521,7 +527,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 					if (!ausentes.contains(aus)) {
 						ausentes.add(aus);
 					} else {
-						System.err.println("\n# Error. " + res.getName() + " ya está añadida al día " + dia);
+						System.err.println("\r\n # Error. " + res.getName() + " ya está añadida al día " + dia);
 					}
 					this.jTextArea.setText("");
 					this.jTextFieldAusencias.setText("");
@@ -529,7 +535,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 					showResident(res.toString(), ausentes, obligatorios);
 				}
 			} catch (Exception exc) {
-				System.err.println("\n# Error en campo AUSENCIAS: " + s);
+				System.err.println("\r\n# Error en campo AUSENCIAS: " + s);
 			}
 		}
     }//GEN-LAST:event_jButtonAddAusenciasActionPerformed
@@ -557,7 +563,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonRestartActionPerformed
 
     private void jButtonHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonHelpActionPerformed
-		// TODO add your handling code here:
+		this.jTextArea.setText(HELP);
     }//GEN-LAST:event_jButtonHelpActionPerformed
 
     private void jButtonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExitActionPerformed
@@ -592,7 +598,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 					if (ausentes.contains(aus)) {
 						ausentes.remove(aus);
 					} else {
-						System.err.println("\n# Error. " + res.getName() + " no está añadida al día " + dia);
+						System.err.println("\r\n # Error. " + res.getName() + " no está añadida al día " + dia);
 					}
 					this.jTextArea.setText("");
 					this.jTextFieldAusencias.setText("");
@@ -600,7 +606,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 					showResident(res.toString(), ausentes, obligatorios);
 				}
 			} catch (Exception exc) {
-				System.err.println("\n# Error en campo AUSENCIAS: " + s);
+				System.err.println("\r\n # Error en campo AUSENCIAS: " + s);
 			}
 		}
     }//GEN-LAST:event_jButtonRmvAusenciasActionPerformed
@@ -624,7 +630,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 					if (!obligatorios.contains(aus)) {
 						obligatorios.add(aus);
 					} else {
-						System.err.println("\n# Error. " + res.getName() + " ya está añadida al día " + dia);
+						System.err.println("\r\n # Error. " + res.getName() + " ya está añadida al día " + dia);
 					}
 					this.jTextArea.setText("");
 					this.jTextFieldObligatorias.setText("");
@@ -632,7 +638,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 					showResident(res.toString(), ausentes, obligatorios);
 				}
 			} catch (Exception exc) {
-				System.err.println("\n# Error en campo AUSENCIAS: " + s);
+				System.err.println("\r\n # Error en campo AUSENCIAS: " + s);
 			}
 		}
     }//GEN-LAST:event_jButtonAddObligatoriasActionPerformed
@@ -656,7 +662,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 					if (obligatorios.contains(aus)) {
 						obligatorios.remove(aus);
 					} else {
-						System.err.println("\n# Error. " + res.getName() + " no está añadida al día " + dia);
+						System.err.println("\r\n # Error. " + res.getName() + " no está añadida al día " + dia);
 					}
 					this.jTextArea.setText("");
 					this.jTextFieldObligatorias.setText("");
@@ -664,25 +670,32 @@ public class MenuPrincipal extends javax.swing.JFrame {
 					showResident(res.toString(), ausentes, obligatorios);
 				}
 			} catch (Exception exc) {
-				System.err.println("\n# Error en campo AUSENCIAS: " + s);
+				System.err.println("\r\n # Error en campo AUSENCIAS: " + s);
 			}
 		}
     }//GEN-LAST:event_jButtonRmvObligatoriasActionPerformed
 
     private void jButtonCleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCleanActionPerformed
-        this.jTextArea.setText("");
+		this.jTextArea.setText("");
     }//GEN-LAST:event_jButtonCleanActionPerformed
 
     private void jButtonExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExportActionPerformed
-        if (!"".equals(jTextArea.getText()) && calendarioActual != null) {
-			try {
-				createTxt(calendarioActual.getId(), this.jTextArea.getText());
-				System.out.println("\n\n Se creado el txt:\n\n\tPATH: " + PATH + calendarioActual.getId() + ".txt\n");
-			} catch (IOException | PrintException ex) {
-				System.err.println("\n # Error: problema al exportar a txt");
+		if (!"".equals(jTextArea.getText())) {
+			JFileChooser chooser = new JFileChooser();
+			if (calendarioActual != null) {
+				chooser.setSelectedFile(new File("guardias" + calendarioActual.getId()));
+			}
+			int retrival = chooser.showSaveDialog(null);
+			if (retrival == JFileChooser.APPROVE_OPTION) {
+				try (FileWriter fw = new FileWriter(chooser.getSelectedFile() + ".txt")) {
+					fw.write(this.jTextArea.getText());
+					fw.close();
+				} catch (IOException ex) {
+					Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+				}
 			}
 		} else {
-			System.err.println("\n # Error: no se pudo exportar a txt");
+			System.err.println("\r\n # Error: no se pudo exportar a txt.");
 		}
     }//GEN-LAST:event_jButtonExportActionPerformed
 	/**

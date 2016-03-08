@@ -33,15 +33,58 @@ public class Utils {
 	public static final String ANSI_BLACK = "\u001B[30m";
 
 	public static final String INTRO
-			= "\t\t\t    /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/\n"
-			+ "\t\t\t   /~~~~~~~~~~~~     GUARDIAS     ~~~~~~~~~~~~/\n"
-			+ "\t\t\t  /~~~~~~~~~~~~ RESIDENTES - CGD ~~~~~~~~~~~~/\n"
-			+ "\t\t\t /~~~~~~~~~~~ PUERTA DEL HIERRO ~~~~~~~~~~~~/\n"
-			+ "\t\t\t/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/\n\n";
-	public static final String HELP
-			= "";
+			= "\t\t\t    /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/\r\n"
+			+ "\t\t\t   /~~~~~~~~~       GUARDIAS        ~~~~~~~~~~~~/\r\n"
+			+ "\t\t\t  /~~~~~~~~~~   RESIDENTES - CGD    ~~~~~~~~~~~/\r\n"
+			+ "\t\t\t /~~~~~~~~~~~   PUERTA DEL HIERRO   ~~~~~~~~~~/\r\n"
+			+ "\t\t\t/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/\r\n\r\n";
 
+	public static final String HELP
+			= "\r\n\r\n" + INTRO
+			+ "\r\n\r\n\t    AYUDA\r\n\r\n"
+			+ "\t1. Aplicación\r\n\r\n"
+			+ "    La versión actual es una beta, por lo que es probable que pueda surgir algún bug.\r\n"
+			+ "  Si es así podéis enviarme un mensaje con la información sobre algún bug que podáis\r\n"
+			+ "  encontrar a mi dirección de correo electrónico: luigi6294@gmail.com\r\n\r\n"
+			+ "\t2. Interfaz\r\n\r\n"
+			+ "    La interfaz consta de 3 partes:\r\n\r\n"
+			+ "\t\t2.1 Parte superior:\r\n\r\n"
+			+ "\t    · Botón RESIDENTES: muestra en el TextArea todos los residentes, con\r\n"
+			+ "\t  las ausencias y obligatorias que se han agregado hasta el momento.\r\n\r\n"
+			+ "\t    · Desplegable residentes: permite seleccionar un residente en concreto,\r\n"
+			+ "\t  mostrándose en el TextArea toda la información sobre dicho residente\r\n\r\n"
+			+ "\t    · Campo Ausencias: cuando seleccionas un residente, puedes agregar en\r\n"
+			+ "\t  este campo los días que estará ausente en el mes. Para agregarlas hay\r\n"
+			+ "\t  que pulsar el botón \"+\".\r\n"
+			+ "\t    Los números permitidos van del 1 al 31. Se pueden agregar los días de\r\n"
+			+ "\t  uno en uno, o de varios en varios. Ejemplo: \"3, 6, 17, 28\". Para eliminar\r\n"
+			+ "\t  algún día agregado basta con escribir dicho día y darle al botón \"-\"\r\n\r\n"
+			+ "\t    · Campo Obligatorias: cuando seleccionas un residente, puedes agregar en este\r\n"
+			+ "\t  campo las urgencias que quieres que el residente haga un día. Sigue las mismas\r\n"
+			+ "\t  reglas que el campo Ausencias.\r\n\r\n"
+			+ "\t    · Campo Year: para seleccionar el año del calendario.\r\n\r\n"
+			+ "\t    · Campo Mes: para seleccionar el mes del calendario.\r\n\r\n"
+			+ "\t    · Campo Seed: para seleccionar el origen aleatorio de la asignación. Cada\r\n"
+			+ "\t  vez que se realiza una asignación se hace de una manera relativamente aleatoria.\r\n"
+			+ "\t  Se parte de este número para hacer la asignación. Así, si una asignación de\r\n"
+			+ "\t  calendario gusta, se puede volver a utilizar la misma seed para que salga\r\n"
+			+ "\t  el mismo resultado. El rango de valores abarca todos los números positivos.\r\n\r\n"
+			+ "\t\t2.2 TextArea:\r\n\r\n"
+			+ "\t    · Este area es donde se imprime toda la información. Se puede escribir sobre\r\n"
+			+ "\t  él, pero lo que se escriba no se podrá utilizar para añadir ausencias, obligatorios\r\n"
+			+ "\t  o asignaciones. Es decir, solo sirve para mostrar información y para escribir\r\n"
+			+ "\t  anotaciones o hacer cambios en un calendario ya asignado, pues cuando se le de a\r\n"
+			+ "\t  \"guardar\" estos cambios se guardan.\r\n\r\n"
+			+ "\t\t2.3 Parte inferior:\r\n\r\n"
+			+ "\t    · Botón salir: para salir de la aplicación.\r\n\r\n"
+			+ "\t    · Botón limpiar: limpia el TextArea.\r\n\r\n"
+			+ "\t    · Botón reiniciar: vacía las listas de ausencias y obligaciones agregadas.\r\n\r\n"
+			+ "\t    · Botón guardar: guarda el contenido del TextArea en un documento \".txt\".\r\n"
+			+ "\t    · Botón ayuda: muestra en TextArea esta ayuda.\r\n\r\n"
+			+ "\t3. Créditos\r\n\r\n"
+			+ "\t    Luis León Gámez - luigi6294@gmail.com\r\n";
 	// </editor-fold>
+
 	// CELLS METHODS
 	// <editor-fold desc="<------------------->">
 	// solo espacios
@@ -261,7 +304,7 @@ public class Utils {
 			i++;
 		}
 
-		println("\n 2. AUSENCIAS");
+		println("\r\n 2. AUSENCIAS");
 		int dia = -1;
 		for (Pair<Integer, Residente> p : ausencias) {
 			int _dia = p.getKey();
@@ -274,7 +317,7 @@ public class Utils {
 		}
 
 		dia = -1;
-		println("\n 3. OBLIGATORIOS");
+		println("\r\n 3. OBLIGATORIOS");
 		for (Pair<Integer, Residente> p : obligatorios) {
 			int _dia = p.getKey();
 			if (dia == _dia) {
@@ -293,14 +336,14 @@ public class Utils {
 
 		println(residente);
 
-		println("\n 1. AUSENCIAS");
+		println("\r\n 1. AUSENCIAS");
 		for (Pair<Integer, Residente> p : ausencias) {
 			if (p.getValue().toString() == null ? residente == null : p.getValue().toString().equals(residente)) {
 				println("    Dia: " + (p.getKey() + 1));
 			}
 		}
 
-		println("\n 2. OBLIGATORIOS");
+		println("\r\n 2. OBLIGATORIOS");
 		for (Pair<Integer, Residente> p : obligatorios) {
 			if (p.getValue().toString() == null ? residente == null : p.getValue().toString().equals(residente)) {
 				println("    Dia: " + (p.getKey() + 1));
@@ -314,54 +357,60 @@ public class Utils {
 		int n = res.size();
 		String aux = "+--------+";
 
-		println("\n 4. ASIGNACIONES\n");
+		println("\r\n 4. ASIGNACIONES\r\n");
 		print(aux);
 		for (int i = 0; i < n; i++) {
 			print(addChars(WIDTH2, '-') + "+");
 		}
-		print("\n");
+		print("\r\n");
 
 		print("|        |");
 		for (int i = 0; i < n; i++) {
 			print(addSpaces(WIDTH2, res.get(i).getName()) + "|");
 		}
-		print("\n");
+		print("\r\n");
 
 		print(aux);
 		for (int i = 0; i < n; i++) {
 			print(addChars(WIDTH2, '-') + "+");
 		}
-		print("\n");
+		print("\r\n");
 
 		print("|    URG |");
 		for (int i = 0; i < n; i++) {
 			print(addSpaces(WIDTH2, Integer.toString(asignaciones_urg[i])) + "|");
 		}
-		print("\n");
+		print("\r\n");
+
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\r\n");
 
 		print("|     TX |");
 		for (int i = 0; i < n; i++) {
 			print(addSpaces(WIDTH2, Integer.toString(asignaciones_tx[i])) + "|");
 		}
-		print("\n");
+		print("\r\n");
 
 		print(aux);
 		for (int i = 0; i < n; i++) {
 			print(addChars(WIDTH2, '-') + "+");
 		}
-		print("\n");
+		print("\r\n");
 
 		print("|  TOTAL |");
 		for (int i = 0; i < n; i++) {
 			print(addSpaces(WIDTH2, Integer.toString(asignaciones[i])) + "|");
 		}
-		print("\n");
+		print("\r\n");
 
 		print(aux);
 		for (int i = 0; i < n; i++) {
 			print(addChars(WIDTH2, '-') + "+");
 		}
-		print("\n");
+		print("\r\n");
 	}
 
 	public static Residente getResidentFromToString(List<Residente> residentes, String residente) {

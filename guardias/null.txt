@@ -1,0 +1,81 @@
+
+			    /~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
+			   /~~~~~~~~~~~~     GUARDIAS     ~~~~~~~~~~~~/
+			  /~~~~~~~~~~~~ RESIDENTES - CGD ~~~~~~~~~~~~/
+			 /~~~~~~~~~~~ PUERTA DEL HIERRO ~~~~~~~~~~~~/
+			/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/
+
+
+ 1. RESIDENTES
+    1. Elena (R5)
+    2. Natalia (R5)
+    3. Javi (R4)
+    4. Pablo (R4)
+    5. Rosaura (R3)
+    6. Joaquin (R3)
+    7. Dani (R2)
+    8. Pau (R2)
+    9. Laura (R1)
+    10. Carmen (R1)
+
+ 2. AUSENCIAS
+
+ 3. OBLIGATORIOS
+
+ 4. ASIGNACIONES
++--------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+|        | Elena |Natalia|  Javi | Pablo |Rosaura|Joaquin|  Dani |  Pau  | Laura | Carmen|
++--------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+|    URG |   5   |   6   |   7   |   6   |   6   |   6   |   7   |   6   |   7   |   7   |
+|     TX |   7   |   7   |   6   |   4   |   7   |   6   |   7   |   5   |   8   |   5   |
++--------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+|  TOTAL |   12  |   13  |   13  |   10  |   13  |   12  |   14  |   11  |   15  |   12  |
++--------+-------+-------+-------+-------+-------+-------+-------+-------+-------+-------+
+
+ 5. CALENDARIO
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MARZO ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++------------+----------+----------+----------+----------+----------+----------+----------+
+|            |     L    |     M    |     X    |     J    |     V    |     S    |     D    |
++------------+----------+----------+----------+----------+----------+----------+----------+
+|            |          |     1    |     2    |     3    |     4    |     5    |     6    |
++------------+----------+----------+----------+----------+----------+----------+----------+
+| URG mayor: |          |   Javi   |   Pablo  |  Natalia |   Elena  |   Javi   |   Elena  |
+| URG peque: |          |  Carmen  |  Rosaura |  Joaquin |    Pau   |   Laura  |    Pau   |
+| TX  mayor: |          |  Natalia |   Javi   |   Pablo  |   Javi   |   Elena  |   Javi   |
+| TX  peque: |          |  Joaquin |  Carmen  |  Rosaura |   Laura  |    Pau   |   Laura  |
++------------+----------+----------+----------+----------+----------+----------+----------+
+|            |     7    |     8    |     9    |    10    |    11    |    12    |    13    |
++------------+----------+----------+----------+----------+----------+----------+----------+
+| URG mayor: |  Natalia |  Joaquin |  Rosaura |   Pablo  |  Rosaura |  Natalia |  Rosaura |
+| URG peque: |   Dani   |   Laura  |   Dani   |  Carmen  |   Laura  |   Dani   |   Laura  |
+| TX  mayor: |   Pablo  |   Elena  |  Joaquin |  Joaquin |  Natalia |  Rosaura |  Natalia |
+| TX  peque: |    Pau   |   Dani   |   Laura  |   Dani   |   Dani   |   Laura  |   Dani   |
++------------+----------+----------+----------+----------+----------+----------+----------+
+|            |    14    |    15    |    16    |    17    |    18    |    19    |    20    |
++------------+----------+----------+----------+----------+----------+----------+----------+
+| URG mayor: |   Pablo  |   Elena  |   Javi   |   Pablo  |  Natalia |   Elena  |  Natalia |
+| URG peque: |    Pau   |  Joaquin |   Laura  |  Joaquin |  Carmen  |    Pau   |  Carmen  |
+| TX  mayor: |  Joaquin |  Rosaura |  Natalia |   Javi   |   Elena  |  Natalia |   Elena  |
+| TX  peque: |   Dani   |  Carmen  |  Carmen  |  Rosaura |    Pau   |  Carmen  |    Pau   |
++------------+----------+----------+----------+----------+----------+----------+----------+
+|            |    21    |    22    |    23    |    24    |    25    |    26    |    27    |
++------------+----------+----------+----------+----------+----------+----------+----------+
+| URG mayor: |  Rosaura |   Elena  |   Javi   |  Joaquin |   Javi   |  Natalia |   Javi   |
+| URG peque: |   Dani   |  Carmen  |   Dani   |  Carmen  |   Dani   |   Laura  |   Dani   |
+| TX  mayor: |  Joaquin |   Pablo  |   Elena  |   Pablo  |  Natalia |   Javi   |  Natalia |
+| TX  peque: |    Pau   |   Laura  |  Joaquin |   Laura  |   Laura  |   Dani   |   Laura  |
++------------+----------+----------+----------+----------+----------+----------+----------+
+|            |    28    |    29    |    30    |    31    |          |          |          |
++------------+----------+----------+----------+----------+----------+----------+----------+
+| URG mayor: |   Pablo  |  Joaquin |  Rosaura |   Pablo  |          |          |          |
+| URG peque: |  Carmen  |    Pau   |   Laura  |    Pau   |          |          |          |
+| TX  mayor: |  Rosaura |   Elena  |   Elena  |   Javi   |          |          |          |
+| TX  peque: |   Dani   |  Rosaura |  Carmen  |  Rosaura |          |          |          |
++------------+----------+----------+----------+----------+----------+----------+----------+
+|            |          |          |          |          |          |          |          |
++------------+----------+----------+----------+----------+----------+----------+----------+
+| URG mayor: |          |          |          |          |          |          |          |
+| URG peque: |          |          |          |          |          |          |          |
+| TX  mayor: |          |          |          |          |          |          |          |
+| TX  peque: |          |          |          |          |          |          |          |
++------------+----------+----------+----------+----------+----------+----------+----------+

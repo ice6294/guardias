@@ -87,7 +87,7 @@ public class Asignar {
 		try {
 			asignado = probarOpciones(cal, cal.getCalendar().get(0), menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx);
 		} catch (CloneNotSupportedException | InterruptedException | NullPointerException exc) {
-			System.err.printf("# ERROR (main): " + exc + "\n# " + cal.getYear() + " - " + cal.monthName() + " [SEED: " + SEED + " ]\n");
+			System.err.printf("# ERROR (main): " + exc + "\r\n# " + cal.getYear() + " - " + cal.monthName() + " [SEED: " + SEED + " ]\r\n");
 		}
 
 		if (asignado) {
@@ -100,7 +100,7 @@ public class Asignar {
 			println(cal.toString());
 			return cal;
 		} else {
-			println("\n\n # ERROR. No se pudieron hacer las asignaciones");
+			println("\r\n\r\n # ERROR. No se pudieron hacer las asignaciones");
 			return null;
 		}
 
@@ -156,7 +156,7 @@ public class Asignar {
 			try {
 				asignado = asignar(calendario, dia, menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx);
 			} catch (CloneNotSupportedException | InterruptedException | NullPointerException exc) {
-				System.err.printf("# ERROR (probarOpciones): " + exc + "\n# " + calendario.getYear() + " - " + calendario.monthName() + " [SEED: " + SEED + " ] ~ Intento: " + jt + " " + it);
+				System.err.printf("# ERROR (probarOpciones): " + exc + "\r\n# " + calendario.getYear() + " - " + calendario.monthName() + " [SEED: " + SEED + " ] ~ Intento: " + jt + " " + it);
 				asignado = false;
 			}
 			if (!asignado) {

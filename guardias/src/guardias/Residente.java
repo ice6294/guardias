@@ -112,7 +112,7 @@ public class Residente implements Cloneable {
 		try {
 			obj = super.clone();
 		} catch (CloneNotSupportedException ex) {
-			System.out.println("# ERROR: (Residente) no se puede duplicar: " + ex);
+			System.err.println("# ERROR: (Residente) no se puede duplicar: " + ex);
 		}
 		return obj;
 	}

@@ -206,25 +206,25 @@ public class Guardias {
 		// </editor-fold>
 
 		// <editor-fold desc="// ASIGNACIÓN">
-		println("\n\n");
+		println("\r\n\r\n");
 		println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ASIGNAR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ");
 		//if (asignar(cal, cal.getCalendar().get(0), menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx)) {
 		boolean asignado = false;
 		try {
 			asignado = probarOpciones(cal, cal.getCalendar().get(0), menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx);
 		} catch (CloneNotSupportedException | InterruptedException | NullPointerException exc) {
-			System.err.printf("# ERROR (main): " + exc + "\n# " + cal.getYear() + " - " + cal.monthName() + " [SEED: " + SEED + " ]\n");
+			System.err.printf("# ERROR (main): " + exc + "\r\n# " + cal.getYear() + " - " + cal.monthName() + " [SEED: " + SEED + " ]\r\n");
 		}
 		if (asignado) {
-			println("\n\n");
+			println("\r\n\r\n");
 			println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " + cal.monthName().toUpperCase() + " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			println(cal.toString());
 			println("Nº de asignaciones totales: " + Arrays.toString(asignaciones));
 			println("Nº de asignaciones urg:     " + Arrays.toString(asignaciones_urg));
 			println("Nº de asignaciones tx:      " + Arrays.toString(asignaciones_tx));
-			println("\n\n");
+			println("\r\n\r\n");
 		} else {
-			println("\n\n ERROR. No se pudieron hacer las asignaciones");
+			println("\r\n\r\n ERROR. No se pudieron hacer las asignaciones");
 		}
 		// </editor-fold>
 
@@ -258,7 +258,7 @@ public class Guardias {
 		int jt = 0;
 		while (!asignado) {
 			// i -> mayores / j -> menores
-			println("\n");
+			println("\r\n");
 			printlnColor("GREEN", "Dia: " + dia.toString() + " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			printlnColor("YELLOW", "Vuelta: " + jt + " - " + it);
 			// Rotamos mayores
@@ -291,7 +291,7 @@ public class Guardias {
 			try {
 				asignado = asignar(calendario, dia, menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx);
 			} catch (CloneNotSupportedException | InterruptedException | NullPointerException exc) {
-				System.err.printf("# ERROR (probarOpciones): " + exc + "\n# " + calendario.getYear() + " - " + calendario.monthName() + " [SEED: " + SEED + " ] ~ Intento: " + jt + " " + it);
+				System.err.printf("# ERROR (probarOpciones): " + exc + "\r\n# " + calendario.getYear() + " - " + calendario.monthName() + " [SEED: " + SEED + " ] ~ Intento: " + jt + " " + it);
 				asignado = false;
 			}
 			if (!asignado) {
@@ -406,7 +406,7 @@ public class Guardias {
 		if (calendario.hasNext(dia.getDay())) {
 			return probarOpciones(calendario, calendario.next(dia.getDay()), menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx);
 		} else {
-			println("\n");
+			println("\r\n");
 			printlnColor("GREEN", "> FIN de asignación");
 			return true;
 		}
@@ -497,7 +497,7 @@ public class Guardias {
 			menores.add(menor);
 			intento++;
 			if (intento > menores.size() && dif > DIF) {
-				printlnColor("RED", "# Por aquí no!!! (asignarURG_menor)\n");
+				printlnColor("RED", "# Por aquí no!!! (asignarURG_menor)\r\n");
 				//Thread.sleep(1000);
 				return false;
 			}

@@ -1,5 +1,6 @@
 package guardias;
 
+import static guardias.Utils.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -199,7 +200,7 @@ public class Dia implements Cloneable {
 
 			obj = (Dia) super.clone();
 		} catch (CloneNotSupportedException ex) {
-			System.out.println("# ERROR: (Dia) no se puede duplicar: " + ex);
+			System.err.println("# ERROR: (Dia) no se puede duplicar: " + ex);
 		}
 		return obj;
 	}

@@ -53,7 +53,7 @@ public class Calendario implements Cloneable {
 	}
 
 	public void setId() {
-		id = year + " " + month + " " + seed;
+		id = year + "_" + month + "_" + seed;
 	}
 
 	public Integer getYear() {
@@ -367,7 +367,7 @@ public class Calendario implements Cloneable {
 		bar += addChars(WIDTH, '-') + "+"; // V
 		bar += addChars(WIDTH, '-') + "+"; // S
 		bar += addChars(WIDTH, '-') + "+"; // D
-		bar += "\n";
+		bar += "\r\n";
 
 		this.string = bar + "|            |";
 		this.string += addSpaces(WIDTH, "L") + "|";
@@ -377,7 +377,7 @@ public class Calendario implements Cloneable {
 		this.string += addSpaces(WIDTH, "V") + "|";
 		this.string += addSpaces(WIDTH, "S") + "|";
 		this.string += addSpaces(WIDTH, "D") + "|";
-		this.string += "\n" + bar;
+		this.string += "\r\n" + bar;
 
 		String URJ_mayor = "| URG mayor: |";
 		String URJ_peque = "| URG peque: |";
@@ -398,7 +398,7 @@ public class Calendario implements Cloneable {
 					this.string += this.table.get(count) + sep;
 					count++;
 				}
-				this.string += "\n";
+				this.string += "\r\n";
 			}
 			this.string += bar;
 		}
