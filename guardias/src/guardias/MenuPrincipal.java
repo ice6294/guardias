@@ -1,3 +1,20 @@
+/**
+ *                ███
+ *                ███                     ██
+ *                ███                     ██
+ *                ███                     ██
+ *                ███                     ██
+ *                ███   █  █  █  █        ██
+ *                ███    ▀▀ ▀▀ ▀▀█        ██
+ * ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄███▄▄▄▄▄▄▄▄▄▄▄▄█▄▄▄▄▄▄▄▄██▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄
+ *     ▀▀▄▄       ███            █        ██
+ *        ▀▀▄▄   ███▀            █        ██
+ *           ▀▀███▀              █        ██
+ *                               █▄▄▄▄▄▄▄▄██▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄
+ *      Copyright (c) 2016       █  ▀▀▄▄  ██
+ *      All right reserved       █     ▀▀██▀
+ *                               ▀
+ */
 package guardias;
 
 import static guardias.Asignar.cthulhu;
@@ -10,9 +27,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.util.Pair;
 import javax.swing.JFileChooser;
 
+/**
+ *
+ * @version v1.0
+ * @author luis
+ */
 public class MenuPrincipal extends javax.swing.JFrame {
 
 	public int year = 2016;
@@ -471,13 +492,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
 		month = getMonth(_month);
 		seed = _seed;
 		if (ok) {
-			Thread th = new Thread(new Runnable() {
+			final Thread th = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					calendarioActual = cthulhu(year, month, seed, residentes, ausentes, obligatorios);
 				}
 			}, "Chtulhu");
-			Thread wait = new Thread(new Runnable() {
+			final Thread wait = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					try {

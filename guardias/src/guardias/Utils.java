@@ -1,3 +1,20 @@
+/**
+ *                ███
+ *                ███                     ██
+ *                ███                     ██
+ *                ███                     ██
+ *                ███                     ██
+ *                ███   █  █  █  █        ██
+ *                ███    ▀▀ ▀▀ ▀▀█        ██
+ * ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄███▄▄▄▄▄▄▄▄▄▄▄▄█▄▄▄▄▄▄▄▄██▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄
+ *     ▀▀▄▄       ███            █        ██
+ *        ▀▀▄▄   ███▀            █        ██
+ *           ▀▀███▀              █        ██
+ *                               █▄▄▄▄▄▄▄▄██▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄
+ *      Copyright (c) 2016       █  ▀▀▄▄  ██
+ *      All right reserved       █     ▀▀██▀
+ *                               ▀
+ */
 package guardias;
 
 import java.io.IOException;
@@ -6,11 +23,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import javafx.util.Pair;
 import javax.print.PrintException;
 
 /**
  *
+ * @version v1.0
  * @author luis
  */
 public class Utils {
@@ -45,7 +62,7 @@ public class Utils {
 			+ "\t1. Aplicación\r\n\r\n"
 			+ "    La versión actual es una beta, por lo que es probable que pueda surgir algún bug.\r\n"
 			+ "  Si es así podéis enviarme un mensaje con la información sobre algún bug que podáis\r\n"
-			+ "  encontrar a mi dirección de correo electrónico: luigi6294@gmail.com\r\n\r\n"
+			+ "  encontrar a mi dirección de correo electrónico: luigi6294@gmail.com\r\n\r\n\r\n"
 			+ "\t2. Interfaz\r\n\r\n"
 			+ "    La interfaz consta de 3 partes:\r\n\r\n"
 			+ "\t\t2.1 Parte superior:\r\n\r\n"
@@ -68,20 +85,34 @@ public class Utils {
 			+ "\t  vez que se realiza una asignación se hace de una manera relativamente aleatoria.\r\n"
 			+ "\t  Se parte de este número para hacer la asignación. Así, si una asignación de\r\n"
 			+ "\t  calendario gusta, se puede volver a utilizar la misma seed para que salga\r\n"
-			+ "\t  el mismo resultado. El rango de valores abarca todos los números positivos.\r\n\r\n"
+			+ "\t  el mismo resultado. El rango de valores abarca todos los números positivos.\r\n\r\n\r\n"
 			+ "\t\t2.2 TextArea:\r\n\r\n"
 			+ "\t    · Este area es donde se imprime toda la información. Se puede escribir sobre\r\n"
 			+ "\t  él, pero lo que se escriba no se podrá utilizar para añadir ausencias, obligatorios\r\n"
 			+ "\t  o asignaciones. Es decir, solo sirve para mostrar información y para escribir\r\n"
 			+ "\t  anotaciones o hacer cambios en un calendario ya asignado, pues cuando se le de a\r\n"
-			+ "\t  \"guardar\" estos cambios se guardan.\r\n\r\n"
+			+ "\t  \"guardar\" estos cambios se guardan.\r\n\r\n\r\n"
 			+ "\t\t2.3 Parte inferior:\r\n\r\n"
 			+ "\t    · Botón salir: para salir de la aplicación.\r\n\r\n"
 			+ "\t    · Botón limpiar: limpia el TextArea.\r\n\r\n"
 			+ "\t    · Botón reiniciar: vacía las listas de ausencias y obligaciones agregadas.\r\n\r\n"
 			+ "\t    · Botón guardar: guarda el contenido del TextArea en un documento \".txt\".\r\n"
-			+ "\t    · Botón ayuda: muestra en TextArea esta ayuda.\r\n\r\n"
-			+ "\t3. Créditos\r\n\r\n"
+			+ "\t    · Botón ayuda: muestra en TextArea esta ayuda.\r\n\r\n\r\n"
+			+ "\t3. Bugs\r\n\r\n"
+			+ "\t    a) Si se intenta asignar en un sábado a una persona que de por si la seed ya\r\n"
+			+ "\t  lo va a colocer el viernes-domingo, el programa asigna todo el fin de semana\r\n"
+			+ "\t  a esa persona. Habría que intentar con otra seed.\r\n\r\n"
+			+ "\t    b) Seleccionar días obligatorios, cuando son más de una persona en días\r\n"
+			+ "\t  consecutivos puede dar a lugar a fallos en la asignación.\r\n\r\n"
+			+ "\t    c) A veces cuenta mal las asignaciones (y asigna 1 día demás a una persona).\r\n\r\n\r\n"
+			+ "\t4. Anotaciones\r\n\r\n"
+			+ "\t    Si un mes empieza en sábado o domingo, estas casillas aparecerán vacías, y se\r\n"
+			+ "\t  debe asignar manualmente según el mes anterior.\r\n"
+			+ "\t    Están pendientes agregar otras funcionalidades como por ejemplo un desplegable\r\n"
+			+ "\t  para los meses, una manera para guardar calendarios y poder volver a cargarlos\r\n"
+			+ "\t  (con el objetivo de tener un computo anual), y poder agregar guardias de trasplante\r\n"
+			+ "\t  obligatorios. De momento espero que sirva para facilitar el trabajo de asignación\r\n\r\n\r\n"
+			+ "\t5. Créditos\r\n\r\n"
 			+ "\t    Luis León Gámez - luigi6294@gmail.com\r\n";
 	// </editor-fold>
 

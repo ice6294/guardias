@@ -1,22 +1,43 @@
+/**
+ *                ███
+ *                ███                     ██
+ *                ███                     ██
+ *                ███                     ██
+ *                ███                     ██
+ *                ███   █  █  █  █        ██
+ *                ███    ▀▀ ▀▀ ▀▀█        ██
+ * ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄███▄▄▄▄▄▄▄▄▄▄▄▄█▄▄▄▄▄▄▄▄██▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄
+ *     ▀▀▄▄       ███            █        ██
+ *        ▀▀▄▄   ███▀            █        ██
+ *           ▀▀███▀              █        ██
+ *                               █▄▄▄▄▄▄▄▄██▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄
+ *      Copyright (c) 2016       █  ▀▀▄▄  ██
+ *      All right reserved       █     ▀▀██▀
+ *                               ▀
+ */
 package guardias;
 
-import static guardias.Utils.*;
+import static guardias.Utils.addChars;
+import static guardias.Utils.println;
+import static guardias.Utils.showAssignments;
+import static guardias.Utils.showResidents;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
-import javafx.util.Pair;
+//import javafx.util.Pair;
 
 /**
  *
+ * @version v1.0
  * @author luis
  */
 public class Asignar {
 
 	// PUBLIC ATTRIBUTES
 	public static Integer SEED = 360;
-	public static Integer DIF = 0;
+	public static Integer DIF = 3;
 	public static List<Residente> RESIDENTES;
 
 	// MASTER METHOD
@@ -91,7 +112,7 @@ public class Asignar {
 		}
 
 		if (asignado) {
-			println(INTRO);
+			println(Utils.INTRO);
 			showResidents(residentes, ausentes, obligatorios);
 			showAssignments(residentes, asignaciones, asignaciones_urg, asignaciones_tx);
 			
@@ -241,8 +262,11 @@ public class Asignar {
 			// Metemos residente en cola
 			mayores.add(mayor);
 			intento++;
-			if (intento > mayores.size() && dif > DIF) {
-				return false;
+			if (intento > mayores.size()) {
+				intento = 0;
+				if (dif > DIF) {
+					return false;
+				}
 			}
 			dif++;
 		}
@@ -285,8 +309,11 @@ public class Asignar {
 			// Metemos residente en cola
 			menores.add(menor);
 			intento++;
-			if (intento > menores.size() && dif > DIF) {
-				return false;
+			if (intento > menores.size()) {
+				intento = 0;
+				if (dif > DIF) {
+					return false;
+				}
 			}
 			dif++;
 		}
@@ -322,8 +349,11 @@ public class Asignar {
 			// Metemos residente en cola
 			mayores.add(mayor);
 			intento++;
-			if (intento > mayores.size() && dif > DIF) {
-				return false;
+			if (intento > mayores.size()) {
+				intento = 0;
+				if (dif > DIF) {
+					return false;
+				}
 			}
 			dif++;
 		}
@@ -361,8 +391,11 @@ public class Asignar {
 			// Metemos residente en cola
 			menores.add(menor);
 			intento++;
-			if (intento > menores.size() && dif > DIF) {
-				return false;
+			if (intento > menores.size()) {
+				intento = 0;
+				if (dif > DIF) {
+					return false;
+				}
 			}
 			dif++;
 		}
@@ -379,7 +412,7 @@ public class Asignar {
 
 		if (calendario.hasNext(dia.getDay())) {
 			Dia sabado = calendario.next(dia.getDay());
-			// del viernes:
+			// cogemos a los asignados del viernes:
 			Residente urg_mayor = dia.getURG_higher();
 			Residente urg_menor = dia.getURG_minor();
 			Residente tx_mayor = dia.getTX_higher();

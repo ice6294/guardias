@@ -1,9 +1,27 @@
+/**
+ *                ███
+ *                ███                     ██
+ *                ███                     ██
+ *                ███                     ██
+ *                ███                     ██
+ *                ███   █  █  █  █        ██
+ *                ███    ▀▀ ▀▀ ▀▀█        ██
+ * ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄███▄▄▄▄▄▄▄▄▄▄▄▄█▄▄▄▄▄▄▄▄██▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄
+ *     ▀▀▄▄       ███            █        ██
+ *        ▀▀▄▄   ███▀            █        ██
+ *           ▀▀███▀              █        ██
+ *                               █▄▄▄▄▄▄▄▄██▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄
+ *      Copyright (c) 2016       █  ▀▀▄▄  ██
+ *      All right reserved       █     ▀▀██▀
+ *                               ▀
+ */
 package guardias;
 
 import java.util.Objects;
 
 /**
  *
+ * @version v1.0
  * @author luis
  */
 public class Residente implements Cloneable {

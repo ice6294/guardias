@@ -1,6 +1,24 @@
+/**
+ *                ███
+ *                ███                     ██
+ *                ███                     ██
+ *                ███                     ██
+ *                ███                     ██
+ *                ███   █  █  █  █        ██
+ *                ███    ▀▀ ▀▀ ▀▀█        ██
+ * ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄███▄▄▄▄▄▄▄▄▄▄▄▄█▄▄▄▄▄▄▄▄██▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄
+ *     ▀▀▄▄       ███            █        ██
+ *        ▀▀▄▄   ███▀            █        ██
+ *           ▀▀███▀              █        ██
+ *                               █▄▄▄▄▄▄▄▄██▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄
+ *      Copyright (c) 2016       █  ▀▀▄▄  ██
+ *      All right reserved       █     ▀▀██▀
+ *                               ▀
+ */
 package guardias;
 
-import static guardias.Utils.*;
+import static guardias.Utils.addChars;
+import static guardias.Utils.addSpaces;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -10,12 +28,14 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- *
+ * 
+ * @version v1.0
  * @author luis
  */
 public class Calendario implements Cloneable {
 
 	// ATTRIBUTES
+	// <editor-fold desc="<------------------->">
 	private String id;
 
 	private Integer year;
@@ -26,16 +46,18 @@ public class Calendario implements Cloneable {
 	private List<String> table;
 
 	private String string;
+	// </editor-fold>
 
 	// CONSTRUCTORS
 	// <editor-fold desc="<------------------->">
 	public Calendario() {
+		this.calendar = new TreeMap();
 	}
 
 	public Calendario(Integer year, Integer month) {
+		this();
 		this.year = year;
 		this.month = month;
-		this.calendar = new TreeMap();
 		this.initializate();
 	}
 
@@ -86,53 +108,14 @@ public class Calendario implements Cloneable {
 	public void setCalendar(SortedMap<Integer, Dia> calendar) {
 		this.calendar = calendar;
 	}
+	
+	public List<String> getTable() {
+		return table;
+	}
 
 	public void setTable() {
-		if (calendar.isEmpty()) {
-			return;
-		}
-		this.table = new ArrayList();
-
-		// rellenamos la tabla con espacios
-		for (int i = 0; i < 210; i++) {
-			table.add(Utils.addSpaces(Utils.WIDTH));
-		}
-
-		Integer primer = calendar.get(0).getWeek_day() - 1;	// primer día de la semana
-		Integer end = calendar.size();	// último dia del mes
-
-		int count = 0;
-		Integer dia = 0;
-		for (int i = 0; i < 6; i++) {
-			int il = i * 35;
-			for (int j = 0; j < 7; j++) {
-				int jl = il + j;
-				// el contador dia no se inicia hasta que empieza el dia 1
-				dia += (count > primer) ? 1 : 0;
-				if (dia > end) {
-					break;
-				}
-				//dia = (dia > end - 1) ? 0 : dia;
-				if (dia != 0) {
-					this.table.set(jl, Utils.addSpaces(Utils.WIDTH, dia.toString()));
-				}
-				// si el contador está a 0 se deja el espacio
-				if (dia > 0 && calendar.get(dia - 1) != null) {
-					if (calendar.get(dia - 1).getURG_higher() != null) {
-						this.table.set(jl + 7, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getURG_higher().getName()));
-					}
-					if (calendar.get(dia - 1).getURG_minor() != null) {
-						this.table.set(jl + 14, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getURG_minor().getName()));
-					}
-					if (calendar.get(dia - 1).getTX_higher() != null) {
-						this.table.set(jl + 21, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getTX_higher().getName()));
-					}
-					if (calendar.get(dia - 1).getTX_minor() != null) {
-						this.table.set(jl + 28, Utils.addSpaces(Utils.WIDTH, calendar.get(dia - 1).getTX_minor().getName()));
-					}
-				}
-				count++;
-			}
+		if (!calendar.isEmpty()) {
+			this.createTable();
 		}
 	}
 	// </editor-fold>
@@ -151,6 +134,52 @@ public class Calendario implements Cloneable {
 			day_name++;
 			day_name %= 7;
 			calendar.put(i, day);
+		}
+	}
+	
+	public void createTable() {
+		this.table = new ArrayList();
+
+		// rellenamos la tabla con espacios
+		for (int i = 0; i < 210; i++) {
+			table.add(addSpaces(Utils.WIDTH));
+		}
+
+		Integer primer = calendar.get(0).getWeek_day() - 1;	// primer día de la semana
+		Integer end = calendar.size();	// último dia del mes
+
+		int count = 0;
+		Integer dia = 0;
+		for (int i = 0; i < 6; i++) {
+			int il = i * 35;
+			for (int j = 0; j < 7; j++) {
+				int jl = il + j;
+				// el contador dia no se inicia hasta que empieza el dia 1
+				dia += (count > primer) ? 1 : 0;
+				if (dia > end) {
+					break;
+				}
+				//dia = (dia > end - 1) ? 0 : dia;
+				if (dia != 0) {
+					this.table.set(jl, addSpaces(Utils.WIDTH, dia.toString()));
+				}
+				// si el contador está a 0 se deja el espacio
+				if (dia > 0 && calendar.get(dia - 1) != null) {
+					if (calendar.get(dia - 1).getURG_higher() != null) {
+						this.table.set(jl + 7, addSpaces(Utils.WIDTH, calendar.get(dia - 1).getURG_higher().getName()));
+					}
+					if (calendar.get(dia - 1).getURG_minor() != null) {
+						this.table.set(jl + 14, addSpaces(Utils.WIDTH, calendar.get(dia - 1).getURG_minor().getName()));
+					}
+					if (calendar.get(dia - 1).getTX_higher() != null) {
+						this.table.set(jl + 21, addSpaces(Utils.WIDTH, calendar.get(dia - 1).getTX_higher().getName()));
+					}
+					if (calendar.get(dia - 1).getTX_minor() != null) {
+						this.table.set(jl + 28, addSpaces(Utils.WIDTH, calendar.get(dia - 1).getTX_minor().getName()));
+					}
+				}
+				count++;
+			}
 		}
 	}
 
@@ -191,9 +220,9 @@ public class Calendario implements Cloneable {
 	public boolean addAbsent(Residente resident, Integer day) {
 		if (isDay(day)) {
 			if (isSaturday(day) && hasPrev(day)) {
-				this.calendar.get(day-1).addAbsent(resident);
-			} else if (isSunday(day) && hasPrev(day-1)) {
-				this.calendar.get(day-2).addAbsent(resident);
+				this.calendar.get(day - 1).addAbsent(resident);
+			} else if (isSunday(day) && hasPrev(day - 1)) {
+				this.calendar.get(day - 2).addAbsent(resident);
 			}
 			this.calendar.get(day).addAbsent(resident);
 			return true;
@@ -269,28 +298,28 @@ public class Calendario implements Cloneable {
 		}
 		return false;
 	}
-	
+
 	public boolean isSaturday(Integer day) {
 		if (isDay(day)) {
 			return this.calendar.get(day).getWeek_day() == 5;
 		}
 		return false;
 	}
-	
+
 	public boolean isSunday(Integer day) {
 		if (isDay(day)) {
 			return this.calendar.get(day).getWeek_day() == 6;
 		}
 		return false;
 	}
-	
+
 	public boolean hasPrevFriday(Integer day) {
 		if (isFriday(day)) {
 			return isDay(day - 7);
 		}
 		return false;
 	}
-	
+
 	public void addPrevFridaysException_urg(Residente res, Integer day) {
 		Dia d;
 		while (hasPrevFriday(day)) {
@@ -299,7 +328,7 @@ public class Calendario implements Cloneable {
 			day -= 7;
 		}
 	}
-	
+
 	public Dia prevFriday(Integer day) {
 		if (hasPrevFriday(day)) {
 			return this.calendar.get(day - 7);
@@ -313,9 +342,9 @@ public class Calendario implements Cloneable {
 		}
 		return false;
 	}
-	
+
 	public boolean hasPrev(Integer day) {
-		return isDay(day-1);
+		return isDay(day - 1);
 	}
 
 	public Dia nextFriday(Integer day) {
@@ -360,23 +389,23 @@ public class Calendario implements Cloneable {
 			this.setTable();
 		}
 		String bar = "+------------+";
-		bar += addChars(WIDTH, '-') + "+"; // L
-		bar += addChars(WIDTH, '-') + "+"; // M
-		bar += addChars(WIDTH, '-') + "+"; // X
-		bar += addChars(WIDTH, '-') + "+"; // J
-		bar += addChars(WIDTH, '-') + "+"; // V
-		bar += addChars(WIDTH, '-') + "+"; // S
-		bar += addChars(WIDTH, '-') + "+"; // D
+		bar += addChars(Utils.WIDTH, '-') + "+"; // L
+		bar += addChars(Utils.WIDTH, '-') + "+"; // M
+		bar += addChars(Utils.WIDTH, '-') + "+"; // X
+		bar += addChars(Utils.WIDTH, '-') + "+"; // J
+		bar += addChars(Utils.WIDTH, '-') + "+"; // V
+		bar += addChars(Utils.WIDTH, '-') + "+"; // S
+		bar += addChars(Utils.WIDTH, '-') + "+"; // D
 		bar += "\r\n";
 
 		this.string = bar + "|            |";
-		this.string += addSpaces(WIDTH, "L") + "|";
-		this.string += addSpaces(WIDTH, "M") + "|";
-		this.string += addSpaces(WIDTH, "X") + "|";
-		this.string += addSpaces(WIDTH, "J") + "|";
-		this.string += addSpaces(WIDTH, "V") + "|";
-		this.string += addSpaces(WIDTH, "S") + "|";
-		this.string += addSpaces(WIDTH, "D") + "|";
+		this.string += addSpaces(Utils.WIDTH, "L") + "|";
+		this.string += addSpaces(Utils.WIDTH, "M") + "|";
+		this.string += addSpaces(Utils.WIDTH, "X") + "|";
+		this.string += addSpaces(Utils.WIDTH, "J") + "|";
+		this.string += addSpaces(Utils.WIDTH, "V") + "|";
+		this.string += addSpaces(Utils.WIDTH, "S") + "|";
+		this.string += addSpaces(Utils.WIDTH, "D") + "|";
 		this.string += "\r\n" + bar;
 
 		String URJ_mayor = "| URG mayor: |";
