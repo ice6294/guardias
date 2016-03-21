@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
  * @version v1.0
  * @author luis
  */
@@ -35,6 +34,7 @@ public class Dia implements Cloneable {
 	private List<Residente> absents;
 	private List<Residente> exceptions;
 	private List<Residente> exceptions_urg;
+	private List<Residente> exceptions_tx;
 
 	private Residente URG_higher;
 	private Residente URG_minor;
@@ -44,18 +44,20 @@ public class Dia implements Cloneable {
 	// CONSTRUCTOR
 	// <editor-fold desc="<------------------->">
 	public Dia() {
-	}
-
-	public Dia(Integer day, Integer week_day) {
-		this.day = day;
-		this.week_day = week_day;
 		this.absents = new ArrayList();
 		this.exceptions = new ArrayList();
 		this.exceptions_urg = new ArrayList();
+		this.exceptions_tx = new ArrayList();
 		this.URG_higher = null;
 		this.URG_minor = null;
 		this.TX_higher = null;
 		this.TX_minor = null;
+	}
+
+	public Dia(Integer day, Integer week_day) {
+		this();
+		this.day = day;
+		this.week_day = week_day;
 	}
 	// </editor-fold>
 
@@ -100,7 +102,16 @@ public class Dia implements Cloneable {
 	public void setExceptions_urg(List<Residente> exceptions_urg) {
 		this.exceptions_urg = exceptions_urg;
 	}
+	
+	public List<Residente> getExceptions_tx() {
+		return exceptions_tx;
+	}
 
+	public void setExceptions_tx(List<Residente> exceptions_tx) {
+		this.exceptions_tx = exceptions_tx;
+	}
+
+	// URG mayor
 	public Residente getURG_higher() {
 		return URG_higher;
 	}
@@ -110,9 +121,10 @@ public class Dia implements Cloneable {
 	}
 
 	public boolean hasURG_higher() {
-		return this.URG_higher != null;
+		return URG_higher != null;
 	}
 
+	// URG menor
 	public Residente getURG_minor() {
 		return URG_minor;
 	}
@@ -122,9 +134,10 @@ public class Dia implements Cloneable {
 	}
 
 	public boolean hasURG_minor() {
-		return this.URG_minor != null;
+		return URG_minor != null;
 	}
 
+	// TX mayor
 	public Residente getTX_higher() {
 		return TX_higher;
 	}
@@ -134,9 +147,10 @@ public class Dia implements Cloneable {
 	}
 
 	public boolean hasTX_higher() {
-		return this.TX_higher != null;
+		return TX_higher != null;
 	}
 
+	// TX menor
 	public Residente getTX_minor() {
 		return TX_minor;
 	}
@@ -146,7 +160,7 @@ public class Dia implements Cloneable {
 	}
 
 	public boolean hasTX_minor() {
-		return this.TX_minor != null;
+		return TX_minor != null;
 	}
 	// </editor-fold>
 
@@ -154,44 +168,53 @@ public class Dia implements Cloneable {
 	// <editor-fold desc="<------------------->">
 	public String getWeekDayName() {
 		String[] aux = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
-		return aux[this.week_day];
+		return aux[week_day];
 	}
 
 	public void addException(Residente resident) {
 		if (!exceptions.contains(resident)) {
-			this.exceptions.add(resident);
+			exceptions.add(resident);
 		}
 	}
 
 	public void addException_urg(Residente resident) {
 		if (!exceptions_urg.contains(resident)) {
-			this.exceptions_urg.add(resident);
+			exceptions_urg.add(resident);
 		}
 	}
 
+	public void addException_tx(Residente resident) {
+		if (!exceptions_tx.contains(resident)) {
+			exceptions_tx.add(resident);
+		}
+	}
+	
 	public void addAbsent(Residente resident) {
 		if (!absents.contains(resident)) {
-			this.absents.add(resident);
+			absents.add(resident);
 		}
 	}
 
 	public void clear() {
-		this.setURG_higher(null);
-		this.setURG_minor(null);
-		this.setTX_higher(null);
-		this.setTX_minor(null);
+		setURG_higher(null);
+		setURG_minor(null);
+		setTX_higher(null);
+		setTX_minor(null);
 	}
 	// </editor-fold>
-
-	// OVERRIDE METHODS
+	
+	// TO STRING METHODS
 	// <editor-fold desc="<------------------->">
 	@Override
 	public String toString() {
-		return "Day: " + (this.getDay() + 1) + ". Week_Day: " + this.getWeekDayName();
+		return "Day: " + (getDay() + 1) + ". Week_Day: " + getWeekDayName();
 	}
-
+	// </editor-fold>
+	
+	// OVERRIDE METHODS
+	// <editor-fold desc="<------------------->">
 	@Override
-	public Object clone() throws CloneNotSupportedException {
+	public final Object clone() throws CloneNotSupportedException {
 		Dia obj = new Dia(this.day, this.week_day);
 		try {
 			// copiamos listas
@@ -207,9 +230,16 @@ public class Dia implements Cloneable {
 			for (int i = 0; i < this.exceptions_urg.size(); i++) {
 				_exceptions_urg.add((Residente) this.exceptions_urg.get(i).clone());
 			}
-
+			List<Residente> _exceptions_tx = new ArrayList();
+			for (int i = 0; i < this.exceptions_tx.size(); i++) {
+				_exceptions_tx.add((Residente) this.exceptions_tx.get(i).clone());
+			}
 			// guardamos listas
 			obj.setAbsents(_absents);
+			obj.setExceptions(_exceptions);
+			obj.setExceptions_urg(_exceptions_urg);
+			obj.setExceptions_tx(_exceptions_tx);
+			// guardamos asignados
 			obj.setURG_higher(this.URG_higher);
 			obj.setURG_minor(this.URG_minor);
 			obj.setTX_higher(this.TX_higher);

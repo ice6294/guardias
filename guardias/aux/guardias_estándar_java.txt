@@ -1,0 +1,170 @@
+GUÍA ESTÁNDAR
+
+	1. Básico
+
+		1.1 Clases
+
+	La estructura de toda clase es como sigue:
+
+##################################################### NombreClase.java ###################################################### {sin _}
+/**
+ *                ███
+ *                ███                     ██
+ *                ███                     ██
+ *                ███                     ██
+ *                ███                     ██
+ *                ███   █  █  █  █        ██
+ *                ███    ▀▀ ▀▀ ▀▀█        ██
+ * ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄███▄▄▄▄▄▄▄▄▄▄▄▄█▄▄▄▄▄▄▄▄██▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄
+ *     ▀▀▄▄       ███            █        ██
+ *        ▀▀▄▄   ███▀            █        ██
+ *           ▀▀███▀              █        ██
+ *                               █▄▄▄▄▄▄▄▄██▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ▄
+ *      Copyright (c) 2016       █  ▀▀▄▄  ██
+ *      All right reserved       █     ▀▀██▀
+ *                               ▀
+ */
+package nombre_paquete;			{minúsculas y con _}
+
+import ...;
+import ...;		{sin ningún .*;}
+import ...;
+
+/**
+ * 
+ * @version <versión>
+ * @author luis
+ */
+public class NombreClase [implements cloneable|serialize|...] {		{mismo que NombreClase.java}
+
+	// ATTRIBUTES
+	// <editor-fold desc="<------------------->">
+	private String id;
+
+	private Integer atr1;
+	private Integer atr2;
+	private SortedMap<Integer, Dia> atr3;		{siempre Objetos (nuna nativos), privados/protected, y cuando sea posible, abstractos}
+	private List<String> atr4;
+	// </editor-fold>
+
+	// CONSTRUCTORS
+	// <editor-fold desc="<------------------->">	
+	public Nombre_clase() {
+	}
+
+	public NombreClase(String id) {
+		this.id = id;
+	}
+
+	public NombreClase(String id, Integer atr1, Integer atr2) {
+		this(id);
+		this.atr1 = atr1;
+		this.atr2 = atr2;
+	}
+	// </editor-fold>
+
+	// GETTERS & SETTERS
+	// <editor-fold desc="<------------------->">	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {		{solo setters de los que se pueda}
+		this.id = id;
+	}
+
+	public String getAtr3() {
+		return atr3;
+	}
+
+	public void setAtr3() {
+		if (this.atr3 == null) {
+			createAtr3();		{si no se puede hacer un set fácil, este llamará al método correspondiente}
+		}
+	}
+
+	public boolean hasAtr3() {		{métodos has's se incluyen también en esta sección}
+		return atr != null;
+	}
+
+	...
+	// </editor-fold>
+
+	// METHODS
+	// <editor-fold desc="<------------------->">
+	// </editor-fold>
+
+	...
+	// ####### METHODS		{los métodos relacionados con un mismo ámbito ######## se colocarán juntos}
+	// <editor-fold desc="<------------------->">
+	// </editor-fold>
+	...
+
+	// BOOLEAN METHODS		{aquí los métodos que devuelven un booleano que no sean getters}
+	// <editor-fold desc="<------------------->">
+	// </editor-fold>
+
+	// TO STRING METHODS		{aquí los métodos que imprimen por pantalla partes de la clase} {el primero tiene que ser toString (aunque sea @override)}
+	// <editor-fold desc="<------------------->">
+	// </editor-fold>
+
+	// OVERRIDE METHODS		{aquí los métodos como clone, equals o hashCode.}
+	// <editor-fold desc="<------------------->">
+	// </editor-fold>
+
+}
+				{<-Dejar este hueco al final}
+#############################################################################################################################
+
+
+	Los corchetes se colocarán siempre como sigue:
+
+	if (...) {
+
+	}
+
+	for (int i = 0; i < n; i++) {
+
+	}
+
+	...
+
+	Se pondrán siempre (aunque dentro solo haya una línea)
+
+	Los tabuladores serán tabuladores (equivalentes a 4 espacios)
+
+	Siempre mantener el format que hace el entorno de desarrollo.
+
+	Comentarios siempre que se pueda.
+
+	Paquetes en minúsculas y con _ en espacios.
+
+	Clases en mayúscula y sin _.
+
+	Métodos en minúscula y sin _.
+
+	El uso de this será obligatorio solo si:
+
+		- se está en un método constructor
+
+		- se está en un método @override
+
+		- se está usando en el mismo método un objeto con el mismo nombre (como en los setters, pero no getters salvo que se de un caso anterior)
+
+
+	En el resto de casos solo es optativo (preferentemente no usar)
+
+
+
+
+
+
+		1.2 Státicos
+
+
+	Sus atributos son estáticos y:
+		- públicos: si son variables globales (en mayúsculas)
+		- privados: si son herramientas auxiliares para los métodos de esa clase (en minúsculas)
+
+	El sistema de comentarios fold funciona igual que las clases normales
+

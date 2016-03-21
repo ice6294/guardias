@@ -26,7 +26,6 @@ import java.util.List;
 import javax.print.PrintException;
 
 /**
- *
  * @version v1.0
  * @author luis
  */
@@ -233,6 +232,7 @@ public class Utils {
 			}
 			default: {
 				System.out.println(s);
+				break;
 			}
 		}
 	}
@@ -289,6 +289,7 @@ public class Utils {
 			}
 			default: {
 				System.out.print(s);
+				break;
 			}
 		}
 	}

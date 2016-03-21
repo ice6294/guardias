@@ -18,7 +18,6 @@
 package guardias;
 
 /**
- *
  * @version v1.0
  * @author luis
  */

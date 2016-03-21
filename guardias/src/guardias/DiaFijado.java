@@ -17,68 +17,40 @@
  */
 package guardias;
 
-import java.util.Objects;
-
 /**
  * @version v1.0
  * @author luis
- * @param <K>
- * @param <V>
  */
-public class Pair<K, V> {
-
+public class DiaFijado {
+	
 	// ATTRIBUTES
-	private K key;
-	private V value;
-
+	// <editor-fold desc="<------------------->">
+	// </editor-fold>
+	
 	// CONSTRUCTOR
-	public Pair(K key, V value) {
-		this.key = key;
-		this.value = value;
+	// <editor-fold desc="<------------------->">
+	public DiaFijado() {
 	}
-
+	// </editor-fold>
+	
 	// GETTERS & SETTERS
-	public K getKey() {
-		return key;
-	}
+	// <editor-fold desc="<------------------->">
+	// </editor-fold>
 	
-	public void setKey(K key) {
-		this.key = key;
-	}
+	// METHODS
+	// <editor-fold desc="<------------------->">
+	// </editor-fold>
 	
-	public V getValue() {
-		return value;
+	// TO STRING METHODS
+	// <editor-fold desc="<------------------->">
+	@Override
+	public String toString() {
+		return "";
 	}
-
-	public void setValue(V value) {
-		this.value = value;
-	}
-
+	// </editor-fold>
+	
 	// OVERRIDE METHODS
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final Pair<K, V> other = (Pair) obj;
-		if (!Objects.equals(this.key, other.key)) {
-			return false;
-		}
-		return Objects.equals(this.value, other.value);
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 3;
-		hash = 97 * hash + Objects.hashCode(this.key);
-		hash = 97 * hash + Objects.hashCode(this.value);
-		return hash;
-	}
-
+	// <editor-fold desc="<------------------->">
+	// </editor-fold>
+	
 }

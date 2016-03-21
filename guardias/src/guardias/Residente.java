@@ -20,17 +20,18 @@ package guardias;
 import java.util.Objects;
 
 /**
- *
  * @version v1.0
  * @author luis
  */
 public class Residente implements Cloneable {
 
 	// ATTRIBUTES
-	private String name;	// TODO agregar ID
-	private Integer number;
-
+	// <editor-fold desc="<------------------->">
+	private Integer id;
+	
+	private String name;
 	private String resident;
+	// </editor-fold>
 
 	// CONSTRUCTOR
 	// <editor-fold desc="<------------------->">
@@ -39,7 +40,7 @@ public class Residente implements Cloneable {
 
 	public Residente(String name, Integer number) {
 		this.name = name;
-		this.setNumber(number);
+		this.setId(number);
 		this.setResident();
 	}
 	// </editor-fold>
@@ -54,15 +55,15 @@ public class Residente implements Cloneable {
 		this.name = name;
 	}
 
-	public Integer getNumber() {
-		return number;
+	public Integer getId() {
+		return id;
 	}
 
-	public final void setNumber(Integer number) {
-		if (number > 9) {
-			this.number = 10;
+	public final void setId(Integer id) {
+		if (id > 9) {
+			this.id = 10;
 		} else {
-			this.number = number;
+			this.id = id;
 		}
 	}
 
@@ -72,7 +73,7 @@ public class Residente implements Cloneable {
 
 	public final void setResident() {
 		int n;
-		switch (this.number) {
+		switch (id) {
 			case 0:
 			case 1: {
 				n = 5;
@@ -100,16 +101,17 @@ public class Residente implements Cloneable {
 			}
 			default: {
 				n = 0;
+				break;
 			}
 		}
-		this.resident = "R" + n;
+		resident = "R" + n;
 	}
 	// </editor-fold>
 
 	// METHODS
 	// <editor-fold desc="<------------------->">
 	public boolean isHigher() {
-		return this.number < 7;
+		return this.id < 7;
 	}
 
 	public boolean isMinor() {
@@ -117,20 +119,23 @@ public class Residente implements Cloneable {
 	}
 	// </editor-fold>
 
-	// OVERRIDE METHODS
+	// TO STRING METHODS
 	// <editor-fold desc="<------------------->">
 	@Override
 	public String toString() {
 		return this.getName() + " (" + this.getResident() + ")";
 	}
-
+	// </editor-fold>
+	
+	// OVERRIDE METHODS
+	// <editor-fold desc="<------------------->">
 	@Override
-	public Object clone() throws CloneNotSupportedException {
+	public final Object clone() throws CloneNotSupportedException {
 		Object obj = null;
 		try {
 			obj = super.clone();
 		} catch (CloneNotSupportedException ex) {
-			System.err.println("# ERROR: (Residente) no se puede duplicar: " + ex);
+			System.err.println("# ERROR: (Residente) no se puede clonar: " + ex);
 		}
 		return obj;
 	}
@@ -153,14 +158,14 @@ public class Residente implements Cloneable {
 		if (!Objects.equals(this.resident, other.resident)) {
 			return false;
 		}
-		return Objects.equals(this.number, other.number);
+		return Objects.equals(this.id, other.id);
 	}
 
 	@Override
 	public int hashCode() {
 		int hash = 7;
 		hash = 31 * hash + Objects.hashCode(this.name);
-		hash = 31 * hash + Objects.hashCode(this.number);
+		hash = 31 * hash + Objects.hashCode(this.id);
 		hash = 31 * hash + Objects.hashCode(this.resident);
 		return hash;
 	}
