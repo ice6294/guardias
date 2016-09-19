@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import javax.print.PrintException;
 
 /**
@@ -33,8 +34,8 @@ public class Utils {
 
 	// ATRIBUTES
 	// <editor-fold desc="<------------------->">
-	public static final int WIDTH = 10;
-	public static final int WIDTH2 = 7;
+	public static final int WIDTH = 12;
+	public static final int WIDTH2 = 10;
 
 	public static final String PATH = System.getProperty("user.dir");
 
@@ -53,7 +54,8 @@ public class Utils {
 			+ "\t\t\t   /~~~~~~~~~       GUARDIAS        ~~~~~~~~~~~~/\r\n"
 			+ "\t\t\t  /~~~~~~~~~~   RESIDENTES - CGD    ~~~~~~~~~~~/\r\n"
 			+ "\t\t\t /~~~~~~~~~~~   PUERTA DEL HIERRO   ~~~~~~~~~~/\r\n"
-			+ "\t\t\t/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/\r\n\r\n";
+			+ "\t\t\t/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~/\r\n"
+			+ "\t\t\t                  Versión: 1.2\r\n";
 
 	public static final String HELP
 			= "\r\n\r\n" + INTRO
@@ -67,14 +69,20 @@ public class Utils {
 			+ "\t\t2.1 Parte superior:\r\n\r\n"
 			+ "\t    · Botón RESIDENTES: muestra en el TextArea todos los residentes, con\r\n"
 			+ "\t  las ausencias y obligatorias que se han agregado hasta el momento.\r\n\r\n"
+			+ "\t    · Botón EDITAR residentes: muestra una ventana emergente con todos los\r\n"
+			+ "\t  residentes. En la columna de la izquierda se encuentran los residentes fijos\r\n"
+			+ "\t  y en la columna de la derecha los rotantes. Si la casilla se encuentra vacía\r\n"
+			+ "\t  se considera que no hay residente.\r\n\r\n"
 			+ "\t    · Desplegable residentes: permite seleccionar un residente en concreto,\r\n"
 			+ "\t  mostrándose en el TextArea toda la información sobre dicho residente\r\n\r\n"
 			+ "\t    · Campo Ausencias: cuando seleccionas un residente, puedes agregar en\r\n"
 			+ "\t  este campo los días que estará ausente en el mes. Para agregarlas hay\r\n"
-			+ "\t  que pulsar el botón \"+\".\r\n"
+			+ "\t  que pulsar el botón \"+\".\r\n\r\n"
 			+ "\t    Los números permitidos van del 1 al 31. Se pueden agregar los días de\r\n"
-			+ "\t  uno en uno, o de varios en varios. Ejemplo: \"3, 6, 17, 28\". Para eliminar\r\n"
-			+ "\t  algún día agregado basta con escribir dicho día y darle al botón \"-\"\r\n\r\n"
+			+ "\t  uno en uno, o de varios en varios. Ejemplo: \"3, 6, 17, 28\". También se\r\n"
+			+ "\t  pueden agregar conjuntos de días. Ejemplo: \"22-24\", \"3,7,25-28\". Para\r\n"
+			+ "\t  eliminar algún día agregado basta con escribir dicho día y darle al botón \"-\".\r\n"
+			+ "\t  Las reglas para eliminar días siguen las mismas que para agregarlas\r\n\r\n"
 			+ "\t    · Campo Obligatorias: cuando seleccionas un residente, puedes agregar en este\r\n"
 			+ "\t  campo las urgencias que quieres que el residente haga un día. Sigue las mismas\r\n"
 			+ "\t  reglas que el campo Ausencias.\r\n\r\n"
@@ -99,19 +107,22 @@ public class Utils {
 			+ "\t    · Botón ayuda: muestra en TextArea esta ayuda.\r\n\r\n\r\n"
 			+ "\t3. Bugs\r\n\r\n"
 			+ "\t    a) Si se intenta asignar en un sábado a una persona que de por si la seed ya\r\n"
-			+ "\t  lo va a colocer el viernes-domingo, el programa asigna todo el fin de semana\r\n"
+			+ "\t  lo va a colocar el viernes-domingo, el programa asigna todo el fin de semana\r\n"
 			+ "\t  a esa persona. Habría que intentar con otra seed.\r\n\r\n"
 			+ "\t    b) Seleccionar días obligatorios, cuando son más de una persona en días\r\n"
 			+ "\t  consecutivos puede dar a lugar a fallos en la asignación.\r\n\r\n"
-			+ "\t    c) A veces cuenta mal las asignaciones (y asigna 1 día demás a una persona).\r\n\r\n\r\n"
-			+ "\t4. Anotaciones\r\n\r\n"
 			+ "\t    Si un mes empieza en sábado o domingo, estas casillas aparecerán vacías, y se\r\n"
 			+ "\t  debe asignar manualmente según el mes anterior.\r\n"
 			+ "\t    Están pendientes agregar otras funcionalidades como por ejemplo un desplegable\r\n"
-			+ "\t  para los meses, una manera para guardar calendarios y poder volver a cargarlos\r\n"
-			+ "\t  (con el objetivo de tener un computo anual), y poder agregar guardias de trasplante\r\n"
-			+ "\t  obligatorios. De momento espero que sirva para facilitar el trabajo de asignación\r\n\r\n\r\n"
-			+ "\t5. Créditos\r\n\r\n"
+			+ "\t  para los meses, opción para seleccionar un máximo de asignaciones por residente,\r\n"
+			+ "\t  poder agregar guardias de trasplante, etc.\r\n"
+			+ "\t  De momento espero que sirva para facilitar el trabajo de asignación ^^\r\n\r\n\r\n"
+			+ "\t5. Funcionalidades\r\n\r\n"
+			+ "\t    Cuando se abre por primera vez la aplicación, esta carga una lista de residentes\r\n"
+			+ "\t  por defecto. Cuando se cierra la aplicación, las modificaciones sobre los residentes,\r\n"
+			+ "\t  las ausencias y los obligatorios se guardan en 3 ficheros que serán cargadas la\r\n"
+			+ "\t  próxima vez que se inicie la aplicación.\r\n\r\n\r\n"
+			+ "\t6. Créditos\r\n\r\n"
 			+ "\t    Luis León Gámez - luigi6294@gmail.com\r\n";
 	// </editor-fold>
 
@@ -309,7 +320,7 @@ public class Utils {
 		months.add("Agosto");
 		months.add("Septiembre");
 		months.add("Octubre");
-		months.add("Nombiembre");
+		months.add("Noviembre");
 		months.add("Diciembre");
 		return months.contains(s);
 	}
@@ -325,19 +336,21 @@ public class Utils {
 		return i;
 	}
 
-	public static void showResidents(List<Residente> residentes,
+	public static void showResidents(Map<Integer, Residente> residentes,
 			List<Pair<Integer, Residente>> ausencias,
 			List<Pair<Integer, Residente>> obligatorios) {
 
 		int i = 0;
 		println(" 1. RESIDENTES");
-		for (Residente r : residentes) {
+		List<Residente> list = sortMap(residentes);
+		for (Residente r : list) {
 			println("    " + (i + 1) + ". " + r.toString());
 			i++;
 		}
 
 		println("\r\n 2. AUSENCIAS");
 		int dia = -1;
+		sortPairList(ausencias);
 		for (Pair<Integer, Residente> p : ausencias) {
 			int _dia = p.getKey();
 			if (dia == _dia) {
@@ -350,6 +363,7 @@ public class Utils {
 
 		dia = -1;
 		println("\r\n 3. OBLIGATORIOS");
+		sortPairList(obligatorios);
 		for (Pair<Integer, Residente> p : obligatorios) {
 			int _dia = p.getKey();
 			if (dia == _dia) {
@@ -369,6 +383,7 @@ public class Utils {
 		println(residente);
 
 		println("\r\n 1. AUSENCIAS");
+		sortPairList(ausencias);
 		for (Pair<Integer, Residente> p : ausencias) {
 			if (p.getValue().toString() == null ? residente == null : p.getValue().toString().equals(residente)) {
 				println("    Dia: " + (p.getKey() + 1));
@@ -376,6 +391,7 @@ public class Utils {
 		}
 
 		println("\r\n 2. OBLIGATORIOS");
+		sortPairList(obligatorios);
 		for (Pair<Integer, Residente> p : obligatorios) {
 			if (p.getValue().toString() == null ? residente == null : p.getValue().toString().equals(residente)) {
 				println("    Dia: " + (p.getKey() + 1));
@@ -384,11 +400,15 @@ public class Utils {
 
 	}
 
-	public static void showAssignments(List<Residente> res,
-			Integer[] asignaciones, Integer[] asignaciones_urg, Integer[] asignaciones_tx) {
-		int n = res.size();
-		String aux = "+--------+";
+	public static void showAssignments(Map<Integer, Residente> res,
+			Map<Integer,Integer> asignaciones,
+			Map<Integer,Integer> asignaciones_urg,
+			Map<Integer,Integer> asignaciones_tx) {
 
+		List<Residente> resis = sortMap(res);
+		
+		int n = resis.size();
+		String aux = "+--------+";
 		println("\r\n 4. ASIGNACIONES\r\n");
 		print(aux);
 		for (int i = 0; i < n; i++) {
@@ -397,8 +417,8 @@ public class Utils {
 		print("\r\n");
 
 		print("|        |");
-		for (int i = 0; i < n; i++) {
-			print(addSpaces(WIDTH2, res.get(i).getName()) + "|");
+		for (Residente r : resis) {
+			print(addSpaces(WIDTH2, r.getName()) + "|");
 		}
 		print("\r\n");
 
@@ -409,8 +429,8 @@ public class Utils {
 		print("\r\n");
 
 		print("|    URG |");
-		for (int i = 0; i < n; i++) {
-			print(addSpaces(WIDTH2, Integer.toString(asignaciones_urg[i])) + "|");
+		for (Residente r : resis) {
+			print(addSpaces(WIDTH2, asignaciones_urg.get(r.getId()) + "|"));
 		}
 		print("\r\n");
 
@@ -421,8 +441,8 @@ public class Utils {
 		print("\r\n");
 
 		print("|     TX |");
-		for (int i = 0; i < n; i++) {
-			print(addSpaces(WIDTH2, Integer.toString(asignaciones_tx[i])) + "|");
+		for (Residente r : resis) {
+			print(addSpaces(WIDTH2, asignaciones_tx.get(r.getId()) + "|"));
 		}
 		print("\r\n");
 
@@ -433,8 +453,8 @@ public class Utils {
 		print("\r\n");
 
 		print("|  TOTAL |");
-		for (int i = 0; i < n; i++) {
-			print(addSpaces(WIDTH2, Integer.toString(asignaciones[i])) + "|");
+		for (Residente r : resis) {
+			print(addSpaces(WIDTH2, asignaciones.get(r.getId()) + "|"));
 		}
 		print("\r\n");
 
@@ -444,10 +464,174 @@ public class Utils {
 		}
 		print("\r\n");
 	}
+	
+	public static void showAssignmentsInParts(Map<Integer, Residente> res,
+			Map<Integer,Integer> asignaciones,
+			Map<Integer,Integer> asignaciones_urg,
+			Map<Integer,Integer> asignaciones_tx) {
+		
+		println("\r\n 4. ASIGNACIONES\r\n");
+		showAssignmentsR1toR2(res, asignaciones, asignaciones_urg, asignaciones_tx);
+		print("\n");
+		showAssignmentsR3toR5(res, asignaciones, asignaciones_urg, asignaciones_tx);
+		
+	}
+	
+	public static void showAssignmentsR1toR2(Map<Integer, Residente> res,
+			Map<Integer,Integer> asignaciones,
+			Map<Integer,Integer> asignaciones_urg,
+			Map<Integer,Integer> asignaciones_tx) {
+		
+		List<Residente> resis = new ArrayList();
+		for (Residente r : res.values()) {
+			if (r.isRol(1) || r.isRol(2)) {
+				resis.add(r);
+			}
+		}
+		Collections.sort(resis, new Comparator<Residente>() {
+			@Override
+			public int compare(Residente o1, Residente o2) {
+				return o1.getRol().compareTo(o2.getRol());
+			}
+		});
+		
+		int n = resis.size();
+		String aux = "+--------+";
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\r\n");
 
-	public static Residente getResidentFromToString(List<Residente> residentes, String residente) {
+		print("| R1  R2 |");
+		for (Residente r : resis) {
+			print(addSpaces(WIDTH2, r.getName()) + "|");
+		}
+		print("\r\n");
+
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\r\n");
+
+		print("|    URG |");
+		for (Residente r : resis) {
+			print(addSpaces(WIDTH2, asignaciones_urg.get(r.getId()).toString()) + "|");
+		}
+		print("\r\n");
+
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\r\n");
+
+		print("|     TX |");
+		for (Residente r : resis) {
+			print(addSpaces(WIDTH2, asignaciones_tx.get(r.getId()).toString()) + "|");
+		}
+		print("\r\n");
+
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\r\n");
+
+		print("|  TOTAL |");
+		for (Residente r : resis) {
+			print(addSpaces(WIDTH2, asignaciones.get(r.getId()).toString()) + "|");
+		}
+		print("\r\n");
+
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\r\n");
+		
+	}
+	
+	public static void showAssignmentsR3toR5(Map<Integer, Residente> res,
+			Map<Integer,Integer> asignaciones,
+			Map<Integer,Integer> asignaciones_urg,
+			Map<Integer,Integer> asignaciones_tx) {
+		
+		List<Residente> resis = new ArrayList();
+		for (Residente r : res.values()) {
+			if (r.isRol(3) || r.isRol(4) || r.isRol(5)) {
+				resis.add(r);
+			}
+		}
+		Collections.sort(resis, new Comparator<Residente>() {
+			@Override
+			public int compare(Residente o1, Residente o2) {
+				return o1.getRol().compareTo(o2.getRol());
+			}
+		});
+		
+		int n = resis.size();
+		String aux = "+--------+";
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\r\n");
+
+		print("|R3 R4 R5|");
+		for (Residente r : resis) {
+			print(addSpaces(WIDTH2, r.getName()) + "|");
+		}
+		print("\r\n");
+
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\r\n");
+
+		print("|    URG |");
+		for (Residente r : resis) {
+			print(addSpaces(WIDTH2, asignaciones_urg.get(r.getId()).toString()) + "|");
+		}
+		print("\r\n");
+
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\r\n");
+
+		print("|     TX |");
+		for (Residente r : resis) {
+			print(addSpaces(WIDTH2, asignaciones_tx.get(r.getId()).toString()) + "|");
+		}
+		print("\r\n");
+
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\r\n");
+
+		print("|  TOTAL |");
+		for (Residente r : resis) {
+			print(addSpaces(WIDTH2, asignaciones.get(r.getId()).toString()) + "|");
+		}
+		print("\r\n");
+
+		print(aux);
+		for (int i = 0; i < n; i++) {
+			print(addChars(WIDTH2, '-') + "+");
+		}
+		print("\r\n");
+		
+	}
+
+	public static Residente getResidentFromToString(Map<Integer, Residente> residentes, String residente) {
 		Residente result = new Residente();
-		for (Residente r : residentes) {
+		for (Residente r : residentes.values()) {
 			if (r.toString() == null ? residente == null : r.toString().equals(residente)) {
 				result = r;
 				break;
@@ -455,18 +639,23 @@ public class Utils {
 		}
 		return result;
 	}
+	
+	public static List<Residente> sortMap(Map<Integer, Residente> residentes) {
+		List<Residente> resis = new ArrayList(residentes.values());
+		Collections.sort(resis, new Comparator<Residente>() {
+			@Override
+			public int compare(Residente o1, Residente o2) {
+				return -(o1.getRol().compareTo(o2.getRol()));
+			}
+		});
+		return resis;
+	}
 
 	public static void sortPairList(List<Pair<Integer, Residente>> residentes) {
 		Collections.sort(residentes, new Comparator<Pair<Integer, Residente>>() {
 			@Override
 			public int compare(Pair<Integer, Residente> o1, Pair<Integer, Residente> o2) {
-				if (o1.getKey() < o2.getKey()) {
-					return -1;
-				} else if (o1.getKey() > o2.getKey()) {
-					return 1;
-				} else {
-					return 0;
-				}
+				return o1.getKey().compareTo(o2.getKey());
 			}
 		});
 	}

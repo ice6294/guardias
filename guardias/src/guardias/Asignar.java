@@ -17,7 +17,6 @@
  */
 package guardias;
 
-import static guardias.Utils.showAssignments;
 import static guardias.Utils.showResidents;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -25,7 +24,11 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import static guardias.Utils.addChars;
+import static guardias.Utils.print;
 import static guardias.Utils.println;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * @version v1.0
@@ -36,20 +39,21 @@ public class Asignar {
 	// PUBLIC ATTRIBUTES
 	// <editor-fold desc="<------------------->">
 	public static Integer SEED = 360;
-	public static Integer DIF = 3;
+	public static Integer DIF = 2;
 	public static List<Residente> RESIDENTES = new ArrayList();
+	public static boolean stop = false;
 	// </editor-fold>
 
 	// MASTER METHOD
 	// <editor-fold desc="<------------------->">
 	public static Calendario cthulhu(Integer year, Integer month, Integer seed,
-			List<Residente> residentes,
+			Map<Integer, Residente> residentes,
 			List<Pair<Integer, Residente>> ausentes,
 			List<Pair<Integer, Residente>> obligatorios) {
 
 		// Actualizamos las variables globales
 		SEED = seed;
-		RESIDENTES = residentes;
+		RESIDENTES = new ArrayList(residentes.values());
 
 		// Creamos Calendario
 		Calendario cal = new Calendario(year, month, seed);
@@ -69,40 +73,40 @@ public class Asignar {
 		// Creamos random
 		Random random = new Random(SEED);
 
-		// Creamos cola de residentes mayores
-		Queue<Residente> mayores = new ArrayDeque();
-		List<Residente> aux = new ArrayList();
-		for (int i = 0; i < 6; i++) {
-			aux.add(residentes.get(i));
-		}
-		// Randomizamos la cola mayores
-		while (!aux.isEmpty()) {
-			int n = (int) (random.nextDouble() * aux.size());
-			mayores.add(aux.remove(n));
+		// Creamos los listas auxiliares
+		List<Residente> aux_high = new ArrayList();
+		List<Residente> aux_min = new ArrayList();
+		for (Residente res : residentes.values()) {
+			if (res.isHigher()) {
+				aux_high.add(res);
+			}
+			if (res.isMinor()) {
+				aux_min.add(res);
+			}
 		}
 
-		// Creamos cola de residentes menores
+		// Creamos los pulls de residentes
+		Queue<Residente> mayores = new ArrayDeque();
 		Queue<Residente> menores = new ArrayDeque();
-		List<Residente> aux2 = new ArrayList();
-		int res_size = residentes.size();
-		for (int i = 4; i < res_size; i++) {
-			aux2.add(residentes.get(i));
+
+		// Randomizamos pulls
+		while (!aux_high.isEmpty()) {
+			int n = (int) (random.nextDouble() * aux_high.size());
+			mayores.add(aux_high.remove(n));
 		}
-		// Randomizamos cola menores
-		while (!aux2.isEmpty()) {
-			int n = (int) (random.nextDouble() * aux2.size());
-			menores.add(aux2.remove(n));
+		while (!aux_min.isEmpty()) {
+			int n = (int) (random.nextInt(aux_min.size()));
+			menores.add(aux_min.remove(n));
 		}
 
 		// Creamos lista de asignaciones
-		int num_residentes = residentes.size();
-		Integer[] asignaciones = new Integer[num_residentes];
-		Integer[] asignaciones_urg = new Integer[num_residentes];
-		Integer[] asignaciones_tx = new Integer[num_residentes];
-		for (int i = 0; i < num_residentes; i++) {
-			asignaciones[i] = 0;
-			asignaciones_urg[i] = 0;
-			asignaciones_tx[i] = 0;
+		Map<Integer, Integer> asignaciones = new HashMap();
+		Map<Integer, Integer> asignaciones_urg = new HashMap();
+		Map<Integer, Integer> asignaciones_tx = new HashMap();
+		for (Residente res : residentes.values()) {
+			asignaciones.put(res.getId(), 0);
+			asignaciones_urg.put(res.getId(), 0);
+			asignaciones_tx.put(res.getId(), 0);
 		}
 
 		// Hacemos la asignacion
@@ -113,11 +117,14 @@ public class Asignar {
 			System.err.printf("# ERROR (main): " + exc + "\r\n# " + cal.getYear() + " - " + cal.monthName() + " [SEED: " + SEED + " ]\r\n");
 		}
 
+		stop = false;
+
 		if (asignado) {
 			println(Utils.INTRO);
 			showResidents(residentes, ausentes, obligatorios);
-			showAssignments(residentes, asignaciones, asignaciones_urg, asignaciones_tx);
-			
+			//showAssignments(residentes, asignaciones, asignaciones_urg, asignaciones_tx);
+			Utils.showAssignmentsInParts(residentes, asignaciones, asignaciones_urg, asignaciones_tx);
+
 			println(" 5. CALENDARIO");
 			println(addChars(91, " " + cal.monthName().toUpperCase() + " ", '~'));
 			println(cal.toString());
@@ -133,75 +140,111 @@ public class Asignar {
 	// <editor-fold desc="<------------------->">
 	private static boolean probarOpciones(Calendario calendario, Dia dia,
 			Queue<Residente> menores, Queue<Residente> mayores,
-			Integer[] asignaciones, Integer[] asignaciones_urg, Integer[] asignaciones_tx)
+			Map<Integer, Integer> asignaciones,
+			Map<Integer, Integer> asignaciones_urg,
+			Map<Integer, Integer> asignaciones_tx)
 			throws CloneNotSupportedException, InterruptedException {
 
 		// Hacemos copia de todo
 		Calendario _calendario = (Calendario) calendario.clone();
+		Map<Integer, Integer> _asignaciones = cloneMap(asignaciones);
+		Map<Integer, Integer> _asignaciones_urg = cloneMap(asignaciones);
+		Map<Integer, Integer> _asignaciones_tx = cloneMap(asignaciones);
 
 		// Copiamos mayores
-		Queue<Residente> _mayores = new ArrayDeque();
-		for (Residente r : mayores) {
-			_mayores.add((Residente) r.clone());
-		}
+		Queue<Residente> _mayores = cloneQueue(mayores);
+
 		// Copiamos menores
-		Queue<Residente> _menores = new ArrayDeque();
-		for (Residente r : menores) {
-			_menores.add((Residente) r.clone());
-		}
+		Queue<Residente> _menores = cloneQueue(menores);
 
 		boolean asignado = false;
 		boolean is_saturday;
 		int it = 0;
 		int jt = 0;
-		while (!asignado) {
-			// i -> mayores / j -> menores
-			// Rotamos mayores
-			for (int i = 0; i < it; i++) {
-				Residente aux = mayores.poll();
-				mayores.add(aux);
-			}
-			// Rotamos menores
-			for (int j = 0; j < jt; j++) {
-				Residente aux = menores.poll();
-				menores.add(aux);
-			}
-			// Probamos combinacion
-			// Si es Sabado y existe Domingo y Lunes, saltamos directamente al Lunes
-			is_saturday = (dia.getWeek_day() == 5);
-			is_saturday &= (calendario.next(dia.getDay()) != null);
-			is_saturday = (is_saturday && (calendario.next(calendario.next(dia.getDay()).getDay()) != null));	// no evalua el segundo parametro si no se cumple el anterior
-			if (is_saturday) {
-				dia = calendario.next(calendario.next(dia.getDay()).getDay());
-			}
-			// Ejecutamos combinacion
-			try {
+		try {
+			while (!asignado && !stop) {
+				//println("probarOpciones(" + dia.getWeekDayName() + ", " + (dia.getDay()+1) + ")");
+				// i -> mayores / j -> menores
+				// Rotamos mayores
+				for (int i = 0; i < it; i++) {
+					Residente aux = mayores.poll();
+					mayores.add(aux);
+				}
+				// Rotamos menores
+				for (int j = 0; j < jt; j++) {
+					Residente aux = menores.poll();
+					menores.add(aux);
+				}
+				// Probamos combinacion
+				// Si es Sabado y existe Domingo y Lunes, saltamos directamente al Lunes
+				is_saturday = (dia.getWeek_day() == 5);
+				is_saturday &= (calendario.next(dia.getDay()) != null);
+				is_saturday = (is_saturday && (calendario.next(calendario.next(dia.getDay()).getDay()) != null));	// no evalua el segundo parametro si no se cumple el anterior
+				if (is_saturday) {
+					dia = calendario.next(calendario.next(dia.getDay()).getDay());
+				}
+				// Ejecutamos combinacion
 				asignado = asignar(calendario, dia, menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx);
-			} catch (CloneNotSupportedException | InterruptedException | NullPointerException exc) {
-				System.err.printf("# ERROR (probarOpciones): " + exc + "\r\n# " + calendario.getYear() + " - " + calendario.monthName() + " [SEED: " + SEED + " ] ~ Intento: " + jt + " " + it);
-				asignado = false;
-			}
-			if (!asignado) {
-				calendario = _calendario;
-				menores = _menores;
-				mayores = _mayores;
-			}
 
-			it++;
-			if (it > mayores.size()) {
-				it = 0;
-				jt++;
-				if (jt > menores.size()) {
-					return false;
+				// Si se ha asignado, probamos opciones en el día siguiente
+				if (asignado) {
+					if (calendario.hasNext(dia.getDay())) {
+						//println((dia.getDay() + 1) + ") IMPORTANTE!!!!! [" + jt + " " + it + "]\n\n");
+						//println("probamos la siguiente combinación ...\n\n");
+						//Thread.sleep(500);
+						asignado = probarOpciones(calendario, calendario.next(dia.getDay()), menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx);
+					}
+				}
+
+				// Si no se ha podido asignar el día siguiente, se reinicia la cuenta
+				if (!asignado) {
+					//println("Dia: " + dia.getWeekDayName() + " " + (dia.getDay() + 1));
+					//println("___________________________________________________________________________________________________________");
+					//println("______________________________________________ [" + jt + " "+ it + "] ______________________________________________________");
+					//println("__________________________________________________________________________________________________________");
+					//println("| | | Mayores         : " + mayores);
+					//println("| | | Menores         : " + menores);
+					//println("__________________________________________________________________________________________________________");
+					//println("| | | Excepciones     : " + dia.getExceptions());
+					//println("| | | Excepciones URG : " + dia.getExceptions_urg());
+					//println("| | | Excepciones  TX : " + dia.getExceptions_tx());
+					//println("__________________________________________________________________________________________________________");
+					//println("\n\n");
+					calendario = (Calendario) _calendario.clone();
+					mayores = cloneQueue(_mayores);
+					menores = cloneQueue(_menores);
+					asignaciones = cloneMap(_asignaciones);
+					asignaciones_tx = cloneMap(_asignaciones_tx);
+					asignaciones_urg = cloneMap(_asignaciones_urg);
+				}
+
+				// Si superamos el número de intentos, salimos
+				it++;
+				if (it > (mayores.size() / ((dia.getDay() / 6) + 1))) {
+					it = 0;
+					jt++;
+					if (jt > (menores.size() / ((dia.getDay() / 6) + 1))) {
+						return false;
+					}
 				}
 			}
+		} catch (CloneNotSupportedException | InterruptedException | NullPointerException exc) {
+			System.err.printf("# ERROR (probarOpciones): " + exc + "\r\n# " + calendario.getYear() + " - " + calendario.monthName() + " [SEED: " + SEED + " ] ~ Intento: " + jt + " " + it);
+			asignado = false;
 		}
-		return asignado;
+		System.gc();
+		if (stop) {
+			asignado = false;
+		}
+		return (asignado && (!poda(calendario, dia.getDay())));
 	}
 
 	private static boolean asignar(Calendario calendario, Dia dia,
-			Queue<Residente> menores, Queue<Residente> mayores,
-			Integer[] asignaciones, Integer[] asignaciones_urg, Integer[] asignaciones_tx)
+			Queue<Residente> menores,
+			Queue<Residente> mayores,
+			Map<Integer, Integer> asignaciones,
+			Map<Integer, Integer> asignaciones_urg,
+			Map<Integer, Integer> asignaciones_tx)
 			throws InterruptedException, CloneNotSupportedException {
 
 		// Si es un dia fuera de rango (solo por seguridad)
@@ -210,23 +253,29 @@ public class Asignar {
 		}
 		if (dia.getWeek_day() < 5) {
 
+			//println("  asignar(" + dia.getWeekDayName() + ", " + (dia.getDay()+1) + ")");
 			// LUNES | MARTES | MIÉRCOLES | JUEVES | VIERNES
 			// URG_MAYOR
 			if (!asignarURG_mayor(calendario, dia, mayores, asignaciones, asignaciones_urg)) {
+				//println("    (X) # ERROR URG mayor!\n\n");
 				return false;
 			}
 
 			// URG_MENOR
 			if (!asignarURG_menor(calendario, dia, menores, asignaciones, asignaciones_urg)) {
+				//println("    (X) # ERROR URG menor!\n\n");
 				return false;
 			}
+
 			// TX_MAYOR
 			if (!asignarTX_mayor(dia, mayores, asignaciones, asignaciones_tx)) {
+				//println("    (X) # ERROR TX mayor!\n\n");
 				return false;
 			}
 
 			// TX_MENOR
 			if (!asignarTX_menor(dia, menores, asignaciones, asignaciones_tx)) {
+				//println("    (X) # ERROR TX menor!\n\n");
 				return false;
 			}
 
@@ -234,15 +283,16 @@ public class Asignar {
 			if (dia.getWeek_day() == 4) {
 				asignarFinde(calendario, dia, asignaciones, asignaciones_tx, asignaciones_urg);
 			}
+
 		}
-		if (calendario.hasNext(dia.getDay())) {
-			return probarOpciones(calendario, calendario.next(dia.getDay()), menores, mayores, asignaciones, asignaciones_urg, asignaciones_tx);
-		}
+		//println("\n\n");
 		return true;
 	}
 
 	private static boolean asignarURG_mayor(Calendario calendario, Dia dia,
-			Queue<Residente> mayores, Integer[] asignaciones, Integer[] asignaciones_urg)
+			Queue<Residente> mayores,
+			Map<Integer, Integer> asignaciones,
+			Map<Integer, Integer> asignaciones_urg)
 			throws InterruptedException {
 
 		boolean asignado = (dia.hasURG_higher());
@@ -251,45 +301,57 @@ public class Asignar {
 		while (!asignado) {
 			// Sacamos primer residente en cola
 			Residente mayor = mayores.poll();
+			//println("    probando " + mayor + " ... ____________________________");
 			// Comprobamos si la asignacion es correcta
 			asignado = !dia.getAbsents().contains(mayor);
 			asignado &= !dia.getExceptions().contains(mayor);
 			asignado &= !dia.getExceptions_urg().contains(mayor);
-			asignado &= (asignaciones_urg[mayor.getId()] <= media(asignaciones_urg) + dif);
+			asignado &= (asignaciones_urg.get(mayor.getId()) < media(asignaciones_urg) + dif);
+			//println("      \\__ asignaciones (" + mayor + ") = " + asignaciones_urg.get(mayor.getId()) + " < "
+					//+ (media(asignaciones_urg) + dif) + " [" + media(asignaciones_urg) + " + " + dif + "] __/\n");
 			// si la asignacion es correcta lo agregamos
 			if (asignado) {
+				//println("        URG Mayor -> " + mayor);
 				dia.setURG_higher(mayor);
 			}
 			// Metemos residente en cola
 			mayores.add(mayor);
 			intento++;
-			if (intento > mayores.size()) {
+			if (!asignado && intento > mayores.size()) {
 				intento = 0;
+				dif++;
 				if (dif > DIF) {
+					//println("    xxxxxxxxxxxxxxxxxxxxxxxxxxx probadas todas las opciones D:");
 					return false;
 				}
 			}
-			dif++;
 		}
 		Residente mayor = dia.getURG_higher();
-		asignaciones[mayor.getId()]++;
-		asignaciones_urg[mayor.getId()]++;
+		next(asignaciones, mayor.getId());
+		next(asignaciones_urg, mayor.getId());
+		//print("\n                Asignaciones: ");
+		//printAssigns(asignaciones);
+		// Agregar excpeciones
 		dia.addException(mayor);
 		calendario.addNextFridaysException_urg(mayor, dia.getDay());
 		if (calendario.hasNext(dia.getDay())) {
 			calendario.next(dia.getDay()).addException_urg(mayor);
 		}
 		// Si es R3 el otro no puede estar como menor
-		if (mayor.getId() == 4) {
-			dia.addException_urg(RESIDENTES.get(5));
-		} else if (mayor.getId() == 5) {
-			dia.addException_urg(RESIDENTES.get(4));
+		if (mayor.isBoth()) {
+			for (Residente r : RESIDENTES) {
+				if (r.isBoth() && !r.equals(mayor)) {
+					dia.addException_urg(r);
+				}
+			}
 		}
 		return true;
 	}
 
 	private static boolean asignarURG_menor(Calendario calendario, Dia dia,
-			Queue<Residente> menores, Integer[] asignaciones, Integer[] asignaciones_urg)
+			Queue<Residente> menores,
+			Map<Integer, Integer> asignaciones,
+			Map<Integer, Integer> asignaciones_urg)
 			throws InterruptedException {
 
 		boolean asignado = (dia.hasURG_minor());
@@ -298,29 +360,37 @@ public class Asignar {
 		while (!asignado) {
 			// Sacamos primer residente en cola
 			Residente menor = menores.poll();
+			//println("    probando " + menor + " ... ____________________________");
 			// Comprobamos si la asignacion es correcta
 			asignado = !dia.getAbsents().contains(menor);
 			asignado &= !dia.getExceptions().contains(menor);
 			asignado &= !dia.getExceptions_urg().contains(menor);
-			asignado &= (asignaciones_urg[menor.getId()] <= media(asignaciones_urg) + dif);
+			asignado &= (asignaciones_urg.get(menor.getId()) < media(asignaciones_urg) + dif);
+			//println("      \\__ asignaciones (" + menor + ") = " + asignaciones_urg.get(menor.getId()) + " < "
+					//+ (media(asignaciones_urg) + dif) + " [" + media(asignaciones_urg) + " + " + dif + "] __/\n");
 			// si la asignacion es correcta lo agregamos
 			if (asignado) {
+				//println("        URG Menor -> " + menor);
 				dia.setURG_minor(menor);
 			}
 			// Metemos residente en cola
 			menores.add(menor);
 			intento++;
-			if (intento > menores.size()) {
+			if (!asignado && intento > menores.size()) {
 				intento = 0;
+				dif++;
 				if (dif > DIF) {
+					//println("    xxxxxxxxxxxxxxxxxxxxxxxxxxx probadas todas las opciones D:");
 					return false;
 				}
 			}
-			dif++;
 		}
 		Residente menor = dia.getURG_minor();
-		asignaciones[menor.getId()]++;
-		asignaciones_urg[menor.getId()]++;
+		next(asignaciones, menor.getId());
+		next(asignaciones_urg, menor.getId());
+		//print("\n                Asignaciones: ");
+		//printAssigns(asignaciones);
+		// Agregar excpeciones
 		dia.addException(menor);
 		calendario.addNextFridaysException_urg(menor, dia.getDay());
 		if (calendario.hasNext(dia.getDay())) {
@@ -330,7 +400,9 @@ public class Asignar {
 	}
 
 	private static boolean asignarTX_mayor(Dia dia,
-			Queue<Residente> mayores, Integer[] asignaciones, Integer[] asignaciones_tx)
+			Queue<Residente> mayores,
+			Map<Integer, Integer> asignaciones,
+			Map<Integer, Integer> asignaciones_tx)
 			throws InterruptedException {
 
 		boolean asignado = (dia.hasTX_higher());
@@ -339,40 +411,52 @@ public class Asignar {
 		while (!asignado) {
 			// Sacamos primer residente en cola
 			Residente mayor = mayores.poll();
+			//println("    probando " + mayor + " ... ____________________________");
 			// Comprobamos si la asignacion es correcta
 			asignado = !dia.getAbsents().contains(mayor);
 			asignado &= !dia.getExceptions().contains(mayor);
-			asignado &= (asignaciones_tx[mayor.getId()] <= media(asignaciones_tx) + dif);
+			asignado &= (asignaciones_tx.get(mayor.getId()) < media(asignaciones_tx) + dif);
+			//println("      \\__ asignaciones (" + mayor + ") = " + asignaciones_tx.get(mayor.getId()) + " < "
+					//+ (media(asignaciones_tx) + dif) + " [" + media(asignaciones_tx) + " + " + dif + "] __/\n");
 			// si la asignacion es correcta lo agregamos
 			if (asignado) {
+				//println("         TX Mayor -> " + mayor);
 				dia.setTX_higher(mayor);
 			}
 			// Metemos residente en cola
 			mayores.add(mayor);
 			intento++;
-			if (intento > mayores.size()) {
+			if (!asignado && intento > mayores.size()) {
 				intento = 0;
+				dif++;
 				if (dif > DIF) {
+					//println("    xxxxxxxxxxxxxxxxxxxxxxxxxxx probadas todas las opciones D:");
 					return false;
 				}
 			}
-			dif++;
 		}
 		Residente mayor = dia.getTX_higher();
-		asignaciones[mayor.getId()]++;
-		asignaciones_tx[mayor.getId()]++;
+		next(asignaciones, mayor.getId());
+		next(asignaciones_tx, mayor.getId());
+		//print("\n                Asignaciones: ");
+		//printAssigns(asignaciones);
+		// Agregar excpeciones
 		dia.addException(mayor);
 		// Si es R3 el otro no puede estar como menor
-		if (mayor.getId() == 4) {
-			dia.addException(RESIDENTES.get(5));
-		} else if (mayor.getId() == 5) {
-			dia.addException(RESIDENTES.get(4));
+		if (mayor.isBoth()) {
+			for (Residente r : RESIDENTES) {
+				if (r.isBoth() && !r.equals(mayor)) {
+					dia.addException(r);
+				}
+			}
 		}
 		return true;
 	}
 
 	private static boolean asignarTX_menor(Dia dia,
-			Queue<Residente> menores, Integer[] asignaciones, Integer[] asignaciones_tx)
+			Queue<Residente> menores,
+			Map<Integer, Integer> asignaciones,
+			Map<Integer, Integer> asignaciones_tx)
 			throws InterruptedException {
 
 		boolean asignado = (dia.hasTX_minor());
@@ -381,34 +465,44 @@ public class Asignar {
 		while (!asignado) {
 			// Sacamos primer residente en cola
 			Residente menor = menores.poll();
+			//println("    probando " + menor + " ... ____________________________");
 			// Comprobamos si la asignacion es correcta
 			asignado = !dia.getAbsents().contains(menor);
 			asignado &= !dia.getExceptions().contains(menor);
-			asignado &= (asignaciones_tx[menor.getId()] <= media(asignaciones_tx) + dif);
+			asignado &= (asignaciones_tx.get(menor.getId()) < media(asignaciones_tx) + dif);
+			//println("      \\__ asignaciones (" + menor + ") = " + asignaciones_tx.get(menor.getId()) + " < "
+					//+ (media(asignaciones_tx) + dif) + " [" + media(asignaciones_tx) + " + " + dif + "] __/\n");
 			// si la asignacion es correcta lo agregamos
 			if (asignado) {
+				//println("         TX Menor -> " + menor);
 				dia.setTX_minor(menor);
 			}
 			// Metemos residente en cola
 			menores.add(menor);
 			intento++;
-			if (intento > menores.size()) {
+			if (!asignado && intento > menores.size()) {
 				intento = 0;
+				dif++;
 				if (dif > DIF) {
+					//println("    xxxxxxxxxxxxxxxxxxxxxxxxxxx probadas todas las opciones D:");
 					return false;
 				}
 			}
-			dif++;
 		}
 		Residente menor = dia.getTX_minor();
-		asignaciones[menor.getId()]++;
-		asignaciones_tx[menor.getId()]++;
+		next(asignaciones, menor.getId());
+		next(asignaciones_tx, menor.getId());
+		//print("\n                Asignaciones: ");
+		//printAssigns(asignaciones);
+		// Agregar excpeciones
 		dia.addException(menor);
 		return true;
 	}
 
 	private static void asignarFinde(Calendario calendario, Dia dia,
-			Integer[] asignaciones, Integer[] asignaciones_tx, Integer[] asignaciones_urg)
+			Map<Integer, Integer> asignaciones,
+			Map<Integer, Integer> asignaciones_tx,
+			Map<Integer, Integer> asignaciones_urg)
 			throws InterruptedException {
 
 		if (calendario.hasNext(dia.getDay())) {
@@ -426,16 +520,16 @@ public class Asignar {
 			sabado.setTX_minor(urg_menor);
 
 			// aumentamos asignaciones
-			asignaciones[urg_mayor.getId()]++;
-			asignaciones[urg_menor.getId()]++;
-			asignaciones[tx_mayor.getId()]++;
-			asignaciones[tx_menor.getId()]++;
+			next(asignaciones, urg_mayor.getId());
+			next(asignaciones, urg_menor.getId());
+			next(asignaciones, tx_mayor.getId());
+			next(asignaciones, tx_menor.getId());
 			// aumentamos asignaciones_urg
-			asignaciones_urg[tx_mayor.getId()]++;
-			asignaciones_urg[tx_menor.getId()]++;
+			next(asignaciones_urg, tx_mayor.getId());
+			next(asignaciones_urg, tx_menor.getId());
 			// aumentamos asignaciones_tx
-			asignaciones_tx[urg_mayor.getId()]++;
-			asignaciones_tx[urg_menor.getId()]++;
+			next(asignaciones_tx, urg_mayor.getId());
+			next(asignaciones_tx, urg_menor.getId());
 
 			if (calendario.hasNext(sabado.getDay())) {
 				Dia domingo = calendario.next(sabado.getDay());
@@ -446,16 +540,16 @@ public class Asignar {
 				domingo.setTX_minor(tx_menor);
 
 				// aumentamos asignaciones
-				asignaciones[urg_mayor.getId()]++;
-				asignaciones[urg_menor.getId()]++;
-				asignaciones[tx_mayor.getId()]++;
-				asignaciones[tx_menor.getId()]++;
+				next(asignaciones, urg_mayor.getId());
+				next(asignaciones, urg_menor.getId());
+				next(asignaciones, tx_mayor.getId());
+				next(asignaciones, tx_menor.getId());
 				// aumentamos asignaciones_urg
-				asignaciones_urg[urg_mayor.getId()]++;
-				asignaciones_urg[urg_menor.getId()]++;
+				next(asignaciones_urg, urg_mayor.getId());
+				next(asignaciones_urg, urg_menor.getId());
 				// aumentamos asignaciones_tx
-				asignaciones_tx[tx_mayor.getId()]++;
-				asignaciones_tx[tx_menor.getId()]++;
+				next(asignaciones_tx, tx_mayor.getId());
+				next(asignaciones_tx, tx_menor.getId());
 
 				if (calendario.hasNext(domingo.getDay())) {
 					Dia lunes = calendario.next(domingo.getDay());
@@ -469,12 +563,51 @@ public class Asignar {
 		}
 	}
 
-	private static int media(Integer[] asignaciones) {
+	private static Map<Integer, Integer> cloneMap(Map<Integer, Integer> m) {
+		Map<Integer, Integer> n = new HashMap();
+		for (Entry<Integer, Integer> i : m.entrySet()) {
+			n.put(i.getKey(), i.getValue());
+		}
+		return n;
+	}
+
+	private static Queue<Residente> cloneQueue(Queue<Residente> queue) throws CloneNotSupportedException {
+		Queue<Residente> clon = new ArrayDeque();
+		for (Residente r : queue) {
+			clon.add((Residente) r.clone());
+		}
+		return clon;
+	}
+
+	private static boolean poda(Calendario cal, int d) {
+		while (cal.hasNext(d)) {
+			if (!cal.isViable(d)) {
+				return true;
+			}
+			d++;
+		}
+		return false;
+	}
+
+	private static void printAssigns(Map<Integer, Integer> m) {
+		print("[");
+		for (Integer i : m.values()) {
+			print(i + " ");
+		}
+		print("] ... media = " + media(m));
+		println();
+	}
+
+	private static void next(Map<Integer, Integer> m, Integer i) {
+		m.put(i, m.get(i) + 1);
+	}
+
+	private static int media(Map<Integer, Integer> asignaciones) {
 		int media = 0;
-		for (Integer asign : asignaciones) {
+		for (Integer asign : asignaciones.values()) {
 			media += asign;
 		}
-		media /= asignaciones.length;
+		media /= asignaciones.size();
 		return media;
 	}
 	// </editor-fold>

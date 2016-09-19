@@ -22,25 +22,25 @@ package guardias;
  * @author luis
  */
 public class CalendarioFijado {
-	
+
 	// ATTRIBUTES
 	// <editor-fold desc="<------------------->">
 	// </editor-fold>
-	
+
 	// CONSTRUCTOR
 	// <editor-fold desc="<------------------->">
 	public CalendarioFijado() {
 	}
 	// </editor-fold>
-	
+
 	// GETTERS & SETTERS
 	// <editor-fold desc="<------------------->">
 	// </editor-fold>
-	
+
 	// METHODS
 	// <editor-fold desc="<------------------->">
 	// </editor-fold>
-	
+
 	// TO STRING METHODS
 	// <editor-fold desc="<------------------->">
 	@Override
@@ -48,9 +48,8 @@ public class CalendarioFijado {
 		return "";
 	}
 	// </editor-fold>
-	
+
 	// OVERRIDE METHODS
 	// <editor-fold desc="<------------------->">
 	// </editor-fold>
-	
 }

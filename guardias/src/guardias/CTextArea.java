@@ -24,6 +24,9 @@ import java.io.OutputStream;
  * @author luis
  */
 public class CTextArea extends OutputStream {
+
 	@Override
-	public void write(int theByte){}
+	public void write(int theByte) {
+	}
+
 }

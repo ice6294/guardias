@@ -17,6 +17,7 @@
  */
 package guardias;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -25,7 +26,7 @@ import java.util.Objects;
  * @param <K>
  * @param <V>
  */
-public class Pair<K, V> {
+public class Pair<K, V> implements Serializable {
 
 	// ATTRIBUTES
 	private K key;
@@ -41,11 +42,11 @@ public class Pair<K, V> {
 	public K getKey() {
 		return key;
 	}
-	
+
 	public void setKey(K key) {
 		this.key = key;
 	}
-	
+
 	public V getValue() {
 		return value;
 	}

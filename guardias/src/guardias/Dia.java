@@ -102,7 +102,7 @@ public class Dia implements Cloneable {
 	public void setExceptions_urg(List<Residente> exceptions_urg) {
 		this.exceptions_urg = exceptions_urg;
 	}
-	
+
 	public List<Residente> getExceptions_tx() {
 		return exceptions_tx;
 	}
@@ -188,7 +188,7 @@ public class Dia implements Cloneable {
 			exceptions_tx.add(resident);
 		}
 	}
-	
+
 	public void addAbsent(Residente resident) {
 		if (!absents.contains(resident)) {
 			absents.add(resident);
@@ -202,7 +202,7 @@ public class Dia implements Cloneable {
 		setTX_minor(null);
 	}
 	// </editor-fold>
-	
+
 	// TO STRING METHODS
 	// <editor-fold desc="<------------------->">
 	@Override
@@ -210,7 +210,7 @@ public class Dia implements Cloneable {
 		return "Day: " + (getDay() + 1) + ". Week_Day: " + getWeekDayName();
 	}
 	// </editor-fold>
-	
+
 	// OVERRIDE METHODS
 	// <editor-fold desc="<------------------->">
 	@Override

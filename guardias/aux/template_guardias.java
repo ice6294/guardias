@@ -48,6 +48,27 @@ public class Template {
 		return "";
 	}
 	// </editor-fold>
+
+	// EQUAL METHODS
+	// <editor-fold desc="<------------------->">
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final Template other = (Template) obj;
+		if (!Objects.equals(this.atr, other.atr)) {
+			return false;
+		}
+		return Objects.equals(this.atr, other.atr);
+	}
+	// </editor-fold>
 	
 	// OVERRIDE METHODS
 	// <editor-fold desc="<------------------->">

@@ -207,6 +207,21 @@ public class Calendario implements Cloneable {
 		}
 		return null;
 	}
+	
+	public boolean isViable(Integer d) {
+		Dia dia = this.getDia(d);
+		List<Residente> resis_high = new ArrayList();
+		List<Residente> resis_min = new ArrayList();
+		for (Residente res : dia.getExceptions_urg()) {
+			if (res.isHigher()) {
+				resis_high.add(res);
+			}
+			if (res.isMinor()) {
+				resis_min.add(res);
+			}
+		}
+		return (resis_high.size() < 7 || resis_min.size() < 7);
+	}
 	// </editor-fold>
 
 	// ADD METHODS

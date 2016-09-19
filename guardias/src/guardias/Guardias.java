@@ -24,11 +24,8 @@ package guardias;
 public class Guardias {
 
 	public static void main(String[] args) throws InterruptedException, CloneNotSupportedException {
-
 		MenuPrincipal mp = new MenuPrincipal();
-
 		mp.setVisible(true);
-
 	}
 
 }

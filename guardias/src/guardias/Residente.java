@@ -17,18 +17,20 @@
  */
 package guardias;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * @version v1.0
  * @author luis
  */
-public class Residente implements Cloneable {
+public class Residente implements Cloneable, Serializable {
 
 	// ATTRIBUTES
 	// <editor-fold desc="<------------------->">
 	private Integer id;
-	
+	private Integer rol;
+
 	private String name;
 	private String resident;
 	// </editor-fold>
@@ -38,10 +40,10 @@ public class Residente implements Cloneable {
 	public Residente() {
 	}
 
-	public Residente(String name, Integer number) {
+	public Residente(String name, Integer id, Integer rol) {
 		this.name = name;
-		this.setId(number);
-		this.setResident();
+		this.id = id;
+		this.setResident(rol);
 	}
 	// </editor-fold>
 
@@ -59,63 +61,44 @@ public class Residente implements Cloneable {
 		return id;
 	}
 
-	public final void setId(Integer id) {
-		if (id > 9) {
-			this.id = 10;
-		} else {
-			this.id = id;
-		}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	public Integer getRol() {
+		return rol;
 	}
 
 	public String getResident() {
 		return resident;
 	}
 
-	public final void setResident() {
-		int n;
-		switch (id) {
-			case 0:
-			case 1: {
-				n = 5;
-				break;
-			}
-			case 2:
-			case 3: {
-				n = 4;
-				break;
-			}
-			case 4:
-			case 5: {
-				n = 3;
-				break;
-			}
-			case 6:
-			case 7: {
-				n = 2;
-				break;
-			}
-			case 8:
-			case 9: {
-				n = 1;
-				break;
-			}
-			default: {
-				n = 0;
-				break;
-			}
-		}
-		resident = "R" + n;
+	public final void setResident(Integer rol) {
+		this.rol = (rol > 5) ? 0 : rol;
+		resident = "R" + this.rol;
 	}
 	// </editor-fold>
 
 	// METHODS
 	// <editor-fold desc="<------------------->">
 	public boolean isHigher() {
-		return this.id < 7;
+		return (this.rol > 2);
 	}
 
 	public boolean isMinor() {
-		return !this.isHigher();
+		return (this.rol < 4 && this.rol > 0);
+	}
+
+	public boolean isBoth() {
+		return (this.rol == 3);
+	}
+	
+	public boolean isRotante() {
+		return (this.id > 10);
+	}
+	
+	public boolean isRol(int n) {
+		return (this.rol == n);
 	}
 	// </editor-fold>
 
@@ -123,10 +106,14 @@ public class Residente implements Cloneable {
 	// <editor-fold desc="<------------------->">
 	@Override
 	public String toString() {
-		return this.getName() + " (" + this.getResident() + ")";
+		String str = this.getName() + " (" + this.getResident() + ")";
+		if (this.isRotante()) {
+			str += " [ROTANTE]";
+		}
+		return str;
 	}
 	// </editor-fold>
-	
+
 	// OVERRIDE METHODS
 	// <editor-fold desc="<------------------->">
 	@Override
