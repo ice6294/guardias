@@ -127,7 +127,9 @@ public class Asignar {
 
 			println(" 5. CALENDARIO");
 			println(addChars(91, " " + cal.monthName().toUpperCase() + " ", '~'));
-			println(cal.toString());
+			//println(cal.toString()); // TODO: for the moment
+			//println(cal.toJavaScript());
+			println(cal.toJSON());
 			return cal;
 		} else {
 			println("\r\n\r\n # ERROR. No se pudieron hacer las asignaciones");

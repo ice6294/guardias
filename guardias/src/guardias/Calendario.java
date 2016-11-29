@@ -465,6 +465,297 @@ public class Calendario implements Cloneable {
 	public String calendarName() {
 		return year.toString() + " - " + monthName();
 	}
+	
+	public String toJavaScript() {
+		Integer MONTH = 1; // <------------------------------ CHANGE!!!
+		Integer assignID = 0;
+		//Integer absentID = 0; // no absents for the moment
+		Integer exceptionID = 0;
+		Integer petitionID = 0;
+		Integer dayID = 0;
+		String str = "";
+		for (int i = 0; i < this.calendar.size(); i++) {
+			// DAY
+			int dayN = (i + 1);
+			String day = (dayN < 10)? ("0" + dayN) : ("" + dayN);
+			Dia DAY = this.calendar.get(i);
+			str += "// <------ Day " + day + " ------> {day" + MONTH + "_" + day + "}\n";
+			//    DATE
+			str += "// <-- date -->\n";
+			str += "var dat" + MONTH + "_" + day + " = new Date(2016, 9, " + i + ");\n";
+			//    ASSIGNS
+			str += "// <-- assigns -->\n";
+			//        <URJ_MINOR>
+			str += "var ass" + MONTH +"_" + day + "_1: Assign = new Assign(" + assignID + ", ast1" + ", res" +
+					DAY.getURG_minor().getId() + ");\n";
+			assignID++;
+			//        <URJ_MAJOR>
+			str += "var ass" + MONTH +"_" + day + "_2: Assign = new Assign(" + assignID + ", ast2" + ", res" +
+					DAY.getURG_higher().getId() + ");\n";
+			assignID++;
+			//        <TX_MINOR>
+			str += "var ass" + MONTH +"_" + day + "_3: Assign = new Assign(" + assignID + ", ast3" + ", res" +
+					DAY.getTX_minor().getId() + ");\n";
+			assignID++;
+			//        <TX_MAJOR>
+			str += "var ass" + MONTH +"_" + day + "_4: Assign = new Assign(" + assignID + ", ast4" + ", res" +
+					DAY.getTX_higher().getId() + ");\n";
+			assignID++;
+			//        <ADD ALL ASS>
+			str += "var ass" + MONTH + "_" + day +  ": Assign[] = ["
+					+ "ass" + MONTH + "_" + day + "_1, "
+					+ "ass" + MONTH + "_" + day + "_2, "
+					+ "ass" + MONTH + "_" + day + "_3, "
+					+ "ass" + MONTH + "_" + day + "_4"+"];\n";
+			//    ABSENTS
+			str += "// <-- absents -->\n";
+			str += "var abs" + MONTH + "_" + day + ": User[] = [];\n";
+			str += "// <-- exceptions -->\n";
+			//    EXCEPTIONS
+			for (int j = 0; j < DAY.getExceptions_urg().size(); j++) {
+			//        <EXC>
+				str += "var exc" + MONTH + "_" + day + "_" + (j + 1) + ": Exception = new Exception(" +
+						exceptionID + ", rule1, res" + DAY.getExceptions_urg().get(j).getId() + ");\n";
+				exceptionID++;
+			}
+			//        <ADD ALL EXC>
+			str += "var exc" + MONTH + "_" + day +": Exception[] = [";
+			for (int j = 0; j < DAY.getExceptions_urg().size(); j++) {
+				str += "exc" + MONTH + "_" + day + "_" + (j + 1);
+				if (j < DAY.getExceptions_urg().size() - 1)
+					str += ", ";
+			}
+			str += "];\n";
+			//    PETITIONS
+			for (int j = 0; j < DAY.getAbsents().size(); j++) {
+			//        <PEt>
+				str += "var pet" + MONTH + "_" + day + "_" + (j + 1) + ": Petition = new Petition(" +
+						petitionID + ", " + 1 + ", \"\", res" + DAY.getAbsents().get(j).getId() + ", per" + 1 + ");\n";
+				petitionID++;
+			}
+			//        <ADD ALL PET>
+			str += "var pet" + MONTH + "_" + day +": Petition[] = [";
+			for (int j = 0; j < DAY.getAbsents().size(); j++) {
+				str += "pet" + MONTH + "_" + day + "_" + (j + 1);
+				if (j < DAY.getAbsents().size() - 1)
+					str += ", ";
+			}
+			str += "];\n";
+			//    DAY
+			str += "var day" + MONTH + "_" + day + ": Day = new Day(" + dayID + ", true, "
+					+ "dat" + MONTH + "_" + day + ", "
+					+ "ass" + MONTH + "_" + day + ", "
+					+ "abs" + MONTH + "_" + day + ", "
+					+ "exc" + MONTH + "_" + day + ", "
+					+ "pet" + MONTH + "_" + day + ");\n";
+			str += "add(day" + MONTH + "_" + day + ", cal" + MONTH + ".days);\n\n";
+			dayID++;
+		}
+		return str;
+	}
+	
+	//"// <------ Day 1 ------> {day_1_01}\n" +
+	//"// <-- date -->\n" +
+	//"var dat1_01: Date = new Date(2016, 9, 0);\n" +
+	//"// <-- assigns -->\n" +
+	//"var ass1_01_1: Assign = new Assign(0, ast1, res1);\n" +
+	//"var ass1_01_2: Assign = new Assign(0, ast2, res1);\n" +
+	//"var ass1_01_3: Assign = new Assign(0, ast3, res1);\n" +
+	//"var ass1_01_4: Assign = new Assign(0, ast4, res1);\n" +
+	//"var ass1_01: Assign[] = [ass1_01_1, ass1_01_2, ass1_01_3, ass1_01_4];\n" +
+	//"// <-- absents -->\n" +
+	//"var abs1_01: User[] = [res1, res2, res3];\n" +
+	//"// <-- exceptions -->\n" +
+	//"var exc1_01_1: Exception = new Exception(0, rule1, res1);\n" +
+	//"var exc1_01: Exception[] = [exc1_01_1];\n" +
+	//"// <-- petitions -->\n" +
+	//"var pet1_01_1: Petition = new Petition(0, 0, \"\", res1, pet1);\n" +
+	//"var pet1_01: Petition[] = [pet1_01_1];\n" +
+	//"// <-- day -->\n" +
+	//"var day1_01: Day = new Day(0, true, dat1_01, ass1_01, abs1_01, exc1_01, pet1_01);\n" +
+	//"add(day1_01, cal1.days);"
+	
+	public String atr(String atr) {
+		return "\"" + atr + "\": ";
+	}
+	
+	public String toJSON() {
+		Integer ID = 0; // <------------------------------ CHANGE!!!
+		Integer YEAR = this.year;
+		Integer MONTH = this.month + 1;
+		Integer SEED = this.seed;
+		Integer assignID = 0;
+		//Integer absentID = 0; // no absents for the moment
+		Integer exceptionID = 0;
+		Integer petitionID = 0;
+		Integer dayID = 0;
+		String str = "{\n";
+		str += atr("id") + ID + ",\n";
+		str += atr("year") + YEAR + ",\n";
+		str += atr("month") + MONTH + ",\n";
+		str += atr("seed") + SEED + ",\n";
+		str += atr("fixed") + "true" + ",\n";
+		// DAYS
+		str += atr("days") + "[\n";
+		for (int i = 0; i < this.calendar.size(); i++) {
+			Dia DAY = this.calendar.get(i);
+			// DAY
+			str += "{\n";
+			str += atr("id") + dayID + ",\n";
+			str += atr("fixed") + "true" + ",\n";
+			str += atr("date") + "\"" + YEAR + "-" + MONTH + "-" + (i+1) + "\"" + ",\n";
+			//    ASSIGNS
+			str += atr("assigns") + "[\n";
+			//        <URJ_MINOR>
+			str += "{\n";
+			str += atr("id") + assignID + ",\n";
+			str += atr("type") + "{" + atr("id") + 0 + "},\n";
+			str += atr("resident") + "{" + atr("id") + DAY.getURG_minor().getId() + "}\n";
+			str += "},\n";
+			assignID++;
+			//        <URJ_MAJOR>
+			str += "{\n";
+			str += atr("id") + assignID + ",\n";
+			str += atr("type") + "{" + atr("id") + 1 + "},\n";
+			str += atr("resident") + "{" + atr("id") + DAY.getURG_higher().getId() + "}\n";
+			str += "},\n";
+			assignID++;
+			//        <TX_MINOR>
+			str += "{\n";
+			str += atr("id") + assignID + ",\n";
+			str += atr("type") + "{" + atr("id") + 2 + "},\n";
+			str += atr("resident") + "{" + atr("id") + DAY.getTX_minor().getId() + "}\n";
+			str += "},\n";
+			assignID++;
+			//        <TX_MAJOR>
+			str += "{\n";
+			str += atr("id") + assignID + ",\n";
+			str += atr("type") + "{" + atr("id") + 3 + "},\n";
+			str += atr("resident") + "{" + atr("id") + DAY.getTX_higher().getId() + "}\n";
+			str += "}\n";
+			assignID++;
+			str += "],\n";
+			//    EXCEPTIONS
+			str += atr("exceptions") + "[\n";
+			for (int j = 0; j < DAY.getExceptions_urg().size(); j++) {
+			//        <EXC>
+				str += "{\n";
+				str += atr("id") + exceptionID + ",\n";
+				str += atr("rule") + "{" + atr("id") + + 0 + "},\n";
+				str += atr("resident") + "{" + atr("id") + DAY.getExceptions_urg().get(j).getId() + "}\n";
+				str += "}";
+				exceptionID++;
+				if (j < DAY.getExceptions_urg().size() - 1)
+					str += ",";
+				str += "\n";
+			}
+			str += "],\n";
+			//    PETITIONS
+			str += atr("petitions") + "[\n";
+			for (int j = 0; j < DAY.getAbsents().size(); j++) {
+			//        <PEt>
+				str += "{\n";
+				str += atr("id") + exceptionID + ",\n";
+				str += atr("level") + 0 + ",\n";
+				str += atr("reason") + "\"\"" + ",\n";
+				str += atr("resident") + "{" + atr("id") + DAY.getAbsents().get(j).getId() + "},\n";
+				str += atr("petType") + "{\n";
+				str += atr("id") + petitionID + ",\n";
+				str += atr("name") + "\"bloqueo\"" + ",\n";
+				str += atr("color") + "\"#eee\"" + ",\n";
+				str += atr("bColor") + "\"#191\"" + "\n";
+				str += "}";
+				str += "}";
+				petitionID++;
+				if (j < DAY.getAbsents().size() - 1)
+					str += ",\n";
+			}
+			str += "]\n";
+			str += "}\n";
+			dayID++;
+			if (i < this.calendar.size() - 1)
+				str += ",\n";
+		}
+		str += "],\n";
+		str += atr("residents") + "[]\n";
+		str += "}";
+		return str;
+	}
+	
+	//{
+	//	"id": 0,
+	//	"year": 2016,
+	//	"month": 9,
+	//	"seed": 360,
+	//	"fixed": true,
+	//	"days": [
+	//		{
+	//			"id": 0,
+	//			"fixed": true,
+	//			"date": "2016-9-0",
+	//			"assigns": [
+	//				{
+	//					"id": 0,
+	//					"type": 0,
+	//					"resident": {
+	//						"id": 0
+	//					}
+	//				},{
+	//					"id": 1,
+	//					"type": 1,
+	//					"resident": {
+	//						"id": 0
+	//					}
+	//				},{
+	//					"id": 2,
+	//					"type": 2,
+	//					"resident": {
+	//						"id": 0
+	//					}
+	//				},{
+	//					"id": 3,
+	//					"type": 3,
+	//					"resident": {
+	//						"id": 0
+	//					}
+	//				}
+	//			],
+	//			"absents": [
+	//				{
+	//					"id": 0
+	//				}
+	//			],
+	//			"exceptions": [
+	//				{
+	//					"id": 0,
+	//					"rule": 0,
+	//					"resident": {
+	//						"id": 0
+	//					}
+	//				}
+	//			],
+	//			"petitions": [
+	//				{
+	//					"id": 0,
+	//					"level": 0,
+	//					"reason": "",
+	//					"resident": {
+	//						"id": 0
+	//					},
+	//					"petType": {
+	//						"id": 0,
+	//						"name": "bloqueo",
+	//						"color": "",
+	//						"bColor": ""
+	//					}
+	//				}
+	//			]
+	//		}
+	//	],
+	//	"residents": [
+	//	]
+	//}
+	
 	// </editor-fold>
 
 	// OVERRIDE METHODS
