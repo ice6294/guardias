@@ -458,7 +458,7 @@ public class Calendario implements Cloneable {
 	}
 
 	public String monthName() {
-		String[] names = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Nobiembre", "Diciembre"};
+		String[] names = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 		return names[month];
 	}
 
@@ -575,20 +575,28 @@ public class Calendario implements Cloneable {
 	//"var day1_01: Day = new Day(0, true, dat1_01, ass1_01, abs1_01, exc1_01, pet1_01);\n" +
 	//"add(day1_01, cal1.days);"
 	
+	public String id(int n) {
+		if (n == 19)
+			return "10";
+		if (n == 20)
+			return "11";
+		return ("" + (n - 1));
+	}
+	
 	public String atr(String atr) {
 		return "\"" + atr + "\": ";
 	}
 	
 	public String toJSON() {
-		Integer ID = 0; // <------------------------------ CHANGE!!!
+		Integer ID = 3; // <------------------------------ CHANGE!!!
 		Integer YEAR = this.year;
 		Integer MONTH = this.month + 1;
 		Integer SEED = this.seed;
-		Integer assignID = 0;
+		Integer assignID = 364;
 		//Integer absentID = 0; // no absents for the moment
-		Integer exceptionID = 0;
-		Integer petitionID = 0;
-		Integer dayID = 0;
+		Integer exceptionID = 220;
+		Integer petitionID = 73;
+		Integer dayID = 104;
 		String str = "{\n";
 		str += atr("id") + ID + ",\n";
 		str += atr("year") + YEAR + ",\n";
@@ -609,62 +617,79 @@ public class Calendario implements Cloneable {
 			//        <URJ_MINOR>
 			str += "{\n";
 			str += atr("id") + assignID + ",\n";
-			str += atr("type") + "{" + atr("id") + 0 + "},\n";
-			str += atr("resident") + "{" + atr("id") + DAY.getURG_minor().getId() + "}\n";
+			str += atr("type") + "{" + atr("id") + 0 + "}\n";
+			/*
+			if (DAY.getURG_minor() == null)
+				str += atr("resident") + "{" + atr("id") + "TODO:¿?" + "}\n";
+			else
+				str += atr("resident") + "{" + atr("id") + id(DAY.getURG_minor().getId()) + "}\n";*/
 			str += "},\n";
 			assignID++;
 			//        <URJ_MAJOR>
 			str += "{\n";
 			str += atr("id") + assignID + ",\n";
-			str += atr("type") + "{" + atr("id") + 1 + "},\n";
-			str += atr("resident") + "{" + atr("id") + DAY.getURG_higher().getId() + "}\n";
+			str += atr("type") + "{" + atr("id") + 1 + "}\n";
+			/*
+			if (DAY.getURG_higher() == null)
+				str += atr("resident") + "{" + atr("id") + "TODO:¿?" + "}\n";
+			else
+				str += atr("resident") + "{" + atr("id") + id(DAY.getURG_higher().getId()) + "}\n";*/
 			str += "},\n";
 			assignID++;
 			//        <TX_MINOR>
 			str += "{\n";
 			str += atr("id") + assignID + ",\n";
-			str += atr("type") + "{" + atr("id") + 2 + "},\n";
-			str += atr("resident") + "{" + atr("id") + DAY.getTX_minor().getId() + "}\n";
+			str += atr("type") + "{" + atr("id") + 2 + "}\n";
+			/*
+			if (DAY.getTX_minor() == null)
+				str += atr("resident") + "{" + atr("id") + "TODO:¿?" + "}\n";
+			else
+				str += atr("resident") + "{" + atr("id") + id(DAY.getTX_minor().getId()) + "}\n";*/
 			str += "},\n";
 			assignID++;
 			//        <TX_MAJOR>
 			str += "{\n";
 			str += atr("id") + assignID + ",\n";
-			str += atr("type") + "{" + atr("id") + 3 + "},\n";
-			str += atr("resident") + "{" + atr("id") + DAY.getTX_higher().getId() + "}\n";
+			str += atr("type") + "{" + atr("id") + 3 + "}\n";
+			/*
+			if (DAY.getTX_higher() == null)
+				str += atr("resident") + "{" + atr("id") + "TODO:¿?" + "}\n";
+			else
+				str += atr("resident") + "{" + atr("id") + id(DAY.getTX_higher().getId()) + "}\n";*/
 			str += "}\n";
 			assignID++;
 			str += "],\n";
 			//    EXCEPTIONS
-			str += atr("exceptions") + "[\n";
+			str += atr("exceptions") + "[\n";/*
 			for (int j = 0; j < DAY.getExceptions_urg().size(); j++) {
 			//        <EXC>
 				str += "{\n";
 				str += atr("id") + exceptionID + ",\n";
 				str += atr("rule") + "{" + atr("id") + + 0 + "},\n";
-				str += atr("resident") + "{" + atr("id") + DAY.getExceptions_urg().get(j).getId() + "}\n";
+				if (DAY.getExceptions_urg().get(j) == null)
+					str += atr("resident") + "{" + atr("id") + "TODO:¿?" + "}\n";
+				else
+					str += atr("resident") + "{" + atr("id") + id(DAY.getExceptions_urg().get(j).getId()) + "}\n";
 				str += "}";
 				exceptionID++;
 				if (j < DAY.getExceptions_urg().size() - 1)
 					str += ",";
 				str += "\n";
-			}
+			}*/
 			str += "],\n";
 			//    PETITIONS
 			str += atr("petitions") + "[\n";
 			for (int j = 0; j < DAY.getAbsents().size(); j++) {
 			//        <PEt>
 				str += "{\n";
-				str += atr("id") + exceptionID + ",\n";
+				str += atr("id") + petitionID + ",\n";
 				str += atr("level") + 0 + ",\n";
 				str += atr("reason") + "\"\"" + ",\n";
-				str += atr("resident") + "{" + atr("id") + DAY.getAbsents().get(j).getId() + "},\n";
-				str += atr("petType") + "{\n";
-				str += atr("id") + petitionID + ",\n";
-				str += atr("name") + "\"bloqueo\"" + ",\n";
-				str += atr("color") + "\"#eee\"" + ",\n";
-				str += atr("bColor") + "\"#191\"" + "\n";
-				str += "}";
+				if (DAY.getAbsents().get(j) == null)
+					str += atr("resident") + "{" + atr("id") + "TODO:¿?" + "}\n";
+				else
+					str += atr("resident") + "{" + atr("id") + id(DAY.getAbsents().get(j).getId()) + "},\n";
+				str += atr("petType") + "{ " + atr("id") + 0 + " }";
 				str += "}";
 				petitionID++;
 				if (j < DAY.getAbsents().size() - 1)

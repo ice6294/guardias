@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="Calendar" max="32767" attributes="0"/>
+                  <Component id="CalendarInfo" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="CalendarInfo" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="Calendar" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JPanel" name="CalendarInfo">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
+            <BevelBorder/>
+          </Border>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="CalendarTitle" min="-2" pref="147" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="MemberLabelID" min="-2" max="-2" attributes="0"/>
+                      <Component id="DayLabelID" alignment="1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="CalendarTextFieldDAYID" min="-2" pref="50" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="ExceptionLabelID" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="CalendarTextFieldFIXRESID" min="-2" pref="50" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="AssignLabelID" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="CalendarTextFieldASSIGNID" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="CalendarTextFieldEXCEPTIONID" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="PetitionLabelID" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="CalendarTextFieldPETITIONID" min="-2" pref="50" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="LoadButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="toJSONButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="CloseButton" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="0" pref="43" max="32767" attributes="0"/>
+                          <Component id="IDLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="CalendarTextFieldID" min="-2" pref="34" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="YearLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="CalendarTextFieldYEAR" min="-2" pref="50" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="MonthLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="CalendarComboBoxMONTH" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="SeedLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="CalendarTextFieldSEED" min="-2" pref="50" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="CalendarCheckBoxFIXED" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="MemberLabelID" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CalendarTextFieldFIXRESID" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="AssignLabelID" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CalendarTextFieldASSIGNID" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="PetitionLabelID" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CalendarTextFieldPETITIONID" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="toJSONButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CloseButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="LoadButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="DayLabelID" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CalendarTextFieldDAYID" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="ExceptionLabelID" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CalendarTextFieldEXCEPTIONID" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="SeedLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CalendarTextFieldSEED" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="MonthLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CalendarTextFieldYEAR" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="YearLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CalendarCheckBoxFIXED" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CalendarComboBoxMONTH" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="IDLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CalendarTextFieldID" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Component id="CalendarTitle" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="CalendarTitle">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="24" style="1"/>
+            </Property>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" value="CALENDAR"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="MemberLabelID">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="1&#xba; FixRes Id"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="DayLabelID">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="1&#xba; Day Id"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="CalendarTextFieldFIXRESID">
+        </Component>
+        <Component class="javax.swing.JTextField" name="CalendarTextFieldDAYID">
+        </Component>
+        <Component class="javax.swing.JLabel" name="AssignLabelID">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="1&#xba; Assign Id"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="ExceptionLabelID">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="1&#xba; Exception Id"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="CalendarTextFieldEXCEPTIONID">
+        </Component>
+        <Component class="javax.swing.JTextField" name="CalendarTextFieldASSIGNID">
+        </Component>
+        <Component class="javax.swing.JLabel" name="PetitionLabelID">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="1&#xba; Petition Id"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="CalendarTextFieldPETITIONID">
+        </Component>
+        <Component class="javax.swing.JLabel" name="YearLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="YEAR"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="CalendarTextFieldYEAR">
+        </Component>
+        <Component class="javax.swing.JLabel" name="MonthLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="MONTH"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="SeedLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="SEED"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="CalendarTextFieldSEED">
+        </Component>
+        <Component class="javax.swing.JButton" name="toJSONButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="toJSON"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="toJSONButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="CloseButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="close"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CloseButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="CalendarCheckBoxFIXED">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="FIX"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="CalendarComboBoxMONTH">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="4">
+                <StringItem index="0" value="Item 1"/>
+                <StringItem index="1" value="Item 2"/>
+                <StringItem index="2" value="Item 3"/>
+                <StringItem index="3" value="Item 4"/>
+              </StringArray>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CalendarComboBoxMONTHActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JTextField" name="CalendarTextFieldID">
+        </Component>
+        <Component class="javax.swing.JLabel" name="IDLabel">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="ID"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="LoadButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="load"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LoadButtonActionPerformed"/>
+          </Events>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="Calendar">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.SoftBevelBorderInfo">
+            <BevelBorder/>
+          </Border>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" pref="515" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTable" name="CalendarTable">
+              <Properties>
+                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                  <Table columnCount="4" rowCount="31">
+                    <Column editable="false" title="D&#xed;a" type="java.lang.Integer">
+                      <Data value="1"/>
+                      <Data value="2"/>
+                      <Data value="3"/>
+                      <Data value="4"/>
+                      <Data value="5"/>
+                      <Data value="6"/>
+                      <Data value="7"/>
+                      <Data value="8"/>
+                      <Data value="9"/>
+                      <Data value="10"/>
+                      <Data value="11"/>
+                      <Data value="12"/>
+                      <Data value="13"/>
+                      <Data value="14"/>
+                      <Data value="15"/>
+                      <Data value="16"/>
+                      <Data value="17"/>
+                      <Data value="18"/>
+                      <Data value="19"/>
+                      <Data value="20"/>
+                      <Data value="21"/>
+                      <Data value="22"/>
+                      <Data value="23"/>
+                      <Data value="24"/>
+                      <Data value="25"/>
+                      <Data value="26"/>
+                      <Data value="27"/>
+                      <Data value="28"/>
+                      <Data value="29"/>
+                      <Data value="30"/>
+                      <Data value="31"/>
+                    </Column>
+                    <Column editable="true" title="Assigns (ej. &quot;asgID:userID, asgID:userID ...&quot;)" type="java.lang.String"/>
+                    <Column editable="true" title="Exceptions (ej. &quot;userID, userID ...&quot;)" type="java.lang.String"/>
+                    <Column editable="true" title="Petitions (ej. &quot;petID:userID, petID:userID ...&quot;)" type="java.lang.String"/>
+                  </Table>
+                </Property>
+                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                  <TableColumnModel selectionModel="0">
+                    <Column maxWidth="30" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                  </TableColumnModel>
+                </Property>
+                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                </Property>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

@@ -106,7 +106,7 @@ public class Residente implements Cloneable, Serializable {
 	// <editor-fold desc="<------------------->">
 	@Override
 	public String toString() {
-		String str = this.getName() + " (" + this.getResident() + ")";
+		String str = "[" + this.getId() + "] " + this.getName() + " (" + this.getResident() + ")";
 		if (this.isRotante()) {
 			str += " [ROTANTE]";
 		}

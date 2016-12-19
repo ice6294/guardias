@@ -326,7 +326,7 @@ public class Utils {
 	}
 
 	public static Integer getMonth(String s) {
-		String[] names = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Nobiembre", "Diciembre"};
+		String[] names = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
 		int i;
 		for (i = 0; i < names.length; i++) {
 			if (names[i].equals(s)) {
